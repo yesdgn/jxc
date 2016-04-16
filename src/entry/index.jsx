@@ -1,6 +1,11 @@
 import '../common/lib';
-import App from '../component/App';
-import ReactDOM from 'react-dom';
 import React from 'react';
-
-ReactDOM.render(<App />, document.getElementById('react-content'));
+import ReactDOM from 'react-dom';
+import Head from '../component/Head';
+import Left from '../component/Left';
+import Bottom from '../component/Bottom';
+import Content from '../component/Content';
+ReactDOM.render(<Head   />, document.getElementById('react-head'));
+ReactDOM.render(<Left   />, document.getElementById('react-left'));
+ReactDOM.render(<Content   />, document.getElementById('react-content'));
+ReactDOM.render(<Bottom   />, document.getElementById('react-bottom'));

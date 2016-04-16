@@ -1,7 +1,7 @@
 
 'use strict';
 import  React  from 'react';
-import { DatePicker } from 'antd';
+import { Row,Col } from 'antd';
 class App extends React.Component {
     static defaultProps = {
     };
@@ -16,7 +16,11 @@ class App extends React.Component {
     };
     render() {
         return(
-          <DatePicker />
+          <Row>
+            <Col span="12">.col-8</Col>
+            <Col span="12" >.col-8</Col>
+          </Row>
+
         );
     }
 };
