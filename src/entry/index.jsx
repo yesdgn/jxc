@@ -1,11 +1,22 @@
 import '../common/lib';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Head from '../component/Head';
-import Left from '../component/Left';
-import Bottom from '../component/Bottom';
+import { browserHistory,Router, Route, Link } from 'react-router';
 import Content from '../component/Content';
-ReactDOM.render(<Head   />, document.getElementById('react-head'));
-ReactDOM.render(<Left   />, document.getElementById('react-left'));
-ReactDOM.render(<Content   />, document.getElementById('react-content'));
-ReactDOM.render(<Bottom   />, document.getElementById('react-bottom'));
+import NoMatch from '../component/NoMatch';
+import Main from '../component/Main';
+import Users from '../component/Users';
+
+ Content.page=Main;
+
+ReactDOM.render((
+  <Router history={browserHistory}>
+    <Route path="/" component={ Content }   >
+      <Route path="/main" component={Main} />
+      <Route path="/users" component={Users} />
+      <Route path="*" component={NoMatch} />
+    </Route>
+    <Route path="*" component={NoMatch} />
+
+  </Router>
+), document.getElementById('react-body'));

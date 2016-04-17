@@ -11,8 +11,10 @@
     "babel-plugin-antd": "0.3.x",
     "component": "^1.1.0",
     "es3ify-loader": "^0.1.0",
+    "history": "^2.0.2",
     "react": "0.14.x",
-    "react-dom": "0.14.x"
+    "react-dom": "0.14.x",
+    "react-router": "^2.2.4"
   },
   "devDependencies": {
     "dora": "0.3.x",

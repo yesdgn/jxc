@@ -2,6 +2,7 @@
 'use strict';
 import  React  from 'react';
 import { Menu, Icon } from 'antd';
+import { Link } from 'react-router';
 const SubMenu = Menu.SubMenu;
 
 class Left extends React.Component {
@@ -40,8 +41,8 @@ class Left extends React.Component {
             selectedKeys={[this.state.current]}
             mode="inline">
             <SubMenu key="sub1" title={<span><Icon type="mail" /><span>导航一</span></span>}>
-              <Menu.Item key="1">选项1</Menu.Item>
-              <Menu.Item key="2">选项2</Menu.Item>
+              <Menu.Item key="1"><Link to={`/main`}>选项1</Link></Menu.Item>
+              <Menu.Item key="2"><Link to={`/users`}>选项2</Link></Menu.Item>
               <Menu.Item key="3">选项3</Menu.Item>
               <Menu.Item key="4">选项4</Menu.Item>
             </SubMenu>

@@ -2,7 +2,7 @@
 'use strict';
 import  React  from 'react';
 import { Row,Col,Menu,Dropdown,Icon,Tooltip,Badge } from 'antd';
-
+import { Link } from 'react-router';
 const onClick = function ({key}) {
   alert(`点击了菜单${key}`);
 };
@@ -35,9 +35,7 @@ class Head extends React.Component {
     starClick(){
       alert(1);
     };
-    messageClick(){
-      alert(2);
-    };
+
     render() {
         return(
           <div style={styles.headrow} >
@@ -52,13 +50,13 @@ class Head extends React.Component {
             <a style={styles.rightcol2} onClick={this.starClick}>
               <Tooltip title="收藏本页"><Icon type="star-o" /></Tooltip>
             </a>
-            <a style={styles.rightcol3} onClick={this.messageClick}>
+            <Link to={`users/`} style={styles.rightcol3} >
               <Tooltip title="消息">
                 <Badge count={33} overflowCount={9}   >
                   <Icon type="mail" style={styles.rightcol3_1} />
                 </Badge>
               </Tooltip>
-            </a>
+            </Link>
             <div style={styles.appcol}>
               <h1>{this.props.AppName}</h1>
               <h3>{this.props.AppUrl}</h3>

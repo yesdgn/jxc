@@ -1,10 +1,8 @@
 
 'use strict';
 import  React  from 'react';
-import {   Icon } from 'antd';
-
-
-class Bottom extends React.Component {
+import {  Table, Icon  } from 'antd';
+class Users extends React.Component {
     static defaultProps = {
     };
     static propTypes = {
@@ -19,9 +17,9 @@ class Bottom extends React.Component {
 
     render() {
       return(
-        <div style={styles.parentdiv}>
-          <div style={styles.childdiv}>
-            <span>上海</span>
+        <div>
+          <div >
+            用户
           </div>
         </div>
         );
@@ -30,8 +28,6 @@ class Bottom extends React.Component {
 
 const styles={
   parentdiv:{
-    clear:"both",
-    height:"60px",
     position:"relative"
   },
   childdiv:{
@@ -42,4 +38,4 @@ const styles={
   },
 }
 
-export default Bottom
+export default Users
