@@ -8,7 +8,7 @@ const columns = [{
   dataIndex: 'name',
   key: 'name',
   render(text) {
-    return <Link to={`users/`}>{text}</Link>;
+    return <Link to={`users/1`}>{text}</Link>;
   }
 }, {
   title: '时间',
@@ -67,6 +67,6 @@ class Main extends React.Component {
     }
 };
 
- 
+
 
 export default Main

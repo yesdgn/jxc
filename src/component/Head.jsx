@@ -3,6 +3,7 @@
 import  React  from 'react';
 import { Row,Col,Menu,Dropdown,Icon,Tooltip,Badge } from 'antd';
 import { Link } from 'react-router';
+
 const onClick = function ({key}) {
   alert(`点击了菜单${key}`);
 };
@@ -18,39 +19,37 @@ const menu = (
 
 class Head extends React.Component {
     static defaultProps = {
-      AppName:'奇怪的后台管理系统',
-      AppUrl:'www.qq.com',
-      LoginUser:'未登录'
+      appName:'奇怪的后台管理系统',
+      appUrl:'www.qq.com',
     };
     static propTypes = {
-
+      userInfo:React.PropTypes.object.isRequired
     };
     constructor(props) {
         super(props);
-        this.state={
-        };
     };
     componentWillMount() {
     };
-    starClick(){
-      alert(1);
-    };
+    addFavorites(){
+      this.props.addFavorites({userName:'Gavin'});
+    }
 
     render() {
+      const {dispatch,appUrl,appName,userInfo}=this.props;
         return(
           <div style={styles.headrow} >
             <img src="logo.png" style={styles.logoimg} />
             <div style={styles.rightcol}>
                 <Dropdown overlay={menu} style={styles.rightcol}>
                   <a className="ant-dropdown-link" href="#">
-                    {this.props.LoginUser}<Icon type="down" />
+                    {userInfo.userName}<Icon type="down" />
                   </a>
                 </Dropdown>
             </div>
-            <a style={styles.rightcol2} onClick={this.starClick}>
+            <a style={styles.rightcol2} onClick={this.addFavorites.bind(this)}>
               <Tooltip title="收藏本页"><Icon type="star-o" /></Tooltip>
             </a>
-            <Link to={`users/`} style={styles.rightcol3} >
+            <Link to={`/users`} style={styles.rightcol3} >
               <Tooltip title="消息">
                 <Badge count={33} overflowCount={9}   >
                   <Icon type="mail" style={styles.rightcol3_1} />
@@ -58,8 +57,8 @@ class Head extends React.Component {
               </Tooltip>
             </Link>
             <div style={styles.appcol}>
-              <h1>{this.props.AppName}</h1>
-              <h3>{this.props.AppUrl}</h3>
+              <h1>{appName}</h1>
+              <h3>{appUrl}</h3>
             </div>
 
           </div>
@@ -101,4 +100,4 @@ const styles={
 
 }
 
-export default Head
+export default  Head
