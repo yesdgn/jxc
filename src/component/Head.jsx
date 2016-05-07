@@ -31,11 +31,11 @@ class Head extends React.Component {
     componentWillMount() {
     };
     addFavorites(){
-      this.props.addFavorites({userName:'Gavin'});
+      this.props.addFavorites(this.props.route.path);
     }
 
     render() {
-      const {dispatch,appUrl,appName,userInfo}=this.props;
+      const {appUrl,appName,userInfo}=this.props;
         return(
           <div style={styles.headrow} >
             <img src="logo.png" style={styles.logoimg} />
