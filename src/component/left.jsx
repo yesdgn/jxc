@@ -24,7 +24,7 @@ class Left extends React.Component {
       this.setState({
         current: e.key,
         openKeys: e.keyPath.slice(1)
-      });
+      }); 
     };
     onToggle(info) {
       this.setState({
