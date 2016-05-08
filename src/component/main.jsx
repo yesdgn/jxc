@@ -8,7 +8,7 @@ const columns = [{
   dataIndex: 'name',
   key: 'name',
   render(text) {
-    return <Link to={`users/1`}>{text}</Link>;
+    return <Link to={`/login`}>{text}</Link>;
   }
 }, {
   title: '时间',
@@ -32,17 +32,17 @@ const columns = [{
 }];
 const data = [{
   key: '1',
-  name: '胡彦斌',
+  name: 'aaa',
   age: 32,
   address: '西湖区湖底公园1号'
 }, {
   key: '2',
-  name: '胡彦祖',
+  name: 'bbbb',
   age: 42,
   address: '西湖区湖底公园1号'
 }, {
   key: '3',
-  name: '李大嘴',
+  name: 'cccc',
   age: 32,
   address: '西湖区湖底公园1号'
 }];

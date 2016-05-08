@@ -24,7 +24,7 @@ class Left extends React.Component {
       this.setState({
         current: e.key,
         openKeys: e.keyPath.slice(1)
-      }); 
+      });
     };
     onToggle(info) {
       this.setState({
@@ -42,8 +42,12 @@ class Left extends React.Component {
                 }
                 else {
                   return(
-                           <Menu.Item key={x.MenuID}  >{x.MenuName}</Menu.Item>
-                         )
+                             <Menu.Item key={x.MenuID} >
+                               <Link to={x.Url}  >
+                                 {x.MenuName}
+                               </Link>
+                             </Menu.Item>
+                        )
                 }
               })
         )

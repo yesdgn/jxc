@@ -31,7 +31,7 @@ class Head extends React.Component {
     componentWillMount() {
     };
     addFavorites(){
-      this.props.addFavorites(this.props.route.path);
+      this.props.addFavorites();
     }
 
     render() {

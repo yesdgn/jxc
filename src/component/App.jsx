@@ -9,7 +9,11 @@ import * as actions from '../redux/actions'
 import Head from './Head';
 import Left from './Left';
 import Bottom from './Bottom';
-import Main from './Main';
+
+//未登录时没有左边页、头部页也不同
+const singleComponent=[]
+//不需要左边页的组件
+const cancelLeftComponent=['/users']
 
 class App extends React.Component {
   static defaultProps = {
@@ -22,16 +26,34 @@ class App extends React.Component {
   componentWillMount() {
    this.props.dispatch(actions.readMainMenu(123456))
   };
-
+  LeftComponent(url)
+  {
+    if (cancelLeftComponent.includes(url) )
+      {
+        //styles.contentDiv.margin="10px 0px 0px 10px";
+        return(null);
+      }
+      else {
+        //styles.contentDiv.margin="10px 0px 0px 250px";
+        return(<Left jsonData={this.props.mainMenu.items} />);
+      }
+  }
   render() {
       // 通过调用 connect() 注入:
-      const { dispatch, user } = this.props
+      const { dispatch, user } = this.props;
+      const url=this.props.location.pathname;
+      if (singleComponent.includes(url) )
+        {
+          return(
+            this.props.children
+          );
+        }
       return(
         <div>
-          <Head userInfo={user.userInfo} addFavorites={url =>
+          <Head userInfo={user.userInfo}  addFavorites={() =>
             dispatch(actions.readUser(url))
           } />
-          <Left jsonData={this.props.mainMenu.items}  />
+          {this.LeftComponent(url)}
           <div style={styles.contentDiv}>
             <div style={styles.breadcrumb}>
             <Breadcrumb >
@@ -41,7 +63,7 @@ class App extends React.Component {
               <Breadcrumb.Item>某应用</Breadcrumb.Item>
             </Breadcrumb>
           </div>
-          {this.props.children || <Main /> }
+          {this.props.children}
         </div>
         <Bottom />
       </div>
@@ -51,11 +73,12 @@ class App extends React.Component {
 
 const styles={
   contentDiv:{
-    margin:"10px 0px 0px 250px",
-    minHeight:"500px"
+    margin:"10px 0px 0px 10px",
+    minHeight:"500px",
+    overflow:"hidden"
   },
   breadcrumb:{
-    marginBottom:"10px"
+    margin:"0px 0px 10px  10px",
   }
 }
 
