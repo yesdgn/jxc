@@ -11,7 +11,7 @@ import Left from './Left';
 import Bottom from './Bottom';
 
 //不包含左边页、头部页  如登录前页面、个性化页面
-const singleComponent=[]
+const singleComponent=['/']
 //不包含左边页
 const cancelLeftComponent=['/users']
 
