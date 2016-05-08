@@ -10,9 +10,9 @@ import Head from './Head';
 import Left from './Left';
 import Bottom from './Bottom';
 
-//未登录时没有左边页、头部页也不同
+//不包含左边页、头部页  如登录前页面、个性化页面
 const singleComponent=[]
-//不需要左边页的组件
+//不包含左边页
 const cancelLeftComponent=['/users']
 
 class App extends React.Component {
@@ -30,16 +30,13 @@ class App extends React.Component {
   {
     if (cancelLeftComponent.includes(url) )
       {
-        //styles.contentDiv.margin="10px 0px 0px 10px";
         return(null);
       }
       else {
-        //styles.contentDiv.margin="10px 0px 0px 250px";
         return(<Left jsonData={this.props.mainMenu.items} />);
       }
   }
   render() {
-      // 通过调用 connect() 注入:
       const { dispatch, user } = this.props;
       const url=this.props.location.pathname;
       if (singleComponent.includes(url) )
@@ -57,7 +54,7 @@ class App extends React.Component {
           <div style={styles.contentDiv}>
             <div style={styles.breadcrumb}>
             <Breadcrumb >
-              <Link to={`/`}><Breadcrumb.Item>首页</Breadcrumb.Item></Link>
+              <Link to={`/main`}><Breadcrumb.Item>首页</Breadcrumb.Item></Link>
               <Link to={`/users`}><Breadcrumb.Item>应用中心</Breadcrumb.Item></Link>
               <Link to={`/user`}><Breadcrumb.Item>应用列表</Breadcrumb.Item></Link>
               <Breadcrumb.Item>某应用</Breadcrumb.Item>

@@ -20,6 +20,7 @@ ReactDOM.render(
     <Router history={browserHistory}>
       <Route path="/" component={ App }  >
         <IndexRoute  component={Login} />
+        <Route path="/main" component={Main} />
         <Route path="/users" component={Users} >
           <Route path="/users/:ID" component={Users} />
         </Route>
