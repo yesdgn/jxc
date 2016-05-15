@@ -4,6 +4,7 @@ import  React  from 'react';
 import ReactDOM from 'react-dom';
 import { Breadcrumb } from 'antd';
 import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import * as actions from '../redux/actions'
 import Head from './Head';
@@ -11,9 +12,9 @@ import Left from './Left';
 import Bottom from './Bottom';
 
 //不包含左边页、头部页  如登录前页面、个性化页面
-const singleComponent=['/']
+const singleComponent=['/','/reguser','/newPass','/login']
 //不包含左边页
-const cancelLeftComponent=['/users']
+const cancelLeftComponent=[]
 
 class App extends React.Component {
   static defaultProps = {
@@ -24,22 +25,24 @@ class App extends React.Component {
       super(props);
   };
   componentWillMount() {
-   this.props.dispatch(actions.readMainMenu(123456))
+
+
   };
+
   LeftComponent(url)
   {
-    if (cancelLeftComponent.includes(url) )
+    if (cancelLeftComponent.indexOf(url)>=0 )
       {
         return(null);
       }
       else {
-        return(<Left jsonData={this.props.mainMenu.items} />);
+        return(<Left jsonData={this.props.mainMenu.items}   onLoadMenuData={()=>this.props.dispatch(actions.readMainMenu(123456789))} />);
       }
   }
   render() {
       const { dispatch, user } = this.props;
       const url=this.props.location.pathname;
-      if (singleComponent.includes(url) )
+      if (singleComponent.indexOf(url)>=0 )
         {
           return(
             this.props.children
@@ -47,7 +50,7 @@ class App extends React.Component {
         }
       return(
         <div>
-          <Head userInfo={user.userInfo}  addFavorites={() =>
+          <Head userInfo={user.userInfo}   addFavorites={() =>
             dispatch(actions.readUser(url))
           } />
           {this.LeftComponent(url)}
@@ -88,13 +91,11 @@ const styles={
 // };
 function mapStateToProps(state) {
   const { mainMenu,user } = state
-
-
-
   return {
     mainMenu:mainMenu,
     user
   }
 }
+
 
 export default  connect(mapStateToProps)(App)

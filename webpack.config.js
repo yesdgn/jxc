@@ -1,3 +1,4 @@
+var webpack = require('atool-build/lib/webpack');
 module.exports = function(webpackConfig) {
   webpackConfig.babel.plugins.push('antd');
 
@@ -5,7 +6,10 @@ module.exports = function(webpackConfig) {
   webpackConfig.module.loaders.unshift({
     test: /\.jsx?$/,
     loader: 'es3ify-loader',
-  });
+  }
+);
+
+
 
   return webpackConfig;
 };

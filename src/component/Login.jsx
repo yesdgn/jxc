@@ -2,6 +2,11 @@
 'use strict';
 import  React  from 'react';
 import {Row,Col,Form,Input, Button, Checkbox  } from 'antd';
+import { Link } from 'react-router';
+import {userLogin} from '../redux/actions';
+import { connect } from 'react-redux';
+var lodash = require('lodash');
+
 const FormItem = Form.Item;
 
 class Login extends React.Component {
@@ -16,32 +21,65 @@ class Login extends React.Component {
     };
     componentWillMount() {
     };
+
+    handleReset(e) {
+       e.preventDefault();
+       this.props.form.resetFields();
+    }
     handleSubmit(e) {
       e.preventDefault();
-      console.log('收到表单值：', this.props.form.getFieldsValue());
+      this.props.form.validateFields((errors, values) => {
+        if (!!errors) {
+          console.log('Errors in form!!!');
+          return;
+        }
+        this.props.dispatch(userLogin(values));
+        console.log('收到表单值：', values);
+      });
+
+    };
+    checkLength(rule, value, callback) {
+      let regex=/^[A-Za-z0-9_@.]{1,30}$/;
+      let isOK=regex.test(value);
+      let firstStr=lodash.startsWith(value,'@') || lodash.startsWith(value,'.') || lodash.startsWith(value,'_') ;
+
+            if (lodash.trim(value) === '') {
+              callback([new Error('请输入用户名。')]);
+            }
+            else if (firstStr) {
+              callback([new Error('首字母只能是字母或数字')]);
+            }
+            else if (!isOK) {
+                    callback([new Error('用户名不符合规则。')]);
+                }
+           else {
+            callback();
+          }
     };
     render() {
-      const { getFieldProps } = this.props.form;
+      const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
       const formItemLayout = {
             labelCol: { span: 6 },
-            wrapperCol: { span: 14 },
+            wrapperCol: { span: 12 }
           };
+      const nameProps = getFieldProps('userName', {
+          rules: [
+            { validator: this.checkLength },
+
+          ],
+        });
       return(
-        <div>
-        <div style={styles.headrow} >
-        </div>
-        <div>
-          <Row type="flex" justify="center" align="middle">
-            <Col span="14" style={styles.img} >
-              <img src="loginR.jpg"   />
-            </Col>
-            <Col span="10">
-              <Form horizontal  onSubmit={this.handleSubmit}>
-                <FormItem {...formItemLayout} label="用户：">
+        <Row type="flex" justify="center" align="middle"  style={styles.Div}>
+          <Col span="18" >
+          <Row type="flex" justify="space-between" align="middle"  style={styles.middleDiv}>
+            <Col span="14" style={styles.col1} >
+              <Form horizontal form={this.props.form} onSubmit={this.handleSubmit.bind(this)} style={{paddingTop:"25px"}}>
+                <FormItem {...formItemLayout} label="用户：" hasFeedback required
+                   help={isFieldValidating('userName') ? '校验中...' : (getFieldError('userName') || []).join(', ')}>
                   <Input placeholder="请输入用户名"
-                    {...getFieldProps('userName')} />
+                    {...nameProps} />
                 </FormItem>
-                <FormItem {...formItemLayout} label="密码：">
+                <FormItem {...formItemLayout} label="密码：" required >
                   <Input type="password" placeholder="请输入密码"
                     {...getFieldProps('password')} />
                 </FormItem>
@@ -51,26 +89,77 @@ class Login extends React.Component {
                       {...getFieldProps('agreement')} />记住我
                   </label>
                 </FormItem>
-                <FormItem {...formItemLayout} label=" " >
-                  <Button type="primary" htmlType="submit">登录</Button>
+                <FormItem {...formItemLayout} label=" "  >
+                  <Button type="primary" htmlType="submit"  >登录</Button>
+
+                  <Button type="ghost" onClick={this.handleReset.bind(this)} style={styles.button} >重置</Button>
+                </FormItem>
+                <FormItem {...formItemLayout} label=" "  >
+                  <label className="ant-checkbox-inline">
+                     <Link to={`/reguser`}>注册</Link>
+                  </label>
+                  <label className="ant-checkbox-inline">
+                     <Link to={`/newPass`}>忘记密码</Link>
+                  </label>
                 </FormItem>
               </Form>
             </Col>
+            <Col span="10" style={styles.col2} >
+                  <p style={styles.p}>
+                     您可以通过以下途径,获得帮助 <br/>
+                     邮　　件: yesdgn@qq.com <br/>
+                     手　　机: 15618551880 <br/>
+                     在线QQ: 71989555 <br/>
+                     本网站支持现代浏览器浏览
+                    </p>
+            </Col>
           </Row>
-        </div>
-      </div>
+        </Col>
+        </Row>
         );
     }
 };
 
 const styles={
-  headrow:{
-    height:"80px",
-    backgroundColor:"white"
+  Div:{
+    backgroundColor:"white",
+    minHeight:"100%",
+    minWidth:"100%",
+    position:"absolute"
   },
-  img:{
-    textAlign:"center"
+  middleDiv:{
+    height:"300px",
+    boxShadow:"0 0 16px #888"
+  },
+  col1:{
+    minHeight:"100%",
+  },
+  col2:{
+    minHeight:"100%",
+    backgroundColor:"#2f7dcd",
+    fontSize:"14",
+    color:"white"
+  },
+  p:{
+    minWidth:"200px",
+    lineHeight:"2.2",
+    position:"absolute",
+    top:"50%",
+    left:"50%",
+    transform:"translate(-50%,-50%)",
+  },
+  button:{
+    marginLeft:"100px"
+  }
+
+}
+
+function mapStateToProps(state) {
+  const { user } = state
+  return {
+    user:user
   }
 }
+
 Login = Form.create()(Login);
-export default Login
+export default connect(mapStateToProps)(Login)

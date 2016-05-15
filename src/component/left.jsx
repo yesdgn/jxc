@@ -31,6 +31,9 @@ class Left extends React.Component {
         openKeys: info.open ? info.keyPath : info.keyPath.slice(1)
       });
     };
+    componentWillMount() {
+      this.props.onLoadMenuData();
+    };
     initMenu(jsonData){
         return(  jsonData.map((x)=>{
                 if (x.children)
