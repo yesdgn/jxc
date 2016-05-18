@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { USER_LOGIN,READ_MAIN_MENU,RECEIVE_POSTS,REQUEST_POSTS,RECEIVE_REG_POST } from './actions'
+import { USER_LOGIN,READ_MAIN_MENU,USER_REG } from './actions'
 
 function user(state={} , action) {
   switch (action.type) {
@@ -8,10 +8,10 @@ function user(state={} , action) {
           ...state,
           userInfo: action.loginInfo
         }
-    case RECEIVE_REG_POST:
+    case USER_REG:
           return {
             ...state,
-            regResult:action.posts.items[0]}
+            regResult:action.receivedJson.items[0]}
      default:
       return state
   }
@@ -19,8 +19,8 @@ function user(state={} , action) {
 
 function mainMenu(state=[] , action) {
   switch (action.type) {
-    case RECEIVE_POSTS:
-      return action.posts
+    case READ_MAIN_MENU:
+      return action.receivedJson
     default:
       return state
   }

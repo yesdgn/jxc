@@ -1,13 +1,16 @@
 
 'use strict';
 import  React  from 'react';
-import {Row,Col,Form,Input, Button, Checkbox  } from 'antd';
+import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
 import * as actions from '../redux/actions';
 import { connect } from 'react-redux';
 var lodash = require('lodash');
+var CryptoJS = require('crypto-js');
+import {APISERVERURL} from '../../config';
 const FormItem = Form.Item;
 
+var hide;
 class RegUser extends React.Component {
     static defaultProps = {
     };
@@ -18,7 +21,18 @@ class RegUser extends React.Component {
         this.state={
         };
     };
-    componentDidMount() {
+    transformResult(json)
+    {
+      if ( json.items[0].result=='fail')
+      {
+        hide = message.loading(json.items[0].resultDescribe);
+      }
+      else if (json.items[0].result=='success')
+      {
+        hide = message.loading(json.items[0].resultDescribe);
+      }
+      else {
+      }
     };
     noop() {
       return false;
@@ -34,7 +48,24 @@ class RegUser extends React.Component {
         if (!!errors) {
           return;
         }
-        this.props.dispatch(actions.userReg(values));
+        hide = message.loading('注册中...', 0);
+        let url=APISERVERURL+`/2?loginid=`+values.userName+`&nickname=`+values.userName+`&logintype=6&usertype=1&password=`+CryptoJS.SHA1(values.password).toString()+`&checkcode=nocheck`;
+        fetch(url)
+           .then(res => {
+             setTimeout(hide, 0);
+             if (res.ok) {
+               res.json().then(data => {
+                 this.transformResult(data);
+               });
+             } else {
+               hide = message.loading('服务器返回数据不正确。');
+               console.log("Looks like the response wasn't perfect, got status", res.status);
+             }
+           }, function(e) {
+             setTimeout(hide, 0);
+             hide = message.loading('网络连接不稳定。');
+             console.log("Fetch failed!", e);
+           });
       });
     };
     checkUserName(rule, value, callback) {
@@ -77,6 +108,7 @@ class RegUser extends React.Component {
           };
       const nameProps = getFieldProps('userName', {
               rules: [
+                { required: true, whitespace: true, message: '请填写密码' },
                 { validator: this.checkUserName },
               ],
             });
@@ -95,14 +127,15 @@ class RegUser extends React.Component {
                 validator: this.checkPass2,
               }],
             });
+
       return(
         <Row type="flex" justify="center" align="middle"  style={styles.Div}>
           <Col span="18" >
           <Row type="flex" justify="space-between" align="middle"  style={styles.middleDiv}>
             <Col span="14" style={styles.col1} >
               <Form horizontal form={this.props.form}   onSubmit={this.handleSubmit} style={{paddingTop:"25px"}}>
-                <FormItem {...formItemLayout} label="用户："  hasFeedback required
-                  help={isFieldValidating('userName') ? '校验中...' : (getFieldError('userName') || []).join(', ')}>
+                <FormItem {...formItemLayout} label="用户："  hasFeedback required>
+
                   <Input placeholder="请输入用户名"
                       {...nameProps} />
                 </FormItem>
