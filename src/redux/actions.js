@@ -2,12 +2,8 @@ import {APISERVERURL} from '../../config';
 import fetch from 'isomorphic-fetch'
 var CryptoJS = require('crypto-js');
 
-//用户信息
-export const USER_LOGIN = 'USER_LOGIN';
 
-export function userLogin(loginInfo) {
-  return { type: USER_LOGIN, loginInfo }
-}
+
 
 //读主菜单信息
 export const READ_MAIN_MENU = 'READ_MAIN_MENU'
@@ -51,13 +47,13 @@ function fetchPosts(actionType,url) {
 }
 
 
-//用户注册
+//用户登录
+export const USER_LOGIN = 'USER_LOGIN';
 
-export const USER_REG = 'USER_REG'
 
-export function userReg(regInfo) {
+export function userLogin(loginInfo) {
   return (dispatch, getState) => {
-    let url=APISERVERURL+`/2?loginid=`+regInfo.userName+`&nickname=`+regInfo.userName+`&logintype=6&usertype=1&password=`+CryptoJS.SHA1(regInfo.password).toString()+`&checkcode=nocheck`;
-    return dispatch(fetchPosts(USER_REG,url))
+    let url=APISERVERURL+`/3?appid=1000&appsecret=friuiowqueoikdsjkwoieuo&loginid=`+loginInfo.userName+`&logintype=6&usertype=1&password=`+CryptoJS.SHA1(loginInfo.password).toString() ;
+    return dispatch(fetchPosts(USER_LOGIN,url))
   }
 }

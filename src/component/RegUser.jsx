@@ -3,8 +3,6 @@
 import  React  from 'react';
 import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
-import * as actions from '../redux/actions';
-import { connect } from 'react-redux';
 var lodash = require('lodash');
 var CryptoJS = require('crypto-js');
 import {APISERVERURL} from '../../config';
@@ -15,6 +13,10 @@ class RegUser extends React.Component {
     static defaultProps = {
     };
     static propTypes = {
+
+    };
+    static contextTypes = {
+      router: React.PropTypes.object.isRequired
     };
     constructor(props) {
         super(props);
@@ -30,6 +32,7 @@ class RegUser extends React.Component {
       else if (json.items[0].result=='success')
       {
         hide = message.loading(json.items[0].resultDescribe);
+        this.context.router.push('/login');
       }
       else {
       }
@@ -58,7 +61,7 @@ class RegUser extends React.Component {
                  this.transformResult(data);
                });
              } else {
-               hide = message.loading('服务器返回数据不正确。');
+               hide = message.loading('获取数据错误。');
                console.log("Looks like the response wasn't perfect, got status", res.status);
              }
            }, function(e) {
@@ -69,7 +72,7 @@ class RegUser extends React.Component {
       });
     };
     checkUserName(rule, value, callback) {
-      let regex=/^[A-Za-z0-9_@.]{1,30}$/;
+      let regex=/^[A-Za-z0-9_@.]{3,30}$/;
       let isOK=regex.test(value);
       let firstStr=lodash.startsWith(value,'@') || lodash.startsWith(value,'.') || lodash.startsWith(value,'_') ;
       if (lodash.trim(value) === '') {
@@ -108,7 +111,6 @@ class RegUser extends React.Component {
           };
       const nameProps = getFieldProps('userName', {
               rules: [
-                { required: true, whitespace: true, message: '请填写密码' },
                 { validator: this.checkUserName },
               ],
             });
@@ -176,6 +178,7 @@ class RegUser extends React.Component {
     }
 };
 
+
 const styles={
   Div:{
     backgroundColor:"white",
@@ -209,11 +212,6 @@ const styles={
   }
 
 }
-function mapStateToProps(state) {
-  const { user } = state
-  return {
-    user:user
-  }
-}
+
 RegUser = Form.create()(RegUser);
-export default  connect(mapStateToProps)(RegUser)
+export default  RegUser

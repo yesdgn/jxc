@@ -1,44 +1,58 @@
 
 'use strict';
 import  React  from 'react';
-import {Row,Col,Form,Input, Button, Checkbox  } from 'antd';
+import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
 import {userLogin} from '../redux/actions';
 import { connect } from 'react-redux';
 var lodash = require('lodash');
 
 const FormItem = Form.Item;
-
+var hide;
 class Login extends React.Component {
     static defaultProps = {
     };
     static propTypes = {
     };
+    static contextTypes = {
+      router: React.PropTypes.object.isRequired
+    };
     constructor(props) {
         super(props);
         this.state={
         };
+        var showMessagesign=false;
     };
-    componentWillMount() {
+    componentWillReceiveProps(nextProps)
+    {
+      if( nextProps.user.userInfo &&  nextProps.user.userInfo.items[0].item0[0].result=='success')
+      {
+        this.context.router.push('/main');
+      }
+      else if(this.showMessagesign==true && nextProps.user.userInfo &&  nextProps.user.userInfo.items[0].item0[0].result=='fail')
+      {
+        this.showMessagesign=false;
+        hide = message.loading(nextProps.user.userInfo.items[0].item0[0].resultDescribe);
+      }
     };
 
-    handleReset(e) {
+    handleReset=(e)=> {
        e.preventDefault();
        this.props.form.resetFields();
     }
-    handleSubmit(e) {
+    handleSubmit=(e)=> {
       e.preventDefault();
       this.props.form.validateFields((errors, values) => {
         if (!!errors) {
-          console.log('Errors in form!!!');
           return;
         }
         this.props.dispatch(userLogin(values));
-        console.log('收到表单值：', values);
+        this.showMessagesign=true;
+        //console.log('收到表单值：', values);
       });
 
     };
-    checkLength(rule, value, callback) {
+    checkUserName(rule, value, callback) {
       let regex=/^[A-Za-z0-9_@.]{1,30}$/;
       let isOK=regex.test(value);
       let firstStr=lodash.startsWith(value,'@') || lodash.startsWith(value,'.') || lodash.startsWith(value,'_') ;
@@ -56,6 +70,7 @@ class Login extends React.Component {
             callback();
           }
     };
+
     render() {
       const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
       const formItemLayout = {
@@ -64,7 +79,13 @@ class Login extends React.Component {
           };
       const nameProps = getFieldProps('userName', {
           rules: [
-            { validator: this.checkLength },
+            { validator: this.checkUserName },
+
+          ],
+        });
+        const passwdProps = getFieldProps('password', {
+          rules: [
+            { required: true, whitespace: true, message: '请填写密码' },
 
           ],
         });
@@ -73,15 +94,15 @@ class Login extends React.Component {
           <Col span="18" >
           <Row type="flex" justify="space-between" align="middle"  style={styles.middleDiv}>
             <Col span="14" style={styles.col1} >
-              <Form horizontal form={this.props.form} onSubmit={this.handleSubmit.bind(this)} style={{paddingTop:"25px"}}>
-                <FormItem {...formItemLayout} label="用户：" hasFeedback required
-                   help={isFieldValidating('userName') ? '校验中...' : (getFieldError('userName') || []).join(', ')}>
+              <Form horizontal form={this.props.form} onSubmit={this.handleSubmit} style={{paddingTop:"25px"}}>
+                <FormItem {...formItemLayout} label="用户：" hasFeedback required>
                   <Input placeholder="请输入用户名"
                     {...nameProps} />
                 </FormItem>
-                <FormItem {...formItemLayout} label="密码：" required >
-                  <Input type="password" placeholder="请输入密码"
-                    {...getFieldProps('password')} />
+                <FormItem {...formItemLayout} label="密码：" required hasFeedback>
+                  <Input type="password" placeholder="请输入密码"   autoComplete="off"
+             onContextMenu={this.noop} onPaste={this.noop} onCopy={this.noop} onCut={this.noop}
+                     {...passwdProps}  />
                 </FormItem>
                 <FormItem {...formItemLayout} label=" " >
                   <label className="ant-checkbox-inline">
@@ -92,7 +113,7 @@ class Login extends React.Component {
                 <FormItem {...formItemLayout} label=" "  >
                   <Button type="primary" htmlType="submit"  >登录</Button>
 
-                  <Button type="ghost" onClick={this.handleReset.bind(this)} style={styles.button} >重置</Button>
+                  <Button type="ghost" onClick={this.handleReset} style={styles.button} >重置</Button>
                 </FormItem>
                 <FormItem {...formItemLayout} label=" "  >
                   <label className="ant-checkbox-inline">
