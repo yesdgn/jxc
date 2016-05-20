@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { USER_LOGIN,READ_MAIN_MENU } from './actions'
+import { USER_LOGIN,READ_MAIN_MENU,USER_CLEAR } from './actions'
 
 function user(state={} , action) {
   switch (action.type) {
@@ -8,6 +8,9 @@ function user(state={} , action) {
           ...state,
           userInfo: action.receivedJson
         }
+    case USER_CLEAR:
+          return {
+            }
      default:
       return state
   }

@@ -3,7 +3,7 @@
 import  React  from 'react';
 import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
-import {userLogin} from '../redux/actions';
+import {userLogin,clearUserInfo} from '../redux/actions';
 import { connect } from 'react-redux';
 var lodash = require('lodash');
 
@@ -21,18 +21,17 @@ class Login extends React.Component {
         super(props);
         this.state={
         };
-        var showMessagesign=false;
     };
-    componentWillReceiveProps(nextProps)
+    componentWillReceiveProps (nextProps)
     {
       if( nextProps.user.userInfo &&  nextProps.user.userInfo.items[0].item0[0].result=='success')
       {
         this.context.router.push('/main');
       }
-      else if(this.showMessagesign==true && nextProps.user.userInfo &&  nextProps.user.userInfo.items[0].item0[0].result=='fail')
+      else if(nextProps.user.userInfo &&  nextProps.user.userInfo.items[0].item0[0].result=='fail')
       {
-        this.showMessagesign=false;
-        hide = message.loading(nextProps.user.userInfo.items[0].item0[0].resultDescribe);
+        hide = message.error(nextProps.user.userInfo.items[0].item0[0].resultDescribe);
+        this.props.dispatch(clearUserInfo());
       }
     };
 
@@ -47,7 +46,6 @@ class Login extends React.Component {
           return;
         }
         this.props.dispatch(userLogin(values));
-        this.showMessagesign=true;
         //console.log('收到表单值：', values);
       });
 

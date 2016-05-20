@@ -5,7 +5,7 @@ import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
 var lodash = require('lodash');
 var CryptoJS = require('crypto-js');
-import {APISERVERURL} from '../../config';
+import * as APP from '../../config';
 const FormItem = Form.Item;
 
 var hide;
@@ -27,11 +27,11 @@ class RegUser extends React.Component {
     {
       if ( json.items[0].result=='fail')
       {
-        hide = message.loading(json.items[0].resultDescribe);
+        hide = message.error(json.items[0].resultDescribe);
       }
       else if (json.items[0].result=='success')
       {
-        hide = message.loading(json.items[0].resultDescribe);
+        hide = message.success(json.items[0].resultDescribe);
         this.context.router.push('/login');
       }
       else {
@@ -52,7 +52,7 @@ class RegUser extends React.Component {
           return;
         }
         hide = message.loading('注册中...', 0);
-        let url=APISERVERURL+`/2?loginid=`+values.userName+`&nickname=`+values.userName+`&logintype=6&usertype=1&password=`+CryptoJS.SHA1(values.password).toString()+`&checkcode=nocheck`;
+        let url=APP.APISERVERURL+`/2?loginid=`+values.userName+`&nickname=`+values.userName+`&logintype=`+APP.LOGINTYPE+`&usertype=`+APP.USERTYPE+`&password=`+CryptoJS.SHA1(values.password).toString()+`&checkcode=nocheck`;
         fetch(url)
            .then(res => {
              setTimeout(hide, 0);
@@ -61,12 +61,12 @@ class RegUser extends React.Component {
                  this.transformResult(data);
                });
              } else {
-               hide = message.loading('获取数据错误。');
+               hide = message.error('获取数据错误。');
                console.log("Looks like the response wasn't perfect, got status", res.status);
              }
            }, function(e) {
              setTimeout(hide, 0);
-             hide = message.loading('网络连接不稳定。');
+             hide = message.error('网络连接错误。');
              console.log("Fetch failed!", e);
            });
       });
