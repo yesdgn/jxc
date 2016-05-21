@@ -5,7 +5,8 @@ import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
 import {userLogin,clearUserInfo} from '../redux/actions';
 import { connect } from 'react-redux';
-var lodash = require('lodash');
+import * as lodash   from 'lodash';
+import * as dgn from '../common/dgn';
 
 const FormItem = Form.Item;
 var hide;
@@ -22,10 +23,28 @@ class Login extends React.Component {
         this.state={
         };
     };
+    componentDidMount() {
+      let username=dgn.storeL.getItem("user");
+      if (username)
+      {
+        this.props.form.setFieldsValue({userName:username,agreement:true});
+      }
+    }
     componentWillReceiveProps (nextProps)
     {
+      let fieldsValue=this.props.form.getFieldsValue();
+      if (fieldsValue.agreement===false)
+      {
+        dgn.storeL.removeItem("user");
+      }
       if( nextProps.user.userInfo &&  nextProps.user.userInfo.items[0].item0[0].result=='success')
       {
+        if (fieldsValue.agreement===true)
+        {
+          dgn.storeL.setItem("user",fieldsValue.userName);
+        }
+        dgn.storeS.setItem("sessionKey",nextProps.user.userInfo.items[0].item0[0].accessToken);
+
         this.context.router.push('/main');
       }
       else if(nextProps.user.userInfo &&  nextProps.user.userInfo.items[0].item0[0].result=='fail')
@@ -105,7 +124,9 @@ class Login extends React.Component {
                 <FormItem {...formItemLayout} label=" " >
                   <label className="ant-checkbox-inline">
                     <Checkbox
-                      {...getFieldProps('agreement')} />记住我
+                      {...getFieldProps('agreement', {valuePropName: 'checked'})}  >
+                    记住我
+                  </Checkbox>
                   </label>
                 </FormItem>
                 <FormItem {...formItemLayout} label=" "  >

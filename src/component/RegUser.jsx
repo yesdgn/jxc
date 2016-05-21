@@ -3,9 +3,9 @@
 import  React  from 'react';
 import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
-var lodash = require('lodash');
-var CryptoJS = require('crypto-js');
-import * as APP from '../../config';
+import * as lodash   from 'lodash';
+import * as CryptoJS   from 'crypto-js';
+import * as APP from '../entry/config';
 const FormItem = Form.Item;
 
 var hide;
