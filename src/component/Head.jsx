@@ -26,8 +26,7 @@ class Head extends React.Component {
     super(props);
 
   };
-  componentWillMount() {};
-  addFavorites() {
+  addFavorites=()=> {
     this.props.addFavorites();
   }
   menuClick=({key}) =>{
@@ -56,7 +55,7 @@ class Head extends React.Component {
             </Link>
           </Dropdown>
         </div>
-        <a style={styles.rightcol2} onClick={this.addFavorites.bind(this)}>
+        <a style={styles.rightcol2} onClick={this.addFavorites}>
           <Tooltip title="收藏本页"><Icon type="star-o"/></Tooltip>
         </a>
         <Link to={`/users`} style={styles.rightcol3}>

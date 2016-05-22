@@ -37,19 +37,19 @@ class Login extends React.Component {
       {
         dgn.storeL.removeItem("user");
       }
-      if( nextProps.user.userInfo &&  nextProps.user.userInfo.items[0].item0[0].result=='success')
+      if( nextProps.user.userLoginResult &&  nextProps.user.userLoginResult.items[0].item0[0].result=='success')
       {
         if (fieldsValue.agreement===true)
         {
           dgn.storeL.setItem("user",fieldsValue.userName);
         }
-        dgn.storeS.setItem("sessionKey",nextProps.user.userInfo.items[0].item0[0].accessToken);
+        dgn.storeS.setItem("sessionKey",nextProps.user.userLoginResult.items[0].item0[0].accessToken);
 
         this.context.router.push('/main');
       }
-      else if(nextProps.user.userInfo &&  nextProps.user.userInfo.items[0].item0[0].result=='fail')
+      else if(nextProps.user.userLoginResult &&  nextProps.user.userLoginResult.items[0].item0[0].result=='fail')
       {
-        hide = message.error(nextProps.user.userInfo.items[0].item0[0].resultDescribe);
+        hide = message.error(nextProps.user.userLoginResult.items[0].item0[0].resultDescribe);
         this.props.dispatch(clearUserInfo());
       }
     };

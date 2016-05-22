@@ -1,27 +1,37 @@
 import {
-  combineReducers
-} from 'redux'
-import {
   USER_LOGIN,
+  USER_REG,
   READ_MAIN_MENU,
-  USER_CLEAR
+  USER_CLEAR,
+  SET_FAVORITES
 } from './actions'
 
-function user(state = {}, action) {
+export function user(state = {}, action) {
   switch (action.type) {
     case USER_LOGIN:
       return {
         ...state,
-        userInfo: action.receivedJson
+        userLoginResult: action.receivedJson,
+        userInfo:action.receivedJson.items[0].item0[0].result=='success'?action.receivedJson.items[1].item1[0]:{}
+      }
+    case USER_REG:
+      return{
+        ...state,
+        regInfo:action.receivedJson
       }
     case USER_CLEAR:
       return {}
+    case SET_FAVORITES:
+      return {
+        ...state,
+        favorites:action.receivedJson
+      }
     default:
       return state
   }
 }
 
-function mainMenu(state = [], action) {
+export function mainMenu(state = [], action) {
   switch (action.type) {
     case READ_MAIN_MENU:
       return action.receivedJson
@@ -29,12 +39,3 @@ function mainMenu(state = [], action) {
       return state
   }
 }
-
-
-
-const rootReducer = combineReducers({
-  user,
-  mainMenu
-})
-
-export default rootReducer

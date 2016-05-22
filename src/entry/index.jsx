@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {browserHistory, Router, Route, IndexRoute} from 'react-router';
 import configureStore from '../redux/configureStore';
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import App from '../component/App';
 import NoMatch from '../component/NoMatch';
 import Login from '../component/Login';
@@ -15,12 +16,13 @@ import RegUser from '../component/RegUser';
 import NewPass from '../component/NewPass';
 
 const store = configureStore()
+const history = syncHistoryWithStore(browserHistory, store);
 
 let rootElement = document.getElementById('react-body');
 
 ReactDOM.render(
   <Provider store={store}>
-  <Router history={browserHistory}>
+  <Router history={history}>
     <Route path="/" component={App}>
       <IndexRoute component={Login}/>
       <Route path="/login" component={Login}/>

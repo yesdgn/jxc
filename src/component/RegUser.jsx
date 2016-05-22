@@ -3,6 +3,8 @@
 import  React  from 'react';
 import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import {userReg,clearUserInfo} from '../redux/actions';
 import * as lodash   from 'lodash';
 import * as CryptoJS   from 'crypto-js';
 import * as APP from '../entry/config';
@@ -23,20 +25,17 @@ class RegUser extends React.Component {
         this.state={
         };
     };
-    transformResult(json)
-    {
-      if ( json.items[0].result=='fail')
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.user.regInfo && nextProps.user.regInfo.items[0].result==='success')
       {
-        hide = message.error(json.items[0].resultDescribe);
-      }
-      else if (json.items[0].result=='success')
-      {
-        hide = message.success(json.items[0].resultDescribe);
+        hide = message.success(nextProps.user.regInfo.items[0].resultDescribe);
         this.context.router.push('/login');
       }
-      else {
+      else if (nextProps.user.regInfo && nextProps.user.regInfo.items[0].result==='fail') {
+        this.props.dispatch(clearUserInfo());
+        hide = message.error(nextProps.user.regInfo.items[0].resultDescribe);
       }
-    };
+    }
     noop() {
       return false;
     }
@@ -51,24 +50,7 @@ class RegUser extends React.Component {
         if (!!errors) {
           return;
         }
-        hide = message.loading('注册中...', 0);
-        let url=APP.APISERVERURL+`/2?loginid=`+values.userName+`&nickname=`+values.userName+`&logintype=`+APP.LOGINTYPE+`&usertype=`+APP.USERTYPE+`&password=`+CryptoJS.SHA1(values.password).toString()+`&checkcode=nocheck`;
-        fetch(url)
-           .then(res => {
-             setTimeout(hide, 0);
-             if (res.ok) {
-               res.json().then(data => {
-                 this.transformResult(data);
-               });
-             } else {
-               hide = message.error('获取数据错误。');
-               console.log("Looks like the response wasn't perfect, got status", res.status);
-             }
-           }, function(e) {
-             setTimeout(hide, 0);
-             hide = message.error('网络连接错误。');
-             console.log("Fetch failed!", e);
-           });
+        this.props.dispatch(userReg(values));
       });
     };
     checkUserName(rule, value, callback) {
@@ -212,6 +194,11 @@ const styles={
   }
 
 }
-
+function mapStateToProps(state) {
+  const { user } = state
+  return {
+    user:user
+  }
+}
 RegUser = Form.create()(RegUser);
-export default  RegUser
+export default  connect(mapStateToProps)(RegUser)

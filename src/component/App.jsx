@@ -28,7 +28,7 @@ class App extends React.Component {
     if (cancelLeftComponent.indexOf(url) >= 0) {
       return (null);
     } else {
-      return (<Left jsonData={this.props.mainMenu.items} onLoadMenuData={() => this.props.dispatch(actions.readMainMenu(123456789))}/>);
+      return (<Left jsonData={this.props.mainMenu.items} onLoadMenuData={() => this.props.dispatch(actions.readMainMenu(this.props.user.userInfo.UserID))}/>);
     }
   }
   render() {
@@ -39,8 +39,8 @@ class App extends React.Component {
     }
     return (
       <div>
-        <Head userInfo={this.props.user.userInfo?this.props.user.userInfo.items[1].item1[0]:{}}
-          addFavorites={() => dispatch(actions.readUser(url))}  clearUserInfo={() => dispatch(actions.clearUserInfo())} />
+        <Head userInfo={this.props.user.userInfo}
+          addFavorites={() => dispatch(actions.setFavorites(this.props.user.userInfo.UserID))}  clearUserInfo={() => dispatch(actions.clearUserInfo())} />
         {this.LeftComponent(url)}
         <div style={styles.contentDiv}>
           <div style={styles.breadcrumb}>

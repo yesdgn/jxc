@@ -22,6 +22,7 @@
     "react-dom": "0.14.x",
     "react-redux": "^4.4.5",
     "react-router": "^2.2.4",
+    "react-router-redux": "^4.0.4",
     "redux": "^3.5.1",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.0.1"
