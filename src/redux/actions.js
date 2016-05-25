@@ -9,6 +9,7 @@ import {message} from 'antd';
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_CLEAR = 'USER_CLEAR';
 export const USER_REG = 'USER_REG';
+export const RESULT_CLEAR = 'RESULT_CLEAR';
 
 export function userLogin(loginInfo) {
   return (dispatch, getState) => {
@@ -35,9 +36,15 @@ export function userReg(regInfo) {
     return dispatch(fetchPosts(USER_REG, dgn.getUrl(2,param)))
   }
 }
-export function clearUserInfo() {
+export function clearUser() {
   return {
     type: USER_CLEAR
+  }
+}
+
+export function clearResult() {
+  return {
+    type: RESULT_CLEAR
   }
 }
 
@@ -55,6 +62,7 @@ export function readMainMenu(userid) {
 
 //收藏
 export const SET_FAVORITES = 'SET_FAVORITES'
+export const READ_FAVORITES = 'READ_FAVORITES'
 
 export function setFavorites(UserID) {
   return (dispatch, getState) => {
@@ -64,6 +72,15 @@ export function setFavorites(UserID) {
       path:location.pathname,
     };
     return dispatch(fetchPosts(SET_FAVORITES, dgn.getUrl(8,param)))
+  }
+}
+export function readFavorites(UserID) {
+  return (dispatch, getState) => {
+    let param={
+      sessionkey:dgn.storeS.getItem('sessionKey'),
+      userid:UserID
+    };
+    return dispatch(fetchPosts(READ_FAVORITES, dgn.getUrl(9,param)))
   }
 }
 

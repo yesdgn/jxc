@@ -1,0 +1,13 @@
+.headrow {
+  height: 80px;
+  background-color: #0d0e0e;
+}
+.headcol{
+  height: 100%;
+}
+.favRow{
+    height: 100%;
+}
+.favMenu {
+  background-color: #0d0e0e;
+}

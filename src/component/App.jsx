@@ -28,7 +28,7 @@ class App extends React.Component {
     if (cancelLeftComponent.indexOf(url) >= 0) {
       return (null);
     } else {
-      return (<Left jsonData={this.props.mainMenu.items} onLoadMenuData={() => this.props.dispatch(actions.readMainMenu(this.props.user.userInfo.UserID))}/>);
+      return (<Left  menuData={this.props.mainMenu.items} onLoadMenuData={() => this.props.dispatch(actions.readMainMenu(this.props.user.userInfo.UserID))}/>);
     }
   }
   render() {
@@ -39,23 +39,14 @@ class App extends React.Component {
     }
     return (
       <div>
-        <Head userInfo={this.props.user.userInfo}
-          addFavorites={() => dispatch(actions.setFavorites(this.props.user.userInfo.UserID))}  clearUserInfo={() => dispatch(actions.clearUserInfo())} />
+        <Head userInfo={this.props.user.userInfo} favMenuData={this.props.user.favorites?this.props.user.favorites.items:[]}
+          addFavorites={() => dispatch(actions.setFavorites(this.props.user.userInfo.UserID))}
+          clearUser={() => dispatch(actions.clearUser())}
+          onLoadFavData={() => this.props.dispatch(actions.readFavorites(this.props.user.userInfo.UserID))}/>
         {this.LeftComponent(url)}
         <div style={styles.contentDiv}>
           <div style={styles.breadcrumb}>
-            <Breadcrumb >
-              <Link to={`/main`}>
-                <Breadcrumb.Item>首页</Breadcrumb.Item>
-              </Link>
-              <Link to={`/users`}>
-                <Breadcrumb.Item>应用中心</Breadcrumb.Item>
-              </Link>
-              <Link to={`/user`}>
-                <Breadcrumb.Item>应用列表</Breadcrumb.Item>
-              </Link>
-              <Breadcrumb.Item>某应用</Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb {...this.props} />
           </div>
           {this.props.children}
         </div>

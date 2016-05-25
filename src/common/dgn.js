@@ -1,4 +1,5 @@
 import * as lodash   from 'lodash';
+import * as CryptoJS from 'crypto-js';
 import * as APP from '../entry/config';
 /* 第一种使用：执行函数返回对象
 export  const  storeS =s2() ;
@@ -33,7 +34,7 @@ export function getUrl(apiID,paramsObj)
  let stringB='';
 
  params.appid=APP.APPID;
-
+ params.timestamp=lodash.now();
  let stringA=lodash.chain(params)
  .keys()
  .sortBy()
@@ -49,7 +50,8 @@ export function getUrl(apiID,paramsObj)
     }
     return;
   })
- stringC=APP.APISERVERURL+'/'+apiID+'?'+stringC+(isNull(stringB)?'':stringB);
-  console.log(stringC);
+
+ let sign=lodash.toUpper(CryptoJS.MD5(stringC).toString());
+ stringC=APP.APISERVERURL+'/'+apiID+'?'+stringC+'&sign='+sign+(isNull(stringB)?'':stringB);
   return stringC
 }

@@ -4,7 +4,7 @@ import  React  from 'react';
 import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import {userReg,clearUserInfo} from '../redux/actions';
+import {userReg,clearUser} from '../redux/actions';
 import * as lodash   from 'lodash';
 import * as CryptoJS   from 'crypto-js';
 import * as APP from '../entry/config';
@@ -29,11 +29,12 @@ class RegUser extends React.Component {
       if (nextProps.user.regInfo && nextProps.user.regInfo.items[0].result==='success')
       {
         hide = message.success(nextProps.user.regInfo.items[0].resultDescribe);
+        this.props.dispatch(clearUser());
         this.context.router.push('/login');
       }
       else if (nextProps.user.regInfo && nextProps.user.regInfo.items[0].result==='fail') {
-        this.props.dispatch(clearUserInfo());
         hide = message.error(nextProps.user.regInfo.items[0].resultDescribe);
+        this.props.dispatch(clearUser());
       }
     }
     noop() {

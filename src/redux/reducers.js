@@ -1,9 +1,5 @@
 import {
-  USER_LOGIN,
-  USER_REG,
-  READ_MAIN_MENU,
-  USER_CLEAR,
-  SET_FAVORITES
+  USER_LOGIN,USER_REG,READ_MAIN_MENU,USER_CLEAR,SET_FAVORITES,RESULT_CLEAR,READ_FAVORITES
 } from './actions'
 
 export function user(state = {}, action) {
@@ -24,8 +20,18 @@ export function user(state = {}, action) {
     case SET_FAVORITES:
       return {
         ...state,
-        favorites:action.receivedJson
+        favoriteResult:action.receivedJson
       }
+    case READ_FAVORITES:
+        return {
+          ...state,
+          favorites:action.receivedJson
+        }
+    case RESULT_CLEAR:
+          return{
+            ...state,
+            userLoginResult:{}
+          }
     default:
       return state
   }

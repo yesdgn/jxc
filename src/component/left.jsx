@@ -7,7 +7,7 @@ const SubMenu = Menu.SubMenu;
 var menuArray = [];
 class Left extends React.Component {
   static defaultProps = {
-    jsonData: []
+    menuData: []
   };
   static propTypes = {};
   constructor(props) {
@@ -17,11 +17,11 @@ class Left extends React.Component {
       openKeys: []
     };
   };
-  handleClick(e) {
+  handleClick=(e)=> {
     //  console.log('click ', e);
     this.setState({current: e.key, openKeys: e.keyPath.slice(1)});
   };
-  onToggle(info) {
+  onToggle=(info)=> {
     this.setState({
       openKeys: info.open
         ? info.keyPath
@@ -31,8 +31,8 @@ class Left extends React.Component {
   componentWillMount() {
     this.props.onLoadMenuData();
   };
-  initMenu(jsonData) {
-    return (jsonData.map((x) => {
+  initMenu(menuData) {
+    return (menuData.map((x) => {
       if (x.children) {
         return (
           <SubMenu key={x.MenuID} title={< span > <Icon type={x.Icon}/> < span > {
@@ -59,8 +59,8 @@ class Left extends React.Component {
         */
     }
     return (
-      <Menu onClick={this.handleClick.bind(this)} style={styles.leftmenu} openKeys={this.state.openKeys} onOpen={this.onToggle.bind(this)} onClose={this.onToggle.bind(this)} selectedKeys={[this.state.current]} mode="inline">
-        {this.initMenu(this.props.jsonData)}
+      <Menu onClick={this.handleClick } style={styles.leftmenu} openKeys={this.state.openKeys} onOpen={this.onToggle} onClose={this.onToggle} selectedKeys={[this.state.current]} mode="inline">
+        {this.initMenu(this.props.menuData)}
       </Menu>
     );
   }

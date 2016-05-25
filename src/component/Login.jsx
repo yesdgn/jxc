@@ -3,7 +3,7 @@
 import  React  from 'react';
 import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
-import {userLogin,clearUserInfo} from '../redux/actions';
+import {userLogin,clearUser,clearResult} from '../redux/actions';
 import { connect } from 'react-redux';
 import * as lodash   from 'lodash';
 import * as dgn from '../common/dgn';
@@ -37,20 +37,20 @@ class Login extends React.Component {
       {
         dgn.storeL.removeItem("user");
       }
-      if( nextProps.user.userLoginResult &&  nextProps.user.userLoginResult.items[0].item0[0].result=='success')
+      if(nextProps.user.userLoginResult && nextProps.user.userLoginResult.items &&  nextProps.user.userLoginResult.items[0].item0[0].result=='success')
       {
         if (fieldsValue.agreement===true)
         {
           dgn.storeL.setItem("user",fieldsValue.userName);
         }
         dgn.storeS.setItem("sessionKey",nextProps.user.userLoginResult.items[0].item0[0].accessToken);
-
+        this.props.dispatch(clearResult());
         this.context.router.push('/main');
       }
-      else if(nextProps.user.userLoginResult &&  nextProps.user.userLoginResult.items[0].item0[0].result=='fail')
+      else if(nextProps.user.userLoginResult  && nextProps.user.userLoginResult.items &&  nextProps.user.userLoginResult.items[0].item0[0].result=='fail')
       {
         hide = message.error(nextProps.user.userLoginResult.items[0].item0[0].resultDescribe);
-        this.props.dispatch(clearUserInfo());
+        this.props.dispatch(clearUser());
       }
     };
 

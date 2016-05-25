@@ -23,16 +23,16 @@ let rootElement = document.getElementById('react-body');
 ReactDOM.render(
   <Provider store={store}>
   <Router history={history}>
-    <Route path="/" component={App}>
+    <Route path="/" breadcrumbName="首页" component={App}>
       <IndexRoute component={Login}/>
-      <Route path="/login" component={Login}/>
-      <Route path="/main" component={Main}/>
-      <Route path="/users" component={Users}>
-        <Route path="/users/:userid" component={User}/>
+      <Route path="login"  breadcrumbName="登录" component={Login}/>
+      <Route path="main" breadcrumbName="主页" component={Main}/>
+      <Route path="users" breadcrumbName="用户列表" component={Users}>
+        <Route path=":userid" breadcrumbName="用户" component={User}/>
       </Route>
-      <Route path="/newPass" component={NewPass}/>
-      <Route path="/reguser" component={RegUser}/>
-      <Route path="*" component={NoMatch}/>
+      <Route path="newPass" breadcrumbName="忘记密码" component={NewPass}/>
+      <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
+      <Route path="*" breadcrumbName="未找到页面" component={NoMatch}/>
     </Route>
   </Router>
 </Provider>, rootElement)
