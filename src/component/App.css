@@ -4,6 +4,7 @@
 }
 .headcol{
   height: 100%;
+  text-align: right;
 }
 .favRow{
     height: 100%;
@@ -14,9 +15,12 @@
 .message{
   width: 42px;
 }
-.colpadding10{
+.colLeftPa10{
   padding-left: 10px;
 }
-.colpadding20{
+.colLeftPa20{
   padding-left: 20px;
+}
+.colRightPa20{
+  padding-right: 20px;
 }

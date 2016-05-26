@@ -21,8 +21,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
   };
-  componentWillMount() {};
+ componentDidMount() {
 
+ }
   LeftComponent(url)
   {
     if (cancelLeftComponent.indexOf(url) >= 0) {
@@ -40,9 +41,12 @@ class App extends React.Component {
     return (
       <div>
         <Head userInfo={this.props.user.userInfo} favMenuData={this.props.user.favorites?this.props.user.favorites.items:[]}
+          msgQty={this.props.user.userMessage?this.props.user.userMessage.items.length:0}
           addFavorites={() => dispatch(actions.setFavorites(this.props.user.userInfo.UserID))}
           clearUser={() => dispatch(actions.clearUser())}
-          onLoadFavData={() => this.props.dispatch(actions.readFavorites(this.props.user.userInfo.UserID))}/>
+          onLoadFavData={() => this.props.dispatch(actions.readFavorites(this.props.user.userInfo.UserID))}
+          onLoadMsg={()=>this.props.dispatch(actions.readMessage(this.props.user.userInfo.UserID))}
+          />
         {this.LeftComponent(url)}
         <div style={styles.contentDiv}>
           <div style={styles.breadcrumb}>

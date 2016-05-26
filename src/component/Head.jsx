@@ -32,6 +32,7 @@ class Head extends React.Component {
   };
   componentWillMount() {
     this.props.onLoadFavData();
+    this.props.onLoadMsg();
   }
 
   addFavorites = () => {
@@ -58,7 +59,7 @@ class Head extends React.Component {
   render() {
     const menu = (
       <Menu onClick={this.menuClick}>
-        <Menu.Item key="2">切换帐号</Menu.Item>
+        <Menu.Item key="2">注 销</Menu.Item>
       </Menu>
     )
 
@@ -66,10 +67,10 @@ class Head extends React.Component {
     return (
       <div >
         <Row type="flex" justify="center" align="middle" className="headrow">
-          <Col span="1" className="colpadding10">
+          <Col span="1" className="colLeftPa10">
             <img src="logo.png"/>
           </Col>
-          <Col span="4" className="colpadding20">
+          <Col span="4" className="colLeftPa20">
             <Row type="flex">
               <Col span="24">
                 <h1>{APP.APPNAME}</h1>
@@ -92,26 +93,25 @@ class Head extends React.Component {
           </Col>
           <Col span="4" className="headcol">
             <Row type="flex" justify="end" align="middle" className="headcol">
-              <Col span="8" >
-                <Link to={`/message`}  >
+              <Col span="24"  >
+                <Link to={`/message`} className="colRightPa20" >
                   <Tooltip title="消息" >
-                    <Badge count={1} overflowCount={9} >
+                    <Badge count={this.props.msgQty} overflowCount={99} >
                       <Icon type="mail" className="message" />
                     </Badge>
                   </Tooltip>
                 </Link>
-              </Col>
-              <Col span="3">
-                <a   onClick={this.addFavorites}>
+
+                <a   onClick={this.addFavorites} className="colRightPa20">
                   <Tooltip title="收藏本页"><Icon type="star-o"/></Tooltip>
                 </a>
-              </Col>
-              <Col span="10">
+                <span className="colRightPa20">
                 <Dropdown overlay={menu}  >
                   <Link to={`/users/` + userInfo.UserID} className="ant-dropdown-link">
                     {userInfo.Name}<Icon type="down"/>
                   </Link>
                 </Dropdown>
+              </span>
               </Col>
             </Row>
           </Col>

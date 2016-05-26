@@ -1,5 +1,5 @@
 import {
-  USER_LOGIN,USER_REG,READ_MAIN_MENU,USER_CLEAR,SET_FAVORITES,RESULT_CLEAR,READ_FAVORITES
+  USER_LOGIN,USER_REG,READ_MAIN_MENU,USER_CLEAR,SET_FAVORITES,RESULT_CLEAR,READ_FAVORITES,USER_MESSAGE
 } from './actions'
 
 export function user(state = {}, action) {
@@ -32,6 +32,11 @@ export function user(state = {}, action) {
             ...state,
             userLoginResult:{}
           }
+    case USER_MESSAGE:
+              return {
+                ...state,
+                userMessage:action.receivedJson
+              }
     default:
       return state
   }

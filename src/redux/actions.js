@@ -11,6 +11,7 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const USER_CLEAR = 'USER_CLEAR';
 export const USER_REG = 'USER_REG';
 export const RESULT_CLEAR = 'RESULT_CLEAR';
+export const USER_MESSAGE = 'USER_MESSAGE';
 
 export function userLogin(loginInfo) {
   return (dispatch, getState) => {
@@ -48,6 +49,16 @@ export function clearUser() {
 export function clearResult() {
   return {
     type: RESULT_CLEAR
+  }
+}
+export function readMessage(UserID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:10,
+      sessionkey:dgn.storeS.getItem('sessionKey'),
+      userid:UserID,
+    };
+    return dispatch(fetchPosts(USER_MESSAGE, params))
   }
 }
 
