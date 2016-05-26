@@ -1,5 +1,6 @@
 import * as APP from '../entry/config';
 import * as dgn from '../common/dgn';
+import * as lodash   from 'lodash';
 import fetch from 'isomorphic-fetch'
 import * as CryptoJS from 'crypto-js';
 import {message} from 'antd';
@@ -13,19 +14,21 @@ export const RESULT_CLEAR = 'RESULT_CLEAR';
 
 export function userLogin(loginInfo) {
   return (dispatch, getState) => {
-    let param={
+    let params={
+      apiid:3,
       loginid:loginInfo.userName,
       logintype:APP.LOGINTYPE,
       usertype:APP.USERTYPE,
       password:CryptoJS.SHA1(loginInfo.password).toString()
     };
-    return dispatch(fetchPosts(USER_LOGIN, dgn.getUrl(3,param)))
+    return dispatch(fetchPosts(USER_LOGIN, params))
   }
 }
 
 export function userReg(regInfo) {
   return (dispatch, getState) => {
-    let param={
+    let params={
+      apiid:2,
       loginid:regInfo.userName,
       logintype:APP.LOGINTYPE,
       usertype:APP.USERTYPE,
@@ -33,7 +36,7 @@ export function userReg(regInfo) {
       checkcode:'nocheck',
       password:CryptoJS.SHA1(regInfo.password).toString()
     };
-    return dispatch(fetchPosts(USER_REG, dgn.getUrl(2,param)))
+    return dispatch(fetchPosts(USER_REG, params))
   }
 }
 export function clearUser() {
@@ -53,10 +56,11 @@ export const READ_MAIN_MENU = 'READ_MAIN_MENU'
 
 export function readMainMenu(userid) {
   return (dispatch, getState) => {
-    let param={
+    let params={
+      apiid:7,
       userid:userid
     };
-    return dispatch(fetchPosts(READ_MAIN_MENU, dgn.getUrl(7,param)))
+    return dispatch(fetchPosts(READ_MAIN_MENU, params))
   }
 }
 
@@ -66,31 +70,40 @@ export const READ_FAVORITES = 'READ_FAVORITES'
 
 export function setFavorites(UserID) {
   return (dispatch, getState) => {
-    let param={
+    let params={
+      apiid:8,
       sessionkey:dgn.storeS.getItem('sessionKey'),
       userid:UserID,
       path:location.pathname,
     };
-    return dispatch(fetchPosts(SET_FAVORITES, dgn.getUrl(8,param)))
+    return dispatch(fetchPosts(SET_FAVORITES, params,cbSetFavorites))
   }
+}
+function cbSetFavorites (data,dispatch,params) {
+  message.success(data.items[0].resultDescribe);
+  dispatch(readFavorites(params.userid));
 }
 export function readFavorites(UserID) {
   return (dispatch, getState) => {
-    let param={
+    let params={
+      apiid:9,
       sessionkey:dgn.storeS.getItem('sessionKey'),
       userid:UserID
     };
-    return dispatch(fetchPosts(READ_FAVORITES, dgn.getUrl(9,param)))
+    return dispatch(fetchPosts(READ_FAVORITES, params))
   }
 }
 
-function fetchPosts(actionType, url) {
+function fetchPosts(actionType, params,callBack) {
   return dispatch => {
     //  dispatch(requestPosts(userid))
+    let url=dgn.getUrl(params)
     return fetch(url)
       .then(res => {
         if (res.ok) {
           res.json().then(data => {
+            if (lodash.isFunction(callBack))
+            {callBack(data,dispatch,params);}
             dispatch(receivePosts(actionType, data))
           });
         } else {

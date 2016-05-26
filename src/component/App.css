@@ -11,3 +11,12 @@
 .favMenu {
   background-color: #0d0e0e;
 }
+.message{
+  width: 42px;
+}
+.colpadding10{
+  padding-left: 10px;
+}
+.colpadding20{
+  padding-left: 20px;
+}

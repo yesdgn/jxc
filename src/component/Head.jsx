@@ -58,7 +58,7 @@ class Head extends React.Component {
   render() {
     const menu = (
       <Menu onClick={this.menuClick}>
-        <Menu.Item key="2">注销</Menu.Item>
+        <Menu.Item key="2">切换帐号</Menu.Item>
       </Menu>
     )
 
@@ -66,10 +66,10 @@ class Head extends React.Component {
     return (
       <div >
         <Row type="flex" justify="center" align="middle" className="headrow">
-          <Col span="1">
+          <Col span="1" className="colpadding10">
             <img src="logo.png"/>
           </Col>
-          <Col span="4">
+          <Col span="4" className="colpadding20">
             <Row type="flex">
               <Col span="24">
                 <h1>{APP.APPNAME}</h1>
@@ -91,24 +91,24 @@ class Head extends React.Component {
             </Row>
           </Col>
           <Col span="4" className="headcol">
-            <Row type="flex" justify="end" align="top">
-              <Col span="8">
-                <Link to={`/users`} style={styles.rightcol3}>
-                  <Tooltip title="消息">
-                    <Badge count={33} overflowCount={9}>
-                      <Icon type="mail" style={styles.rightcol3_1}/>
+            <Row type="flex" justify="end" align="middle" className="headcol">
+              <Col span="8" >
+                <Link to={`/message`}  >
+                  <Tooltip title="消息" >
+                    <Badge count={1} overflowCount={9} >
+                      <Icon type="mail" className="message" />
                     </Badge>
                   </Tooltip>
                 </Link>
               </Col>
-              <Col span="8">
-                <a style={styles.rightcol2} onClick={this.addFavorites}>
+              <Col span="3">
+                <a   onClick={this.addFavorites}>
                   <Tooltip title="收藏本页"><Icon type="star-o"/></Tooltip>
                 </a>
               </Col>
-              <Col span="8">
-                <Dropdown overlay={menu} style={styles.rightcol}>
-                  <Link to={`users/` + userInfo.UserID} className="ant-dropdown-link">
+              <Col span="10">
+                <Dropdown overlay={menu}  >
+                  <Link to={`/users/` + userInfo.UserID} className="ant-dropdown-link">
                     {userInfo.Name}<Icon type="down"/>
                   </Link>
                 </Dropdown>
@@ -121,38 +121,6 @@ class Head extends React.Component {
   }
 };
 
-const styles = {
-  headrow: {
-    height: "80px",
-    backgroundColor: "#0d0e0e"
-  },
-  logoimg: {
-    maxHeight: "80px",
-    float: "left",
-    padding: "15px"
-  },
-  appcol: {
-    height: "80px",
-    display: "table-cell",
-    verticalAlign: "middle"
-  },
-  rightcol: {
-    float: "right",
-    padding: "20px 10px 10px 10px"
-  },
-  rightcol2: {
-    float: "right",
-    padding: "20px 10px 10px 10px"
-  },
-  rightcol3: {
-    float: "right",
-    margin: "20px 30px 10px 10px"
-  },
-  rightcol3_1: {
-    width: "42px"
 
-  }
-
-}
 
 export default Head

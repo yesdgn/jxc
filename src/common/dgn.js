@@ -27,7 +27,7 @@ export function isNull(obj)
 }
 
 
-export function getUrl(apiID,paramsObj)
+export function getUrl(paramsObj)
 {
  let params=paramsObj;
  let stringC='';
@@ -52,6 +52,6 @@ export function getUrl(apiID,paramsObj)
   })
 
  let sign=lodash.toUpper(CryptoJS.MD5(stringC).toString());
- stringC=APP.APISERVERURL+'/'+apiID+'?'+stringC+'&sign='+sign+(isNull(stringB)?'':stringB);
+ stringC=APP.APISERVERURL+'/'+params.apiid+'?'+stringC+'&sign='+sign+(isNull(stringB)?'':stringB);
   return stringC
 }
