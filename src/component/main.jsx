@@ -1,7 +1,9 @@
 'use strict';
 import React from 'react';
-import {Table, Icon} from 'antd';
+import {Table, Icon,Steps ,  Row, Col } from 'antd';
 import {Link} from 'react-router';
+const Step = Steps.Step;
+
 const columns = [
   {
     title: '标题',
@@ -49,6 +51,19 @@ const data = [
     address: '西湖区湖底公园1号'
   }
 ];
+const steps = [{
+  status: 'saleOrder',
+  title: '销售',
+}, {
+  status: 'process',
+  title: '配货',
+}, {
+  status: 'wait',
+  title: '出库',
+}, {
+  status: 'wait',
+  title: '入账',
+}].map((s, i) => <Step key={i} title={s.title} description={s.description} />);
 
 class Main extends React.Component {
   static defaultProps = {};
@@ -60,7 +75,22 @@ class Main extends React.Component {
   componentWillMount() {};
 
   render() {
-    return (<Table columns={columns} dataSource={data}/>);
+    return (
+      <Row type="flex" justify="center" align="middle"  >
+        <Col span="12" >
+          <Table columns={columns} dataSource={data}/>
+        </Col>
+        <Col span="12" >
+          订单编号：D201605261301000001
+          <Steps size="small" current={1}>{steps}</Steps>
+          <br/>
+          订单编号：D201605261301000002
+          <Steps size="small" current={1}>{steps}</Steps>
+        </Col>
+      </Row>
+
+
+  );
   }
 };
 

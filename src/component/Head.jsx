@@ -30,19 +30,13 @@ class Head extends React.Component {
     super(props);
 
   };
-  componentWillMount() {
-    this.props.onLoadFavData();
-    this.props.onLoadMsg();
-  }
 
   addFavorites = () => {
     this.props.addFavorites();
   }
   menuClick = ({key}) => {
     if (`${key}` === '2') {
-      dgn.storeS.removeItem("sessionKey");
-      this.props.clearUser();
-      this.context.router.push('/login');
+      this.props.logout();
     }
   };
   addMenuItem(favMenuData) {

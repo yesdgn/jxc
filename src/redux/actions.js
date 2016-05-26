@@ -51,12 +51,12 @@ export function clearResult() {
     type: RESULT_CLEAR
   }
 }
-export function readMessage(UserID) {
+export function readMessage() {
   return (dispatch, getState) => {
     let params={
       apiid:10,
       sessionkey:dgn.storeS.getItem('sessionKey'),
-      userid:UserID,
+      userid:dgn.storeS.getItem('UserID')
     };
     return dispatch(fetchPosts(USER_MESSAGE, params))
   }
@@ -65,11 +65,11 @@ export function readMessage(UserID) {
 //读主菜单信息
 export const READ_MAIN_MENU = 'READ_MAIN_MENU'
 
-export function readMainMenu(userid) {
+export function readMainMenu() {
   return (dispatch, getState) => {
     let params={
       apiid:7,
-      userid:userid
+      userid:dgn.storeS.getItem('UserID')
     };
     return dispatch(fetchPosts(READ_MAIN_MENU, params))
   }
@@ -79,12 +79,12 @@ export function readMainMenu(userid) {
 export const SET_FAVORITES = 'SET_FAVORITES'
 export const READ_FAVORITES = 'READ_FAVORITES'
 
-export function setFavorites(UserID) {
+export function setFavorites() {
   return (dispatch, getState) => {
     let params={
       apiid:8,
       sessionkey:dgn.storeS.getItem('sessionKey'),
-      userid:UserID,
+      userid:dgn.storeS.getItem('UserID'),
       path:location.pathname,
     };
     return dispatch(fetchPosts(SET_FAVORITES, params,cbSetFavorites))
@@ -94,12 +94,12 @@ function cbSetFavorites (data,dispatch,params) {
   message.success(data.items[0].resultDescribe);
   dispatch(readFavorites(params.userid));
 }
-export function readFavorites(UserID) {
+export function readFavorites() {
   return (dispatch, getState) => {
     let params={
       apiid:9,
       sessionkey:dgn.storeS.getItem('sessionKey'),
-      userid:UserID
+      userid:dgn.storeS.getItem('UserID')
     };
     return dispatch(fetchPosts(READ_FAVORITES, params))
   }

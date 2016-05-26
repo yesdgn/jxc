@@ -9,6 +9,7 @@ import * as actions from '../redux/actions'
 import Head from './Head';
 import Left from './Left';
 import Bottom from './Bottom';
+import * as dgn from '../common/dgn';
 
 //不包含左边页、头部页  如登录前页面、个性化页面
 const singleComponent = ['/', '/reguser', '/newPass', '/login']
@@ -18,18 +19,25 @@ const cancelLeftComponent = []
 class App extends React.Component {
   static defaultProps = {};
   static propTypes = {};
+  static contextTypes = {
+    router: React.PropTypes.object.isRequired
+  };
   constructor(props) {
     super(props);
   };
- componentDidMount() {
 
- }
+  logout=()=>{
+    dgn.storeS.removeItem("sessionKey");
+    dgn.storeS.removeItem("UserID");
+    this.props.dispatch(actions.clearUser())
+    this.context.router.push('/login');
+  }
   LeftComponent(url)
   {
     if (cancelLeftComponent.indexOf(url) >= 0) {
       return (null);
     } else {
-      return (<Left  menuData={this.props.mainMenu.items} onLoadMenuData={() => this.props.dispatch(actions.readMainMenu(this.props.user.userInfo.UserID))}/>);
+      return (<Left  menuData={this.props.mainMenu.items} />);
     }
   }
   render() {
@@ -40,12 +48,11 @@ class App extends React.Component {
     }
     return (
       <div>
-        <Head userInfo={this.props.user.userInfo} favMenuData={this.props.user.favorites?this.props.user.favorites.items:[]}
+        <Head userInfo={this.props.user.userInfo}
+          favMenuData={this.props.user.favorites?this.props.user.favorites.items:[]}
           msgQty={this.props.user.userMessage?this.props.user.userMessage.items.length:0}
-          addFavorites={() => dispatch(actions.setFavorites(this.props.user.userInfo.UserID))}
-          clearUser={() => dispatch(actions.clearUser())}
-          onLoadFavData={() => this.props.dispatch(actions.readFavorites(this.props.user.userInfo.UserID))}
-          onLoadMsg={()=>this.props.dispatch(actions.readMessage(this.props.user.userInfo.UserID))}
+          addFavorites={() => dispatch(actions.setFavorites())}
+          logout={this.logout}
           />
         {this.LeftComponent(url)}
         <div style={styles.contentDiv}>
