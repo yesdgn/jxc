@@ -1,5 +1,13 @@
 import {
-  USER_LOGIN,USER_REG,READ_MAIN_MENU,USER_CLEAR,SET_FAVORITES,RESULT_CLEAR,READ_FAVORITES,USER_MESSAGE
+  USER_LOGIN,
+  USER_REG,
+  READ_MAIN_MENU,
+  USER_CLEAR,
+  SET_FAVORITES,
+  RESULT_CLEAR,
+  READ_FAVORITES,
+  USER_MESSAGE,
+  MESSAGE_DONE
 } from './actions'
 
 export function user(state = {}, action) {
@@ -8,35 +16,40 @@ export function user(state = {}, action) {
       return {
         ...state,
         userLoginResult: action.receivedJson,
-        userInfo:action.receivedJson.items[0].item0[0].result=='success'?action.receivedJson.items[1].item1[0]:{}
+        userInfo: action.receivedJson.items[0].item0[0].result == 'success' ? action.receivedJson.items[1].item1[0] : {}
       }
     case USER_REG:
-      return{
+      return {
         ...state,
-        regInfo:action.receivedJson
+        regInfo: action.receivedJson
       }
     case USER_CLEAR:
       return {}
     case SET_FAVORITES:
       return {
         ...state,
-        favoriteResult:action.receivedJson
+        favoriteResult: action.receivedJson
       }
     case READ_FAVORITES:
-        return {
-          ...state,
-          favorites:action.receivedJson
-        }
+      return {
+        ...state,
+        favorites: action.receivedJson
+      }
     case RESULT_CLEAR:
-          return{
-            ...state,
-            userLoginResult:{}
-          }
+      return {
+        ...state,
+        userLoginResult: {}
+      }
     case USER_MESSAGE:
-              return {
-                ...state,
-                userMessage:action.receivedJson
-              }
+      return {
+        ...state,
+        userMessage: action.receivedJson
+      }
+    case MESSAGE_DONE:
+      return {
+        ...state,
+        messageDoneResult: action.receivedJson
+      }
     default:
       return state
   }

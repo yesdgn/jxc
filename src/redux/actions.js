@@ -12,6 +12,7 @@ export const USER_CLEAR = 'USER_CLEAR';
 export const USER_REG = 'USER_REG';
 export const RESULT_CLEAR = 'RESULT_CLEAR';
 export const USER_MESSAGE = 'USER_MESSAGE';
+export const MESSAGE_DONE = 'MESSAGE_DONE';
 
 export function userLogin(loginInfo) {
   return (dispatch, getState) => {
@@ -61,7 +62,21 @@ export function readMessage() {
     return dispatch(fetchPosts(USER_MESSAGE, params))
   }
 }
-
+export function messageFinished (msgID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:11,
+      sessionkey:dgn.storeS.getItem('sessionKey'),
+      userid:dgn.storeS.getItem('UserID'),
+      id:msgID
+    };
+    return dispatch(fetchPosts(MESSAGE_DONE, params,cbMessageFinished))
+  }
+}
+function cbMessageFinished (data,dispatch,params) {
+  //message.success(data.items[0].resultDescribe);
+  dispatch(readMessage());
+}
 //读主菜单信息
 export const READ_MAIN_MENU = 'READ_MAIN_MENU'
 
@@ -92,7 +107,7 @@ export function setFavorites() {
 }
 function cbSetFavorites (data,dispatch,params) {
   message.success(data.items[0].resultDescribe);
-  dispatch(readFavorites(params.userid));
+  dispatch(readFavorites());
 }
 export function readFavorites() {
   return (dispatch, getState) => {

@@ -4,7 +4,7 @@ import {Menu, Icon} from 'antd';
 import {Link} from 'react-router';
 const SubMenu = Menu.SubMenu;
 
-var menuArray = [];
+//var menuArray = [];
 class Left extends React.Component {
   static defaultProps = {
     menuData: []
@@ -28,7 +28,7 @@ class Left extends React.Component {
         : info.keyPath.slice(1)
     });
   };
- 
+
   initMenu(menuData) {
     return (menuData.map((x) => {
       if (x.children) {
