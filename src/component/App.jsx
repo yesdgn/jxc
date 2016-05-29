@@ -44,13 +44,16 @@ class App extends React.Component {
     if (mouseEvent.target.innerText=='完成')
     {this.props.dispatch(actions.messageFinished(msg.ID));}
   };
-  getCustomProps(ComponentName)
+  readMessage=()=>{
+    this.props.dispatch(actions.readMessage());
+  }
+  getCustomProps(pathname)
   {
-      switch (ComponentName) {
-        case 'Main':
+      switch (pathname) {
+        case '/main':
               return {msgDataSource:this.props.user.userMessage?this.props.user.userMessage.items:[]
-              ,onMsgDone:this.onMsgDone
-              ,readMessage:function(){ this.props.dispatch(actions.readMessage())}.bind(this)}
+                ,onMsgDone:this.onMsgDone
+                ,readMessage:this.readMessage}
           break;
         default:
           return {};
@@ -76,7 +79,7 @@ class App extends React.Component {
           <div style={styles.breadcrumb}>
             <Breadcrumb {...this.props} />
           </div>
-          {React.cloneElement(this.props.children, this.getCustomProps(this.props.children.type.displayName))}
+          {React.cloneElement(this.props.children,this.getCustomProps(this.props.location.pathname))}
         </div>
         <Bottom/>
       </div>

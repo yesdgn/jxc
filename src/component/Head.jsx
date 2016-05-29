@@ -58,6 +58,8 @@ class Head extends React.Component {
     )
 
     const {userInfo} = this.props;
+    const userid=userInfo?userInfo.UserID:'';
+    const username=userInfo?userInfo.Name:'';
     return (
       <div >
         <Row type="flex" justify="center" align="middle" className="headrow">
@@ -101,8 +103,8 @@ class Head extends React.Component {
                 </a>
                 <span className="colRightPa20">
                 <Dropdown overlay={menu}  >
-                  <Link to={`/users/` + userInfo.UserID} className="ant-dropdown-link">
-                    {userInfo.Name}<Icon type="down"/>
+                  <Link to={`/users/` + userid} className="ant-dropdown-link">
+                    {username}<Icon type="down"/>
                   </Link>
                 </Dropdown>
               </span>
