@@ -40,6 +40,23 @@ class App extends React.Component {
       return (<Left  menuData={this.props.mainMenu.items} />);
     }
   }
+  onMsgDone=(msg,index,mouseEvent)=>{
+    if (mouseEvent.target.innerText=='完成')
+    {this.props.dispatch(actions.messageFinished(msg.ID));}
+  };
+  getCustomProps(ComponentName)
+  {
+      switch (ComponentName) {
+        case 'Main':
+              return {msgDataSource:this.props.user.userMessage?this.props.user.userMessage.items:[]
+              ,onMsgDone:this.onMsgDone
+              ,readMessage:function(){ this.props.dispatch(actions.readMessage())}.bind(this)}
+          break;
+        default:
+          return {};
+      }
+
+  }
   render() {
     const {dispatch, user} = this.props;
     const url = this.props.location.pathname;
@@ -48,9 +65,9 @@ class App extends React.Component {
     }
     return (
       <div>
-        <Head userInfo={this.props.user.userInfo}
-          favMenuData={this.props.user.favorites?this.props.user.favorites.items:[]}
-          msgQty={this.props.user.userMessage?this.props.user.userMessage.items.length:0}
+        <Head userInfo={user.userInfo}
+          favMenuData={user.favorites?user.favorites.items:[]}
+          msgQty={user.userMessage?user.userMessage.items.length:0}
           addFavorites={() => dispatch(actions.setFavorites())}
           logout={this.logout}
           />
@@ -59,7 +76,7 @@ class App extends React.Component {
           <div style={styles.breadcrumb}>
             <Breadcrumb {...this.props} />
           </div>
-          {this.props.children}
+          {React.cloneElement(this.props.children, this.getCustomProps(this.props.children.type.displayName))}
         </div>
         <Bottom/>
       </div>

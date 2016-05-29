@@ -88,7 +88,7 @@ class Head extends React.Component {
           <Col span="4" className="headcol">
             <Row type="flex" justify="end" align="middle" className="headcol">
               <Col span="24"  >
-                <Link to={`/message`} className="colRightPa20" >
+                <Link to={`/messages`} className="colRightPa20" >
                   <Tooltip title="消息" >
                     <Badge count={this.props.msgQty} overflowCount={99} >
                       <Icon type="mail" className="message" />

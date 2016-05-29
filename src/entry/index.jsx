@@ -14,7 +14,8 @@ import Users from '../component/Users';
 import User from '../component/User';
 import RegUser from '../component/RegUser';
 import NewPass from '../component/NewPass';
-
+import Message from '../component/Message';
+import Messages from '../component/Messages';
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -31,6 +32,9 @@ ReactDOM.render(
         <Route path=":userid" breadcrumbName="用户" component={User}/>
       </Route>
       <Route path="newPass" breadcrumbName="忘记密码" component={NewPass}/>
+      <Route path="/messages" breadcrumbName="消息列表" component={Messages} >
+        <Route path="/messages/:id" breadcrumbName="消息" component={Message}/>
+      </Route>
       <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
       <Route path="*" breadcrumbName="未找到页面" component={NoMatch}/>
     </Route>
