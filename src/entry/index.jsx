@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import {browserHistory, Router, Route, IndexRoute} from 'react-router';
 import configureStore from '../redux/configureStore';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import * as dgn from '../common/dgn';
 import App from '../component/App';
 import NoMatch from '../component/NoMatch';
 import Login from '../component/Login';
@@ -21,20 +22,25 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 let rootElement = document.getElementById('react-body');
 
+function requireAuthApp(curRoute,replace) {
+  let states=store.getState();
+  if (!states.user.userInfo || !states.user.userInfo.UserID)
+  {replace('/login'); }
+}
+
 ReactDOM.render(
   <Provider store={store}>
   <Router history={history}>
-    <Route path="/" breadcrumbName="首页" component={App}>
+    <Route path="/" breadcrumbName="首页"  component={App}>
       <IndexRoute component={Login}/>
       <Route path="login"  breadcrumbName="登录" component={Login}/>
-      <Route path="main" breadcrumbName="主页" component={Main}/>
+      <Route path="main" breadcrumbName="主页"  onEnter={requireAuthApp}  component={Main} />
       <Route path="users" breadcrumbName="用户列表" component={Users}>
         <Route path=":userid" breadcrumbName="用户" component={User}/>
       </Route>
       <Route path="newPass" breadcrumbName="忘记密码" component={NewPass}/>
-      <Route path="/messages" breadcrumbName="消息列表" component={Messages} >
-        <Route path="/messages/:id" breadcrumbName="消息" component={Message}/>
-      </Route>
+      <Route path="/messages" breadcrumbName="消息列表" component={Messages} />
+      <Route path="/messages/:id" breadcrumbName="消息" component={Message}/>
       <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
       <Route path="*" breadcrumbName="未找到页面" component={NoMatch}/>
     </Route>
