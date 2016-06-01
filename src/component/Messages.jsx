@@ -1,10 +1,43 @@
 'use strict';
 import React from 'react';
-import {Table, Icon,Steps ,  Row, Col } from 'antd';
+import {Table, Icon,Steps ,  Row, Col,Modal } from 'antd';
 import {Link} from 'react-router';
-import { connect } from 'react-redux';
-import {messageFinished,readMessage} from '../redux/actions';
-
+const confirm = Modal.confirm;
+const  columns= [
+    {
+      title: '标题',
+      dataIndex: 'Title',
+      key: 'Title',
+      render(text,record,index) {
+        return <Link to={`/messages/`+record.ID}>{text}</Link>;
+      }
+    }, {
+      title: '内容',
+      dataIndex: 'Body',
+      key: 'Body'
+    }, {
+      title: '发出人',
+      dataIndex: 'Name',
+      key: 'Name'
+    }, {
+      title: '模块',
+      dataIndex: 'MsgModule',
+      key: 'MsgModule'
+    }, {
+      title: '时间',
+      dataIndex: 'CreateTime',
+      key: 'CreateTime'
+    }, {
+      title: '操作',
+      key: 'operation',
+      render(text, record) {
+        return (<span>
+            <a  >完成</a>
+          </span>
+        );
+      }
+    }
+  ]
 
 class Messages extends React.Component {
   static defaultProps = {
@@ -15,55 +48,30 @@ class Messages extends React.Component {
     super(props);
   };
   componentDidMount() {
-    this.props.dispatch(readMessage());
+    this.props.readMessage();
   }
-  MsgDone=(msg,index,mouseEvent)=>{
-    if (mouseEvent.target.innerText=='完成')
-    {this.props.dispatch(messageFinished(msg.ID));}
+  msgDone=(msg,index,mouseEvent)=>{
+    const { props: { onMsgDone } } = this
+    if (mouseEvent.target.innerText == '完成') {
+      confirm({
+        title: '提示',
+        content: '您确认已完成吗?',
+        onOk() {
+          onMsgDone(msg.ID)
+        },
+        onCancel() {}
+      } );
+    }
   };
 
   render() {
-    const onMsgDone=this.MsgDone;
-    const  columns= [
-        {
-          title: '标题',
-          dataIndex: 'Title',
-          key: 'Title',
-          render(text,record,index) {
-            return <Link to={`/messages/`+record.ID}>{text}</Link>;
-          }
-        }, {
-          title: '内容',
-          dataIndex: 'Body',
-          key: 'Body'
-        }, {
-          title: '发出人',
-          dataIndex: 'Name',
-          key: 'Name'
-        }, {
-          title: '模块',
-          dataIndex: 'MsgModule',
-          key: 'MsgModule'
-        }, {
-          title: '时间',
-          dataIndex: 'CreateTime',
-          key: 'CreateTime'
-        }, {
-          title: '操作',
-          key: 'operation',
-          render(text, record) {
-            return (<span>
-                <a  >完成</a>
-              </span>
-            );
-          }
-        }
-      ]
+
+
     return (
       <Row type="flex" justify="center" align="middle"  >
         <Col span="24" >
-          <Table columns={columns} onRowClick={onMsgDone }
-             dataSource={this.props.user.userMessage?this.props.user.userMessage.items:[]}
+          <Table columns={columns} onRowClick={this.msgDone }
+             dataSource={this.props.msgDataSource}
              />
         </Col>
 
@@ -73,10 +81,5 @@ class Messages extends React.Component {
   );
   }
 };
-function mapStateToProps(state) {
-  const { user } = state
-  return {
-    user:user
-  }
-}
-export default connect(mapStateToProps)(Messages)
+
+export default  Messages

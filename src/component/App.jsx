@@ -40,9 +40,8 @@ class App extends React.Component {
       return (<Left  menuData={this.props.mainMenu.items} />);
     }
   }
-  onMsgDone=(msg,index,mouseEvent)=>{
-    if (mouseEvent.target.innerText=='完成')
-    {this.props.dispatch(actions.messageFinished(msg.ID));}
+  onMsgDone=(msgID)=>{
+   this.props.dispatch(actions.messageFinished(msgID));
   };
   readMessage=()=>{
     this.props.dispatch(actions.readMessage());
@@ -50,7 +49,7 @@ class App extends React.Component {
   getCustomProps(pathname)
   {
       switch (pathname) {
-        case '/main':
+        case '/messages':
               return {msgDataSource:this.props.user.userMessage?this.props.user.userMessage.items:[]
                 ,onMsgDone:this.onMsgDone
                 ,readMessage:this.readMessage}
