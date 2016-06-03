@@ -69,7 +69,7 @@ class Head extends React.Component {
           <Col span="4" className="colLeftPa20">
             <Row type="flex">
               <Col span="24">
-                <h1>{APP.APPNAME}</h1>
+                <h1 style={{margin:0}}>{APP.APPNAME}</h1>
               </Col>
             </Row>
             <Row type="flex">

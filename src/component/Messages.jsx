@@ -32,7 +32,7 @@ const  columns= [
       key: 'operation',
       render(text, record) {
         return (<span>
-            <a  >完成</a>
+              <a>完成</a>
           </span>
         );
       }

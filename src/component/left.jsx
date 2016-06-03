@@ -66,7 +66,7 @@ class Left extends React.Component {
 
 const styles = {
   leftmenu: {
-    width: "240",
+    width: 240,
     float: "left"
   }
 }
