@@ -11,7 +11,7 @@ import {
 } from 'antd';
 import {Link} from 'react-router';
 import * as dgn from '../common/dgn';
-import * as APP from '../entry/config';
+import  {APP_CONFIG} from '../entry/config';
 import './App.css';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -69,12 +69,12 @@ class Head extends React.Component {
           <Col span="4" className="colLeftPa20">
             <Row type="flex">
               <Col span="24">
-                <h1 style={{margin:0}}>{APP.APPNAME}</h1>
+                <h1 style={{margin:0}}>{APP_CONFIG.APPNAME}</h1>
               </Col>
             </Row>
             <Row type="flex">
               <Col span="24">
-                <h3>{APP.APPURL}</h3>
+                <h3>{APP_CONFIG.APPURL}</h3>
               </Col>
             </Row>
           </Col>

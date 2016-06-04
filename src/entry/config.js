@@ -1,8 +1,9 @@
-export const APISERVERURL = 'http://127.0.0.1:3000/api'
-export const WEBSERVERURL = 'http://127.0.0.1:3000'
-export const APPID = '1000'
-export const APPSECRET = 'friuiowqueoikdsjkwoieuo'
-export const USERTYPE = '1'
-export const LOGINTYPE = '6'
-export const APPNAME ='后台管理系统'
-export const APPURL ='www.qq.com'
+  export const APP_CONFIG={
+   APISERVERURL:'http://127.0.0.1:3000/api',
+   WEBSERVERURL : 'http://127.0.0.1:3000',
+   APPID : '1000',
+   APPSECRET : 'friuiowqueoikdsjkwoieuo',
+   USERTYPE : '1',
+   LOGINTYPE : '6',
+   APPNAME :'后台管理系统',
+   APPURL :'www.qq.com'}

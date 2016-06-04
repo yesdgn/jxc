@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import {userReg,clearUser} from '../redux/actions';
 import * as lodash   from 'lodash';
 import * as CryptoJS   from 'crypto-js';
-import * as APP from '../entry/config';
+
 const FormItem = Form.Item;
 
 var hide;
@@ -179,12 +179,12 @@ const styles={
   col2:{
     minHeight:"100%",
     backgroundColor:"#2f7dcd",
-    fontSize:"14",
+    fontSize:14,
     color:"white"
   },
   p:{
     minWidth:"200px",
-    lineHeight:"2.2",
+    lineHeight:2.2,
     position:"absolute",
     top:"50%",
     left:"50%",

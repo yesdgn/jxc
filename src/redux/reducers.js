@@ -6,8 +6,9 @@ import {
   SET_FAVORITES,
   RESULT_CLEAR,
   READ_FAVORITES,
-  USER_MESSAGE,
-  MESSAGE_DONE
+  READ_USER_MESSAGE,
+  MESSAGE_DONE,
+  READ_GOODS_ANALYSIS
 } from './actions'
 
 export function user(state = {}, action) {
@@ -40,7 +41,7 @@ export function user(state = {}, action) {
         ...state,
         userLoginResult: {}
       }
-    case USER_MESSAGE:
+    case READ_USER_MESSAGE:
       return {
         ...state,
         userMessage: action.receivedJson
@@ -59,6 +60,18 @@ export function mainMenu(state = [], action) {
   switch (action.type) {
     case READ_MAIN_MENU:
       return action.receivedJson
+    default:
+      return state
+  }
+}
+
+export function chart(state = [], action) {
+  switch (action.type) {
+    case READ_GOODS_ANALYSIS:
+      return {
+        ...state,
+        goodsAnalysis: action.receivedJson
+      }
     default:
       return state
   }

@@ -1,4 +1,4 @@
-import * as APP from '../entry/config';
+import    {APP_CONFIG} from '../entry/config';
 import * as dgn from '../common/dgn';
 import * as lodash   from 'lodash';
 import fetch from 'isomorphic-fetch'
@@ -11,7 +11,7 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const USER_CLEAR = 'USER_CLEAR';
 export const USER_REG = 'USER_REG';
 export const RESULT_CLEAR = 'RESULT_CLEAR';
-export const USER_MESSAGE = 'USER_MESSAGE';
+export const READ_USER_MESSAGE = 'READ_USER_MESSAGE';
 export const MESSAGE_DONE = 'MESSAGE_DONE';
 
 export function userLogin(loginInfo) {
@@ -19,8 +19,8 @@ export function userLogin(loginInfo) {
     let params={
       apiid:3,
       loginid:loginInfo.userName,
-      logintype:APP.LOGINTYPE,
-      usertype:APP.USERTYPE,
+      logintype:APP_CONFIG.LOGINTYPE,
+      usertype:APP_CONFIG.USERTYPE,
       password:CryptoJS.SHA1(loginInfo.password).toString()
     };
     return dispatch(fetchPosts(USER_LOGIN, params))
@@ -32,8 +32,8 @@ export function userReg(regInfo) {
     let params={
       apiid:2,
       loginid:regInfo.userName,
-      logintype:APP.LOGINTYPE,
-      usertype:APP.USERTYPE,
+      logintype:APP_CONFIG.LOGINTYPE,
+      usertype:APP_CONFIG.USERTYPE,
       nickname:regInfo.userName,
       checkcode:'nocheck',
       password:CryptoJS.SHA1(regInfo.password).toString()
@@ -59,7 +59,7 @@ export function readMessage() {
       sessionkey:dgn.storeS.getItem('sessionKey'),
       userid:dgn.storeS.getItem('UserID')
     };
-    return dispatch(fetchPosts(USER_MESSAGE, params))
+    return dispatch(fetchPosts(READ_USER_MESSAGE, params))
   }
 }
 export function messageFinished (msgID) {
@@ -120,6 +120,18 @@ export function readFavorites() {
   }
 }
 
+//图形
+export const READ_GOODS_ANALYSIS = 'READ_GOODS_ANALYSIS'
+export function readGoodsAnalysis() {
+  return (dispatch, getState) => {
+    let params={
+      apiid:12,
+      sessionkey:dgn.storeS.getItem('sessionKey')
+    };
+    return dispatch(fetchPosts(READ_GOODS_ANALYSIS, params))
+  }
+}
+
 function fetchPosts(actionType, params,callBack) {
   return dispatch => {
     //  dispatch(requestPosts(userid))
@@ -142,7 +154,9 @@ function fetchPosts(actionType, params,callBack) {
       });
   }
 }
-
+function sleep(d){
+  for(var t = Date.now();Date.now() - t <= d;);
+}
 function receivePosts(actionType, json) {
   return {
     type: actionType,
