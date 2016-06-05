@@ -9,8 +9,8 @@ import {
 } from 'antd';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
-import {messageFinished, readMessage,readGoodsAnalysis} from '../redux/actions';
-import  {Chart} from 'g2';
+import {messageFinished, readMessage,readChartData} from '../redux/actions';
+import  {Chart,Stat} from 'g2';
 
 class Main extends React.Component {
   static defaultProps = {};
@@ -22,22 +22,13 @@ class Main extends React.Component {
     super(props);
   };
 
- async showChartAsync() {
-   try {
-      await this.context.store.dispatch(readGoodsAnalysis());
-      this.showChart();
-   } catch(e) {
-     console.log(e);
-   }
- }
-  showChart() {
-   let s=this.context.store.getState();
+  showChart(data) {
    var chart = new Chart({
      id: 'c1', // 指定图表容器 ID
      width: 500, // 指定图表宽度
      height: 300 // 指定图表高度
    });
-   chart.source(s.chart.goodsAnalysis.items, {
+   chart.source(data?data:[], {
      ProductCategory: {
        alias: '商品类型' // 列定义，定义该属性显示的别名
      },
@@ -48,13 +39,44 @@ class Main extends React.Component {
    chart.interval().position('ProductCategory*qty').color('ProductCategory')
    chart.render();
  }
-  componentDidMount() {
+ showChart1(data)
+ {
+
+  var chart = new Chart({
+    id: 'c2',
+    width: 500,
+    height: 300
+  });
+  chart.source(data?data:[]);
+  // 重要：绘制饼图时，必须声明 theta 坐标系
+  chart.coord('theta', {
+    radius: 0.8 // 设置饼图的大小
+  });
+  chart.legend('bottom');
+  chart.intervalStack()
+    .position(Stat.summary.percent('qty'))
+    .color('ShopType')
+    .label('ShopType*..percent',function(name, percent){
+    percent = (percent * 100).toFixed(2) + '%';
+    return name + ' ' + percent;
+  });
+  chart.render();
+  // 设置默认选中
+  var geom = chart.getGeoms()[0]; // 获取所有的图形
+  var items = geom.getData(); // 获取图形对应的数据
+  geom.setSelected(items[1]); // 设置选中
+ }
+  componentWillMount() {
     this.context.store.dispatch(readMessage());
-    this.showChartAsync();
-
-
+    this.context.store.dispatch(readChartData());
   }
 
+ componentWillReceiveProps(nextProps) {
+  if ( nextProps.chartDataSource.item0 && nextProps.chartDataSource.item0!==this.props.chartDataSource.item0)
+    {this.showChart(nextProps.chartDataSource.item0);}
+  if ( nextProps.chartDataSource.item1 && nextProps.chartDataSource.item1!==this.props.chartDataSource.item1)
+      {this.showChart1(nextProps.chartDataSource.item1);}
+ }
   render() {
     return (
       <div>

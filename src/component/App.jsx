@@ -52,6 +52,10 @@ componentWillReceiveProps(nextProps) {
   getCustomProps(pathname)
   {
       switch (pathname) {
+        case '/main':
+                return {chartDataSource:this.props.chart.items?this.props.chart.items:[]
+                   }
+            break;
         case '/messages':
               return {msgDataSource:this.props.user.userMessage?this.props.user.userMessage.items:[]
                 ,onMsgDone:this.onMsgDone
@@ -108,8 +112,8 @@ const styles = {
 //   }
 // };
 function mapStateToProps(state) {
-  const {mainMenu, user} = state
-  return {mainMenu: mainMenu, user}
+  const {mainMenu, user,chart} = state
+  return { mainMenu, user,chart}
 }
 
 export default connect(mapStateToProps)(App)

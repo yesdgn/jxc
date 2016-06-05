@@ -8,7 +8,7 @@ import {
   READ_FAVORITES,
   READ_USER_MESSAGE,
   MESSAGE_DONE,
-  READ_GOODS_ANALYSIS,
+  READ_CHART_DATA,
   USER_LOGOUT
 } from './actions'
 
@@ -18,7 +18,7 @@ export function user(state = {}, action) {
       return {
         ...state,
         userLoginResult: action.receivedJson,
-        userInfo: action.receivedJson.items[0].item0[0].result == 'success' ? action.receivedJson.items[1].item1[0] : {}
+        userInfo: action.receivedJson.items.item0[0].result == 'success' ? action.receivedJson.items.item1[0] : {}
       }
     case USER_REG:
       return {
@@ -75,10 +75,10 @@ export function mainMenu(state = [], action) {
 
 export function chart(state = [], action) {
   switch (action.type) {
-    case READ_GOODS_ANALYSIS:
+    case READ_CHART_DATA:
       return {
         ...state,
-        goodsAnalysis: action.receivedJson
+        items:action.receivedJson.items
       }
     case USER_CLEAR:
         return {}

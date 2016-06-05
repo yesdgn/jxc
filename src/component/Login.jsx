@@ -37,22 +37,22 @@ class Login extends React.Component {
       {
         storeL.removeItem("user");
       }
-      if(nextProps.user.userLoginResult && nextProps.user.userLoginResult.items &&  nextProps.user.userLoginResult.items[0].item0[0].result=='success')
+      if(nextProps.user.userLoginResult && nextProps.user.userLoginResult.items &&  nextProps.user.userLoginResult.items.item0[0].result=='success')
       {
         if (fieldsValue.agreement===true)
         {
           storeL.setItem("user",fieldsValue.userName);
         }
-        storeS.setItem("sessionKey",nextProps.user.userLoginResult.items[0].item0[0].accessToken);
+        storeS.setItem("sessionKey",nextProps.user.userLoginResult.items.item0[0].accessToken);
         storeS.setItem("UserID",nextProps.user.userInfo.UserID)
         this.props.dispatch(clearResult());
         this.props.dispatch(readMainMenu());
         this.props.dispatch(readFavorites());
         this.context.router.push('/main') ;
       }
-      else if(nextProps.user.userLoginResult  && nextProps.user.userLoginResult.items &&  nextProps.user.userLoginResult.items[0].item0[0].result=='fail')
+      else if(nextProps.user.userLoginResult  && nextProps.user.userLoginResult.items &&  nextProps.user.userLoginResult.items.item0[0].result=='fail')
       {
-        hide = message.error(nextProps.user.userLoginResult.items[0].item0[0].resultDescribe);
+        hide = message.error(nextProps.user.userLoginResult.items.item0[0].resultDescribe);
         this.props.dispatch(clearUser());
       }
     };

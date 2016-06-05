@@ -2,7 +2,7 @@ import {APP_CONFIG} from '../entry/config';
 import {storeS} from '../common/dgn';
 import {SHA1} from 'crypto-js';
 import {fetchPosts} from './actions_base';
-
+import {message} from 'antd';
 //用户
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_CLEAR = 'USER_CLEAR';
@@ -123,13 +123,16 @@ export function readFavorites() {
 }
 
 //图形
-export const READ_GOODS_ANALYSIS = 'READ_GOODS_ANALYSIS'
-export function readGoodsAnalysis() {
+export const READ_CHART_DATA = 'READ_CHART_DATA'
+export function readChartData() {
   return (dispatch, getState) => {
     let params={
       apiid:12,
+      userid:storeS.getItem('UserID'),
+      starttime:'2016-01-01',
+      endtime:'2056-01-01',
       sessionkey:storeS.getItem('sessionKey')
     };
-    return dispatch(fetchPosts(READ_GOODS_ANALYSIS, params))
+    return dispatch(fetchPosts(READ_CHART_DATA, params))
   }
 }
