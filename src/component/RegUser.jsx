@@ -5,8 +5,8 @@ import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import {userReg,clearUser} from '../redux/actions';
-import * as lodash   from 'lodash';
-import * as CryptoJS   from 'crypto-js';
+import  {startsWith,trim}   from 'lodash';
+ 
 
 const FormItem = Form.Item;
 
@@ -57,8 +57,8 @@ class RegUser extends React.Component {
     checkUserName(rule, value, callback) {
       let regex=/^[A-Za-z0-9_@.]{3,30}$/;
       let isOK=regex.test(value);
-      let firstStr=lodash.startsWith(value,'@') || lodash.startsWith(value,'.') || lodash.startsWith(value,'_') ;
-      if (lodash.trim(value) === '') {
+      let firstStr=startsWith(value,'@') || startsWith(value,'.') || startsWith(value,'_') ;
+      if (trim(value) === '') {
         callback([new Error('请输入用户名。')]);
       }
       else if (firstStr) {

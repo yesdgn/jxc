@@ -1,8 +1,8 @@
-import    {APP_CONFIG} from '../entry/config';
-import * as dgn from '../common/dgn';
-import * as lodash   from 'lodash';
+import {APP_CONFIG} from '../entry/config';
+import {storeS,getUrl} from '../common/dgn';
+import {isFunction}  from 'lodash';
 import fetch from 'isomorphic-fetch'
-import * as CryptoJS from 'crypto-js';
+import {SHA1} from 'crypto-js';
 import {message} from 'antd';
 
 
@@ -21,7 +21,7 @@ export function userLogin(loginInfo) {
       loginid:loginInfo.userName,
       logintype:APP_CONFIG.LOGINTYPE,
       usertype:APP_CONFIG.USERTYPE,
-      password:CryptoJS.SHA1(loginInfo.password).toString()
+      password:SHA1(loginInfo.password).toString()
     };
     return dispatch(fetchPosts(USER_LOGIN, params))
   }
@@ -36,7 +36,7 @@ export function userReg(regInfo) {
       usertype:APP_CONFIG.USERTYPE,
       nickname:regInfo.userName,
       checkcode:'nocheck',
-      password:CryptoJS.SHA1(regInfo.password).toString()
+      password:SHA1(regInfo.password).toString()
     };
     return dispatch(fetchPosts(USER_REG, params))
   }
@@ -56,8 +56,8 @@ export function readMessage() {
   return (dispatch, getState) => {
     let params={
       apiid:10,
-      sessionkey:dgn.storeS.getItem('sessionKey'),
-      userid:dgn.storeS.getItem('UserID')
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID')
     };
     return dispatch(fetchPosts(READ_USER_MESSAGE, params))
   }
@@ -66,8 +66,8 @@ export function messageFinished (msgID) {
   return (dispatch, getState) => {
     let params={
       apiid:11,
-      sessionkey:dgn.storeS.getItem('sessionKey'),
-      userid:dgn.storeS.getItem('UserID'),
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
       id:msgID
     };
     return dispatch(fetchPosts(MESSAGE_DONE, params,cbMessageFinished))
@@ -84,7 +84,7 @@ export function readMainMenu() {
   return (dispatch, getState) => {
     let params={
       apiid:7,
-      userid:dgn.storeS.getItem('UserID')
+      userid:storeS.getItem('UserID')
     };
     return dispatch(fetchPosts(READ_MAIN_MENU, params))
   }
@@ -98,8 +98,8 @@ export function setFavorites() {
   return (dispatch, getState) => {
     let params={
       apiid:8,
-      sessionkey:dgn.storeS.getItem('sessionKey'),
-      userid:dgn.storeS.getItem('UserID'),
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
       path:location.pathname,
     };
     return dispatch(fetchPosts(SET_FAVORITES, params,cbSetFavorites))
@@ -113,8 +113,8 @@ export function readFavorites() {
   return (dispatch, getState) => {
     let params={
       apiid:9,
-      sessionkey:dgn.storeS.getItem('sessionKey'),
-      userid:dgn.storeS.getItem('UserID')
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID')
     };
     return dispatch(fetchPosts(READ_FAVORITES, params))
   }
@@ -126,7 +126,7 @@ export function readGoodsAnalysis() {
   return (dispatch, getState) => {
     let params={
       apiid:12,
-      sessionkey:dgn.storeS.getItem('sessionKey')
+      sessionkey:storeS.getItem('sessionKey')
     };
     return dispatch(fetchPosts(READ_GOODS_ANALYSIS, params))
   }
@@ -135,14 +135,27 @@ export function readGoodsAnalysis() {
 function fetchPosts(actionType, params,callBack) {
   return dispatch => {
     //  dispatch(requestPosts(userid))
-    let url=dgn.getUrl(params)
+    let url=getUrl(params)
     return fetch(url)
       .then(res => {
         if (res.ok) {
           res.json().then(data => {
-            if (lodash.isFunction(callBack))
-            {callBack(data,dispatch,params);}
-            dispatch(receivePosts(actionType, data))
+            if (data.returnCode==0)
+            {
+              if (isFunction(callBack))
+              {callBack(data,dispatch,params);}
+              dispatch(receivePosts(actionType, data))
+           }
+           else if (data.returnCode==1003 || data.returnCode==1004 )  {
+             message.error(data.returnDescribe);
+             storeS.removeItem("sessionKey");
+             storeS.removeItem("UserID");
+             dispatch(clearUser());
+             this.context.router.push('/login');
+           }
+           else {
+             message.error(data.returnDescribe);
+           }
           });
         } else {
           message.error('获取数据错误。');
@@ -154,9 +167,7 @@ function fetchPosts(actionType, params,callBack) {
       });
   }
 }
-function sleep(d){
-  for(var t = Date.now();Date.now() - t <= d;);
-}
+
 function receivePosts(actionType, json) {
   return {
     type: actionType,

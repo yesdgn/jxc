@@ -10,7 +10,6 @@ import {
   Badge
 } from 'antd';
 import {Link} from 'react-router';
-import * as dgn from '../common/dgn';
 import  {APP_CONFIG} from '../entry/config';
 import './App.css';
 const SubMenu = Menu.SubMenu;

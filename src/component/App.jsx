@@ -5,11 +5,11 @@ import {Breadcrumb} from 'antd';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux'
-import * as actions from '../redux/actions'
+import {clearUser,messageFinished,readMessage,setFavorites} from '../redux/actions'
 import Head from './Head';
 import Left from './Left';
 import Bottom from './Bottom';
-import * as dgn from '../common/dgn';
+import {storeS} from '../common/dgn';
 
 //不包含左边页、头部页  如登录前页面、个性化页面
 const singleComponent = ['/', '/reguser', '/newPass', '/login']
@@ -27,9 +27,9 @@ class App extends React.Component {
   };
 
   logout=()=>{
-    dgn.storeS.removeItem("sessionKey");
-    dgn.storeS.removeItem("UserID");
-    this.props.dispatch(actions.clearUser())
+    storeS.removeItem("sessionKey");
+    storeS.removeItem("UserID");
+    this.props.dispatch(clearUser())
     this.context.router.push('/login');
   }
   LeftComponent(url)
@@ -41,10 +41,10 @@ class App extends React.Component {
     }
   }
   onMsgDone=(msgID)=>{
-   this.props.dispatch(actions.messageFinished(msgID));
+   this.props.dispatch(messageFinished(msgID));
   };
   readMessage=()=>{
-    this.props.dispatch(actions.readMessage());
+    this.props.dispatch(readMessage());
   }
   getCustomProps(pathname)
   {
@@ -70,7 +70,7 @@ class App extends React.Component {
         <Head userInfo={user.userInfo}
           favMenuData={user.favorites?user.favorites.items:[]}
           msgQty={user.userMessage?user.userMessage.items.length:0}
-          addFavorites={() => dispatch(actions.setFavorites())}
+          addFavorites={() => dispatch(setFavorites())}
           logout={this.logout}
           />
         {this.LeftComponent(url)}

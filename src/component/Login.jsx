@@ -5,8 +5,8 @@ import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
 import {userLogin,clearUser,clearResult,readMainMenu,readFavorites,readMessage,readGoodsAnalysis} from '../redux/actions';
 import { connect } from 'react-redux';
-import * as lodash   from 'lodash';
-import * as dgn from '../common/dgn';
+import {startsWith,trim}  from 'lodash';
+import  {storeL,storeS} from '../common/dgn';
 
 const FormItem = Form.Item;
 var hide;
@@ -24,7 +24,7 @@ class Login extends React.Component {
         };
     };
     componentDidMount() {
-      let username=dgn.storeL.getItem("user");
+      let username=storeL.getItem("user");
       if (username)
       {
         this.props.form.setFieldsValue({userName:username,agreement:true});
@@ -35,16 +35,16 @@ class Login extends React.Component {
       let fieldsValue=this.props.form.getFieldsValue();
       if (fieldsValue.agreement===false)
       {
-        dgn.storeL.removeItem("user");
+        storeL.removeItem("user");
       }
       if(nextProps.user.userLoginResult && nextProps.user.userLoginResult.items &&  nextProps.user.userLoginResult.items[0].item0[0].result=='success')
       {
         if (fieldsValue.agreement===true)
         {
-          dgn.storeL.setItem("user",fieldsValue.userName);
+          storeL.setItem("user",fieldsValue.userName);
         }
-        dgn.storeS.setItem("sessionKey",nextProps.user.userLoginResult.items[0].item0[0].accessToken);
-        dgn.storeS.setItem("UserID",nextProps.user.userInfo.UserID)
+        storeS.setItem("sessionKey",nextProps.user.userLoginResult.items[0].item0[0].accessToken);
+        storeS.setItem("UserID",nextProps.user.userInfo.UserID)
         this.props.dispatch(clearResult());
         this.props.dispatch(readMainMenu());
         this.props.dispatch(readFavorites());
@@ -75,9 +75,9 @@ class Login extends React.Component {
     checkUserName(rule, value, callback) {
       let regex=/^[A-Za-z0-9_@.]{1,30}$/;
       let isOK=regex.test(value);
-      let firstStr=lodash.startsWith(value,'@') || lodash.startsWith(value,'.') || lodash.startsWith(value,'_') ;
+      let firstStr=startsWith(value,'@') || startsWith(value,'.') || startsWith(value,'_') ;
 
-            if (lodash.trim(value) === '') {
+            if (trim(value) === '') {
               callback([new Error('请输入用户名。')]);
             }
             else if (firstStr) {

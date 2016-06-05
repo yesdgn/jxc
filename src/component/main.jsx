@@ -10,7 +10,7 @@ import {
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import {messageFinished, readMessage,readGoodsAnalysis} from '../redux/actions';
-import * as G2 from 'g2';
+import  {Chart} from 'g2';
 
 class Main extends React.Component {
   static defaultProps = {};
@@ -32,7 +32,7 @@ class Main extends React.Component {
  }
   showChart() {
    let s=this.context.store.getState();
-   var chart = new G2.Chart({
+   var chart = new Chart({
      id: 'c1', // 指定图表容器 ID
      width: 500, // 指定图表宽度
      height: 300 // 指定图表高度
