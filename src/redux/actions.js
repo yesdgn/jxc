@@ -1,10 +1,7 @@
 import {APP_CONFIG} from '../entry/config';
-import {storeS,getUrl} from '../common/dgn';
-import {isFunction}  from 'lodash';
-import fetch from 'isomorphic-fetch'
+import {storeS} from '../common/dgn';
 import {SHA1} from 'crypto-js';
-import {message} from 'antd';
-
+import {fetchPosts} from './actions_base';
 
 //用户
 export const USER_LOGIN = 'USER_LOGIN';
@@ -13,6 +10,7 @@ export const USER_REG = 'USER_REG';
 export const RESULT_CLEAR = 'RESULT_CLEAR';
 export const READ_USER_MESSAGE = 'READ_USER_MESSAGE';
 export const MESSAGE_DONE = 'MESSAGE_DONE';
+export const USER_LOGOUT = 'USER_LOGOUT';
 
 export function userLogin(loginInfo) {
   return (dispatch, getState) => {
@@ -46,7 +44,11 @@ export function clearUser() {
     type: USER_CLEAR
   }
 }
-
+export function userLogout() {
+  return {
+    type: USER_LOGOUT
+  }
+}
 export function clearResult() {
   return {
     type: RESULT_CLEAR
@@ -129,49 +131,5 @@ export function readGoodsAnalysis() {
       sessionkey:storeS.getItem('sessionKey')
     };
     return dispatch(fetchPosts(READ_GOODS_ANALYSIS, params))
-  }
-}
-
-function fetchPosts(actionType, params,callBack) {
-  return dispatch => {
-    //  dispatch(requestPosts(userid))
-    let url=getUrl(params)
-    return fetch(url)
-      .then(res => {
-        if (res.ok) {
-          res.json().then(data => {
-            if (data.returnCode==0)
-            {
-              if (isFunction(callBack))
-              {callBack(data,dispatch,params);}
-              dispatch(receivePosts(actionType, data))
-           }
-           else if (data.returnCode==1003 || data.returnCode==1004 )  {
-             message.error(data.returnDescribe);
-             storeS.removeItem("sessionKey");
-             storeS.removeItem("UserID");
-             dispatch(clearUser());
-             this.context.router.push('/login');
-           }
-           else {
-             message.error(data.returnDescribe);
-           }
-          });
-        } else {
-          message.error('获取数据错误。');
-          console.log("Looks like the response wasn't perfect, got status", res.status);
-        }
-      }, function(e) {
-        message.error('网络连接错误');
-        console.log("Fetch failed!", e);
-      });
-  }
-}
-
-function receivePosts(actionType, json) {
-  return {
-    type: actionType,
-    receivedJson: json,
-    receivedAt: Date.now()
   }
 }

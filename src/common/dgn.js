@@ -1,6 +1,7 @@
 import {isString,isNaN,isNil,isNull,now,chain,keys,sortBy,value,toUpper}  from 'lodash';
 import {MD5} from 'crypto-js';
-import    {APP_CONFIG} from '../entry/config';
+import {APP_CONFIG} from '../entry/config';
+
 /* 第一种使用：执行函数返回对象
 export  const  storeS =s2() ;
 function s2()
@@ -43,7 +44,7 @@ export function getUrl(paramsObj)
  stringA.map( function(key) {
     if(ifNull(params[key]))
     {
-      stringB= (ifNull(stringB)?'':stringB+'&')+key+'='+params[key];
+      stringB= (ifNull(stringB)?'':stringB+'&')+key+'=';
     }
     else {
       stringC= (ifNull(stringC)?'':stringC+'&')+key+'='+params[key];
@@ -52,6 +53,6 @@ export function getUrl(paramsObj)
   })
 
  let sign=toUpper(MD5(stringC).toString());
- stringC=APP_CONFIG.APISERVERURL+'/'+params.apiid+'?'+stringC+'&sign='+sign+(ifNull(stringB)?'':stringB);
+ stringC=APP_CONFIG.APISERVERURL+'/'+params.apiid+'?'+stringC+'&sign='+sign+(ifNull(stringB)?'':'&'+stringB);
   return stringC
 }

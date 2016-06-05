@@ -25,7 +25,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
   };
-
+componentWillReceiveProps(nextProps) {
+  if  (nextProps.user.userLogout && nextProps.user.userLogout==true)
+  {this.logout(); }
+}
   logout=()=>{
     storeS.removeItem("sessionKey");
     storeS.removeItem("UserID");

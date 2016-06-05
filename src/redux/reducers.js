@@ -8,7 +8,8 @@ import {
   READ_FAVORITES,
   READ_USER_MESSAGE,
   MESSAGE_DONE,
-  READ_GOODS_ANALYSIS
+  READ_GOODS_ANALYSIS,
+  USER_LOGOUT
 } from './actions'
 
 export function user(state = {}, action) {
@@ -51,6 +52,11 @@ export function user(state = {}, action) {
         ...state,
         messageDoneResult: action.receivedJson
       }
+    case USER_LOGOUT:
+        return {
+          ...state,
+          userLogout: true
+        }
     default:
       return state
   }
@@ -60,6 +66,8 @@ export function mainMenu(state = [], action) {
   switch (action.type) {
     case READ_MAIN_MENU:
       return action.receivedJson
+    case USER_CLEAR:
+        return {}
     default:
       return state
   }
@@ -72,6 +80,8 @@ export function chart(state = [], action) {
         ...state,
         goodsAnalysis: action.receivedJson
       }
+    case USER_CLEAR:
+        return {}
     default:
       return state
   }
