@@ -102,7 +102,7 @@ class Head extends React.Component {
                 </a>
                 <span className="colRightPa20">
                 <Dropdown overlay={menu}  >
-                  <Link to={`/users/` + userid} className="ant-dropdown-link">
+                  <Link to={`/persons/` + userid} className="ant-dropdown-link">
                     {username}<Icon type="down"/>
                   </Link>
                 </Dropdown>

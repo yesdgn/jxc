@@ -9,7 +9,8 @@ import {
   READ_USER_MESSAGE,
   MESSAGE_DONE,
   READ_CHART_DATA,
-  USER_LOGOUT
+  USER_LOGOUT,
+  READ_PERSONS
 } from './actions'
 
 export function user(state = {}, action) {
@@ -76,6 +77,21 @@ export function mainMenu(state = [], action) {
 export function chart(state = [], action) {
   switch (action.type) {
     case READ_CHART_DATA:
+      return {
+        ...state,
+        items:action.receivedJson.items
+      }
+    case USER_CLEAR:
+        return {}
+    default:
+      return state
+  }
+}
+
+
+export function person(state = [], action) {
+  switch (action.type) {
+    case READ_PERSONS:
       return {
         ...state,
         items:action.receivedJson.items

@@ -3,6 +3,19 @@ import {storeS} from '../common/dgn';
 import {SHA1} from 'crypto-js';
 import {fetchPosts} from './actions_base';
 import {message} from 'antd';
+
+//人员
+export const READ_PERSONS = 'READ_PERSONS';
+export function readPersons() {
+  return (dispatch, getState) => {
+    let params={
+      apiid:13,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID')
+    };
+    return dispatch(fetchPosts(READ_PERSONS, params))
+  }
+}
 //用户
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_CLEAR = 'USER_CLEAR';

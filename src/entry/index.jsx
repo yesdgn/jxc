@@ -10,8 +10,8 @@ import App from '../component/App';
 import NoMatch from '../component/NoMatch';
 import Login from '../component/Login';
 import Main from '../component/Main';
-import Users from '../component/Users';
-import User from '../component/User';
+import Persons from '../component/Persons';
+import Person from '../component/Person';
 import RegUser from '../component/RegUser';
 import NewPass from '../component/NewPass';
 import Message from '../component/Message';
@@ -34,9 +34,8 @@ ReactDOM.render(
       <IndexRoute component={Login}/>
       <Route path="login"  breadcrumbName="登录" component={Login}/>
       <Route path="main" breadcrumbName="主页"  onEnter={requireAuthApp}  component={Main} />
-      <Route path="users" breadcrumbName="用户列表"  onEnter={requireAuthApp}   component={Users}>
-        <Route path=":userid" breadcrumbName="用户"  onEnter={requireAuthApp}   component={User}/>
-      </Route>
+      <Route path="persons" breadcrumbName="人员列表"  onEnter={requireAuthApp}   component={Persons} />
+      <Route path="/persons/:personID" breadcrumbName="人员"  onEnter={requireAuthApp}   component={Person}/>
       <Route path="newPass" breadcrumbName="忘记密码"  component={NewPass}/>
       <Route path="/messages" breadcrumbName="消息列表"  onEnter={requireAuthApp}   component={Messages} />
       <Route path="/messages/:id" breadcrumbName="消息"   onEnter={requireAuthApp}  component={Message}/>

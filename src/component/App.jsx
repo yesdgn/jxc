@@ -5,7 +5,7 @@ import {Breadcrumb} from 'antd';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux'
-import {clearUser,messageFinished,readMessage,setFavorites} from '../redux/actions'
+import {clearUser,messageFinished,readMessage,setFavorites,readPersons} from '../redux/actions'
 import Head from './Head';
 import Left from './Left';
 import Bottom from './Bottom';
@@ -48,7 +48,10 @@ componentWillReceiveProps(nextProps) {
   };
   readMessage=()=>{
     this.props.dispatch(readMessage());
-  }
+  };
+  readPersons=()=>{
+    this.props.dispatch(readPersons());
+  };
   getCustomProps(pathname)
   {
       switch (pathname) {
@@ -61,6 +64,10 @@ componentWillReceiveProps(nextProps) {
                 ,onMsgDone:this.onMsgDone
                 ,readMessage:this.readMessage}
           break;
+        case '/persons':
+                return {personsDataSource:this.props.person.items?this.props.person.items:[]
+                ,readPersons:this.readPersons  }
+            break;
         default:
           return {};
       }
@@ -112,8 +119,8 @@ const styles = {
 //   }
 // };
 function mapStateToProps(state) {
-  const {mainMenu, user,chart} = state
-  return { mainMenu, user,chart}
+  const {mainMenu, user,chart,person} = state
+  return { mainMenu, user,chart,person}
 }
 
 export default connect(mapStateToProps)(App)

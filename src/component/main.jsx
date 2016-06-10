@@ -10,7 +10,7 @@ import {
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import {messageFinished, readMessage,readChartData} from '../redux/actions';
-import  {Chart,Stat} from 'g2';
+import  {Chart,Stat,Frame} from 'g2';
 
 class Main extends React.Component {
   static defaultProps = {};
@@ -39,7 +39,28 @@ class Main extends React.Component {
    chart.interval().position('ProductCategory*qty').color('ProductCategory')
    chart.render();
  }
- showChart1(data)
+ showChart1(data) {
+   var Stat = Stat;
+
+   var frame = new Frame(data);
+   frame = Frame.sort(frame, 'qty'); // 将数据按照population 进行排序，由大到小
+   var chart = new Chart({
+     id : 'c2',
+     width : 500,
+     height : 300,
+     plotCfg: {
+       margin: [0, 0, 0, 0]
+     }
+   });
+   chart.source(frame);
+   chart.axis('District',{
+     title: null
+   });
+   chart.coord('rect').transpose();
+   chart.interval().position('District*qty');
+   chart.render();
+}
+ showChart2(data)
  {
 
   var chart = new Chart({
@@ -55,8 +76,8 @@ class Main extends React.Component {
   chart.legend('bottom');
   chart.intervalStack()
     .position(Stat.summary.percent('qty'))
-    .color('ShopType')
-    .label('ShopType*..percent',function(name, percent){
+    .color('District')
+    .label('District*..percent',function(name, percent){
     percent = (percent * 100).toFixed(2) + '%';
     return name + ' ' + percent;
   });
