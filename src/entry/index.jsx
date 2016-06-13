@@ -35,10 +35,10 @@ ReactDOM.render(
       <Route path="login"  breadcrumbName="登录" component={Login}/>
       <Route path="main" breadcrumbName="主页"  onEnter={requireAuthApp}  component={Main} />
       <Route path="persons" breadcrumbName="人员列表"  onEnter={requireAuthApp}   component={Persons} />
-      <Route path="/persons/:personID" breadcrumbName="人员"  onEnter={requireAuthApp}   component={Person}/>
+      <Route path="/person/:personID" breadcrumbName="人员"  onEnter={requireAuthApp}   component={Person}/>
       <Route path="newPass" breadcrumbName="忘记密码"  component={NewPass}/>
-      <Route path="/messages" breadcrumbName="消息列表"  onEnter={requireAuthApp}   component={Messages} />
-      <Route path="/messages/:id" breadcrumbName="消息"   onEnter={requireAuthApp}  component={Message}/>
+      <Route path="messages" breadcrumbName="消息列表"  onEnter={requireAuthApp}   component={Messages} />
+      <Route path="/message/:id" breadcrumbName="消息"   onEnter={requireAuthApp}  component={Message}/>
       <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
       <Route path="*" breadcrumbName="未找到页面" component={NoMatch}/>
     </Route>

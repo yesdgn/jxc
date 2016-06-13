@@ -8,15 +8,13 @@ import {
   Button
 } from 'antd';
 import {Link} from 'react-router';
-import {connect} from 'react-redux';
-import {messageFinished, readMessage,readChartData} from '../redux/actions';
 import  {Chart,Stat,Frame} from 'g2';
 
 class Main extends React.Component {
   static defaultProps = {};
   static propTypes = {};
   static contextTypes = {
-    store: React.PropTypes.object.isRequired
+  //  store: React.PropTypes.object.isRequired
   };
   constructor(props) {
     super(props);
@@ -88,10 +86,10 @@ class Main extends React.Component {
   geom.setSelected(items[1]); // 设置选中
  }
   componentWillMount() {
-    this.context.store.dispatch(readMessage());
-    this.context.store.dispatch(readChartData());
+  //  this.context.store.dispatch(readMessage());
+  //  this.context.store.dispatch(readChartData());
+  this.props.onLoad();
   }
-
  componentWillReceiveProps(nextProps) {
   if ( nextProps.chartDataSource.item0 && nextProps.chartDataSource.item0!==this.props.chartDataSource.item0)
     {this.showChart(nextProps.chartDataSource.item0);}

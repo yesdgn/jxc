@@ -24,6 +24,7 @@ const formItemLayout = {
     span: 16
   }
 };
+
 class Person extends React.Component {
   static defaultProps = {};
   static propTypes = {};
@@ -38,6 +39,16 @@ class Person extends React.Component {
   handleCancel = () => {
     this.setState({priviewVisible: false});
   }
+  componentWillMount() {
+    this.props.onLoad();
+  }
+  componentWillReceiveProps(nextProps) {
+     if(nextProps.params.personID!==this.props.params.personID)
+     {
+         this.props.onLoad();
+     }
+  }
+
 
   render() {
     const {getFieldProps} = this.props.form;
@@ -47,7 +58,9 @@ class Person extends React.Component {
       listType: 'picture-card',
       data: {
         userid: storeS.getItem('UserID'),
-        imgguid:this.state.imgGuid
+        imgguid:this.state.imgGuid,
+        thumbSize:150,
+        watermark:"system(432347897983241)\r\n2016-06-10 21:28:30\r\n12.213213,28.123211"
       },
       onChange(info) {
         if (info.file.status !== 'uploading') {
@@ -79,43 +92,56 @@ class Person extends React.Component {
         this.setState({priviewImage: file.url, priviewVisible: true});
       }
     };
+    const nameProps = getFieldProps('Name', {
+      rules: [
+        { required: true, min: 1, message: '姓名至少为 1 个字符' },
 
+      ],
+    });
     return (
-      <Form horizontal form={this.props.form}>
+
+      <Form horizontal form={this.props.form} >
+        <Row type="flex" justify="end"   >
+          <Col  span="12">
+            <FormItem    >
+             <Button type="primary" htmlType="submit">保存</Button>
+           </FormItem>
+          </Col>
+        </Row>
         <Row>
           <Col span="12">
             <FormItem {...formItemLayout} label="代码">
-              <Input/>
+              <Input  {...getFieldProps('Code')} />
             </FormItem>
           </Col>
           <Col span="12">
             <FormItem {...formItemLayout} label="姓名">
-              <Input/>
+              <Input {...nameProps} />
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="12">
             <FormItem {...formItemLayout} label="手机">
-              <Input/>
+              <Input {...getFieldProps('Mobile')}/>
             </FormItem>
           </Col>
           <Col span="12">
             <FormItem {...formItemLayout} label="电子邮箱">
-              <Input type="email"/>
+              <Input type="email" {...getFieldProps('Email')}/>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="12">
             <FormItem {...formItemLayout} label="备注">
-              <Input type="textarea" rows="4"/>
+              <Input type="textarea" rows="4" {...getFieldProps('Remark')}/>
             </FormItem>
           </Col>
           <Col span="12">
             <FormItem {...formItemLayout} label="头像">
               <div className="clearfix">
-                <Upload {...props}>
+                <Upload {...props} {...getFieldProps('UserImages')} >
                   <Icon type="plus"/>
                   <div className="ant-upload-text">上传照片</div>
                 </Upload>
@@ -127,11 +153,22 @@ class Person extends React.Component {
             </FormItem>
           </Col>
         </Row>
+
       </Form>
 
     );
   }
 };
 
-Person = Form.create()(Person);
+function mapPropsToFields(props) {
+ return {
+   Code:{value :props.personDataSource.item0?props.personDataSource.item0[0].Code:[]},
+   Name:{value :props.personDataSource.item0?props.personDataSource.item0[0].Name:[]},
+   Email:{value :props.personDataSource.item0?props.personDataSource.item0[0].Email:[]},
+   Mobile:{value :props.personDataSource.item0?props.personDataSource.item0[0].Mobile:[]},
+   Remark:{value :props.personDataSource.item0?props.personDataSource.item0[0].Remark:[]},
+  }
+}
+
+Person = Form.create({mapPropsToFields:mapPropsToFields})(Person);
 export default Person

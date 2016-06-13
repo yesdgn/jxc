@@ -48,7 +48,7 @@ class Messages extends React.Component {
     super(props);
   };
   componentDidMount() {
-    this.props.readMessage();
+    this.props.onLoad();
   }
   msgDone=(msg,index,mouseEvent)=>{
     const { props: { onMsgDone } } = this

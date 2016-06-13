@@ -29,7 +29,9 @@ class Head extends React.Component {
     super(props);
 
   };
-
+  componentDidMount() {
+    this.props.onLoad();
+  }
   addFavorites = () => {
     this.props.addFavorites();
   }
@@ -102,7 +104,7 @@ class Head extends React.Component {
                 </a>
                 <span className="colRightPa20">
                 <Dropdown overlay={menu}  >
-                  <Link to={`/persons/` + userid} className="ant-dropdown-link">
+                  <Link to={`/person/` + userid} className="ant-dropdown-link">
                     {username}<Icon type="down"/>
                   </Link>
                 </Dropdown>

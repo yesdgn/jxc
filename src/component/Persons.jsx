@@ -29,7 +29,7 @@ const  columns= [
       key: 'operation',
       render(text, record) {
         return (<span>
-          <Link to={`/persons/`+record.UserID}>编辑</Link>
+          <Link to={`/person/`+record.UserID}>编辑</Link>
           </span>
         );
       }
@@ -45,7 +45,7 @@ class Persons extends React.Component {
     super(props);
   };
   componentDidMount() {
-    this.props.readPersons();
+    this.props.onLoad();
   }
 
   render() {

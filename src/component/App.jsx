@@ -5,7 +5,8 @@ import {Breadcrumb} from 'antd';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux'
-import {clearUser,messageFinished,readMessage,setFavorites,readPersons} from '../redux/actions'
+import {clearUser,messageFinished,readMessage,setFavorites,readPersons,readMainMenu,readFavorites
+  ,readChartData,readPerson} from '../redux/actions'
 import Head from './Head';
 import Left from './Left';
 import Bottom from './Bottom';
@@ -35,39 +36,42 @@ componentWillReceiveProps(nextProps) {
     this.props.dispatch(clearUser())
     this.context.router.push('/login');
   }
-  LeftComponent(url)
-  {
+  LeftComponent=(url)=> {
     if (cancelLeftComponent.indexOf(url) >= 0) {
       return (null);
     } else {
-      return (<Left  menuData={this.props.mainMenu.items} />);
+      return (<Left  menuData={this.props.mainMenu.items} onLoad={() => this.props.dispatch(readMainMenu())} />);
     }
   }
   onMsgDone=(msgID)=>{
    this.props.dispatch(messageFinished(msgID));
   };
-  readMessage=()=>{
+  mainLoad=()=>{
     this.props.dispatch(readMessage());
-  };
-  readPersons=()=>{
-    this.props.dispatch(readPersons());
-  };
+    this.props.dispatch(readChartData());
+  }
   getCustomProps(pathname)
   {
+  //console.log(pathname);
       switch (pathname) {
-        case '/main':
-                return {chartDataSource:this.props.chart.items?this.props.chart.items:[]
+        case 'main':
+                return {chartDataSource:this.props.chart.items?this.props.chart.items:[],
+                  onLoad:this.mainLoad
                    }
             break;
-        case '/messages':
+        case 'messages':
               return {msgDataSource:this.props.user.userMessage?this.props.user.userMessage.items:[]
                 ,onMsgDone:this.onMsgDone
-                ,readMessage:this.readMessage}
+                ,onLoad:()=>this.props.dispatch(readMessage())}
           break;
-        case '/persons':
-                return {personsDataSource:this.props.person.items?this.props.person.items:[]
-                ,readPersons:this.readPersons  }
+        case 'persons':
+                return {personsDataSource:this.props.persons.personList?this.props.persons.personList:[]
+                ,onLoad:()=>this.props.dispatch(readPersons())}
             break;
+        case '/person/:personID':
+                    return {personDataSource:this.props.persons.personInfo?this.props.persons.personInfo:[]
+                    ,onLoad:()=>this.props.dispatch(readPerson(this.props.params.personID))}
+                break;
         default:
           return {};
       }
@@ -79,9 +83,10 @@ componentWillReceiveProps(nextProps) {
     if (singleComponent.indexOf(url) >= 0) {
       return (this.props.children);
     }
+
     return (
       <div>
-        <Head userInfo={user.userInfo}
+        <Head userInfo={user.userInfo} onLoad={()=> dispatch(readFavorites())}
           favMenuData={user.favorites?user.favorites.items:[]}
           msgQty={user.userMessage?user.userMessage.items.length:0}
           addFavorites={() => dispatch(setFavorites())}
@@ -92,7 +97,7 @@ componentWillReceiveProps(nextProps) {
           <div style={styles.breadcrumb}>
             <Breadcrumb {...this.props} />
           </div>
-          {React.cloneElement(this.props.children,this.getCustomProps(this.props.location.pathname))}
+          {React.cloneElement(this.props.children,this.getCustomProps(this.props.children.props.route.path))}
         </div>
         <Bottom/>
       </div>
@@ -119,8 +124,8 @@ const styles = {
 //   }
 // };
 function mapStateToProps(state) {
-  const {mainMenu, user,chart,person} = state
-  return { mainMenu, user,chart,person}
+  const {mainMenu, user,chart,persons} = state
+  return { mainMenu, user,chart,persons}
 }
 
 export default connect(mapStateToProps)(App)

@@ -28,7 +28,9 @@ class Left extends React.Component {
         : info.keyPath.slice(1)
     });
   };
-
+componentDidMount() {
+  this.props.onLoad();
+}
   initMenu(menuData) {
     return (menuData.map((x) => {
       if (x.children) {

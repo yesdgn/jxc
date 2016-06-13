@@ -3,7 +3,7 @@
 import  React  from 'react';
 import {Row,Col,Form,Input, Button, Checkbox,message  } from 'antd';
 import { Link } from 'react-router';
-import {userLogin,clearUser,clearResult,readMainMenu,readFavorites,readMessage,readGoodsAnalysis} from '../redux/actions';
+import {userLogin,clearUser,clearResult} from '../redux/actions';
 import { connect } from 'react-redux';
 import {startsWith,trim}  from 'lodash';
 import  {storeL,storeS} from '../common/dgn';
@@ -46,8 +46,6 @@ class Login extends React.Component {
         storeS.setItem("sessionKey",nextProps.user.userLoginResult.items.item0[0].accessToken);
         storeS.setItem("UserID",nextProps.user.userInfo.UserID)
         this.props.dispatch(clearResult());
-        this.props.dispatch(readMainMenu());
-        this.props.dispatch(readFavorites());
         this.context.router.push('/main') ;
       }
       else if(nextProps.user.userLoginResult  && nextProps.user.userLoginResult.items &&  nextProps.user.userLoginResult.items.item0[0].result=='fail')

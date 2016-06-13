@@ -6,6 +6,7 @@ import {message} from 'antd';
 
 //人员
 export const READ_PERSONS = 'READ_PERSONS';
+export const READ_PERSON = 'READ_PERSON';
 export function readPersons() {
   return (dispatch, getState) => {
     let params={
@@ -16,6 +17,18 @@ export function readPersons() {
     return dispatch(fetchPosts(READ_PERSONS, params))
   }
 }
+export function readPerson(personID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:14,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      personid:personID
+    };
+    return dispatch(fetchPosts(READ_PERSON, params))
+  }
+}
+
 //用户
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_CLEAR = 'USER_CLEAR';
