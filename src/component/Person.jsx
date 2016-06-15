@@ -2,7 +2,7 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {APP_CONFIG} from '../entry/config';
-import {storeS} from '../common/dgn';
+import {storeS,getRand,ifNull,getUploadControlImgData} from '../common/dgn';
 import {
   Button,
   Row,
@@ -14,6 +14,7 @@ import {
   Modal,
   message
 } from 'antd';
+var imgGuid;
 const createForm = Form.create;
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -33,7 +34,7 @@ class Person extends React.Component {
     this.state = {
       priviewVisible: false,
       priviewImage: '',
-      imgGuid:Math.random().toString().substring(2)
+      fileList:[]
     }
   };
   handleCancel = () => {
@@ -42,26 +43,40 @@ class Person extends React.Component {
   componentWillMount() {
     this.props.onLoad();
   }
+
   componentWillReceiveProps(nextProps) {
      if(nextProps.params.personID!==this.props.params.personID)
      {
          this.props.onLoad();
      }
-  }
 
+
+
+  }
+  handleSubmit=(e)=> {
+    e.preventDefault();
+    this.props.form.validateFields((errors, values) => {
+      if (!!errors) {
+        return;
+      }
+
+       console.log('收到表单值：', values);
+    });
+
+  };
 
   render() {
     const {getFieldProps} = this.props.form;
-    const props = {
+    let props = {
       name: 'img',
       action: APP_CONFIG.WEBSERVERURL + '/upload/img',
       listType: 'picture-card',
       data: {
         userid: storeS.getItem('UserID'),
-        imgguid:this.state.imgGuid,
-        thumbSize:150,
-        watermark:"system(432347897983241)\r\n2016-06-10 21:28:30\r\n12.213213,28.123211"
+        imgguid: imgGuid,
+        thumbSize:150
       },
+      fileList:getUploadControlImgData(this.props.personImgs),
       onChange(info) {
         if (info.file.status !== 'uploading') {
           console.log(info.file, info.fileList);
@@ -79,15 +94,6 @@ class Person extends React.Component {
         }
         return isImg;
       },
-      defaultFileList: [
-        {
-          uid: -1,
-          name: 'img1',
-          status: 'done',
-          url: 'https://os.alipayobjects.com/rmsportal/NDbkJhpzmLxtPhB.png',
-          thumbUrl: 'https://os.alipayobjects.com/rmsportal/NDbkJhpzmLxtPhB.png'
-        }
-      ],
       onPreview: (file) => {
         this.setState({priviewImage: file.url, priviewVisible: true});
       }
@@ -100,12 +106,17 @@ class Person extends React.Component {
     });
     return (
 
-      <Form horizontal form={this.props.form} >
-        <Row type="flex" justify="end"   >
-          <Col  span="12">
+      <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>
+        <Row    type="flex" justify="end" >
+          <Col   >
             <FormItem    >
              <Button type="primary" htmlType="submit">保存</Button>
            </FormItem>
+          </Col>
+          <Col span="1">
+            <FormItem style={{display:'none'}} >
+              <Input  {...getFieldProps('UserID')} />
+            </FormItem>
           </Col>
         </Row>
         <Row>
@@ -141,11 +152,11 @@ class Person extends React.Component {
           <Col span="12">
             <FormItem {...formItemLayout} label="头像">
               <div className="clearfix">
-                <Upload {...props} {...getFieldProps('UserImages')} >
+                <Upload {...props} {...getFieldProps('UserImages')}  >
                   <Icon type="plus"/>
                   <div className="ant-upload-text">上传照片</div>
                 </Upload>
-                <a href="https://os.alipayobjects.com/rmsportal/NDbkJhpzmLxtPhB.png" target="_blank" className="upload-example"></a>
+                 
                 <Modal visible={this.state.priviewVisible} footer={null} onCancel={this.handleCancel}>
                   <img alt="example" src={this.state.priviewImage}/>
                 </Modal>
@@ -161,13 +172,24 @@ class Person extends React.Component {
 };
 
 function mapPropsToFields(props) {
- return {
-   Code:{value :props.personDataSource.item0?props.personDataSource.item0[0].Code:[]},
-   Name:{value :props.personDataSource.item0?props.personDataSource.item0[0].Name:[]},
-   Email:{value :props.personDataSource.item0?props.personDataSource.item0[0].Email:[]},
-   Mobile:{value :props.personDataSource.item0?props.personDataSource.item0[0].Mobile:[]},
-   Remark:{value :props.personDataSource.item0?props.personDataSource.item0[0].Remark:[]},
+  if (!props.personInfo.item0)
+  {
+    return {};
   }
+  else {
+    imgGuid=ifNull(props.personInfo.item0[0].UserImages)?getRand():props.personInfo.item0[0].UserImages;
+
+     return {
+      Code:{value :props.personInfo.item0[0].Code},
+      UserID:{value :props.personInfo.item0[0].UserID},
+      Name:{value :props.personInfo.item0[0].Name},
+      Email:{value :props.personInfo.item0[0].Email},
+      Mobile:{value :props.personInfo.item0[0].Mobile},
+      Remark:{value :props.personInfo.item0[0].Remark},
+      UserImages:{value:imgGuid}
+     }
+  }
+
 }
 
 Person = Form.create({mapPropsToFields:mapPropsToFields})(Person);

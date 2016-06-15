@@ -11,7 +11,8 @@ import {
   READ_CHART_DATA,
   USER_LOGOUT,
   READ_PERSONS,
-  READ_PERSON
+  READ_PERSON,
+  READ_PERSONFILE
 } from './actions'
 
 export function user(state = {}, action) {
@@ -64,10 +65,13 @@ export function user(state = {}, action) {
   }
 }
 
-export function mainMenu(state = [], action) {
+export function common(state = [], action) {
   switch (action.type) {
     case READ_MAIN_MENU:
-      return action.receivedJson
+      return  {
+        ...state,
+        mainMenu:action.receivedJson.items
+      }
     case USER_CLEAR:
         return {}
     default:
@@ -102,6 +106,11 @@ export function persons(state = [], action) {
           ...state,
           personInfo:action.receivedJson.items
         }
+    case READ_PERSONFILE:
+            return {
+              ...state,
+              personImgs:action.receivedJson.items
+            }
     case USER_CLEAR:
         return {}
     default:

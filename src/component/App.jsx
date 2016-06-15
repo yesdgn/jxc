@@ -40,15 +40,15 @@ componentWillReceiveProps(nextProps) {
     if (cancelLeftComponent.indexOf(url) >= 0) {
       return (null);
     } else {
-      return (<Left  menuData={this.props.mainMenu.items} onLoad={() => this.props.dispatch(readMainMenu())} />);
+      return (<Left  menuData={this.props.common.mainMenu} onLoad={() => this.props.dispatch(readMainMenu())} />);
     }
   }
   onMsgDone=(msgID)=>{
    this.props.dispatch(messageFinished(msgID));
   };
   mainLoad=()=>{
-    this.props.dispatch(readMessage());
     this.props.dispatch(readChartData());
+    this.props.dispatch(readMessage());
   }
   getCustomProps(pathname)
   {
@@ -69,8 +69,10 @@ componentWillReceiveProps(nextProps) {
                 ,onLoad:()=>this.props.dispatch(readPersons())}
             break;
         case '/person/:personID':
-                    return {personDataSource:this.props.persons.personInfo?this.props.persons.personInfo:[]
-                    ,onLoad:()=>this.props.dispatch(readPerson(this.props.params.personID))}
+                    return {personInfo:this.props.persons.personInfo?this.props.persons.personInfo:[]
+                    ,onLoad:()=>this.props.dispatch(readPerson(this.props.params.personID))
+                    ,personImgs:this.props.persons.personImgs?this.props.persons.personImgs:[]
+                  }
                 break;
         default:
           return {};
@@ -124,8 +126,8 @@ const styles = {
 //   }
 // };
 function mapStateToProps(state) {
-  const {mainMenu, user,chart,persons} = state
-  return { mainMenu, user,chart,persons}
+  const {common, user,chart,persons} = state
+  return { common, user,chart,persons}
 }
 
 export default connect(mapStateToProps)(App)

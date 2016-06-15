@@ -1,5 +1,5 @@
 import {APP_CONFIG} from '../entry/config';
-import {storeS} from '../common/dgn';
+import {storeS,ifNull} from '../common/dgn';
 import {SHA1} from 'crypto-js';
 import {fetchPosts} from './actions_base';
 import {message} from 'antd';
@@ -7,6 +7,7 @@ import {message} from 'antd';
 //人员
 export const READ_PERSONS = 'READ_PERSONS';
 export const READ_PERSON = 'READ_PERSON';
+export const READ_PERSONFILE = 'READ_PERSONFILE';
 export function readPersons() {
   return (dispatch, getState) => {
     let params={
@@ -25,10 +26,36 @@ export function readPerson(personID) {
       userid:storeS.getItem('UserID'),
       personid:personID
     };
-    return dispatch(fetchPosts(READ_PERSON, params))
+    return dispatch(fetchPosts(READ_PERSON, params,cbreadPerson))
   }
 }
-
+function cbreadPerson (data,dispatch,params) {
+  if (!ifNull(data.items.item0[0].UserImages))
+  {
+    dispatch(readUploadFile(READ_PERSONFILE,data.items.item0[0].UserImages,'img'));
+  }
+  else {
+   dispatch(clearData(READ_PERSONFILE,{items:[]}))
+  }
+}
+export function clearData(actionType,data) {
+  return {
+    type: actionType,
+    receivedJson:data
+  }
+}
+export function readUploadFile(actionType,fileFormID,gettype) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:15,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      formid:fileFormID,
+      gettype:gettype
+    };
+    return dispatch(fetchPosts(actionType, params))
+  }
+}
 //用户
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_CLEAR = 'USER_CLEAR';
