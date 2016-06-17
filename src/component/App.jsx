@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux'
 import {clearUser,messageFinished,readMessage,setFavorites,readPersons,readMainMenu,readFavorites
-  ,readChartData,readPerson} from '../redux/actions'
+  ,readChartData,readPerson,removeFile,savePerson,READ_PERSONFILE,readUploadFile} from '../redux/actions'
 import Head from './Head';
 import Left from './Left';
 import Bottom from './Bottom';
@@ -70,8 +70,11 @@ componentWillReceiveProps(nextProps) {
             break;
         case '/person/:personID':
                     return {personInfo:this.props.persons.personInfo?this.props.persons.personInfo:[]
-                    ,onLoad:()=>this.props.dispatch(readPerson(this.props.params.personID))
                     ,personImgs:this.props.persons.personImgs?this.props.persons.personImgs:[]
+                    ,onLoad:()=>this.props.dispatch(readPerson(this.props.params.personID))
+                    ,removeFile:(fileid)=>this.props.dispatch(removeFile(fileid))
+                    ,savePerson:(data)=>this.props.dispatch(savePerson(data))
+                    ,readPersonFile:(formid)=>this.props.dispatch(readUploadFile(READ_PERSONFILE,formid,'img'))
                   }
                 break;
         default:

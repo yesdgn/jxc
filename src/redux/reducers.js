@@ -12,7 +12,9 @@ import {
   USER_LOGOUT,
   READ_PERSONS,
   READ_PERSON,
-  READ_PERSONFILE
+  READ_PERSONFILE,
+  SAVE_PERSON,
+  REMOVEFILE
 } from './actions'
 
 export function user(state = {}, action) {
@@ -56,10 +58,10 @@ export function user(state = {}, action) {
         messageDoneResult: action.receivedJson
       }
     case USER_LOGOUT:
-        return {
-          ...state,
-          userLogout: true
-        }
+      return {
+        ...state,
+        userLogout: true
+      }
     default:
       return state
   }
@@ -68,12 +70,12 @@ export function user(state = {}, action) {
 export function common(state = [], action) {
   switch (action.type) {
     case READ_MAIN_MENU:
-      return  {
+      return {
         ...state,
-        mainMenu:action.receivedJson.items
+        mainMenu: action.receivedJson.items
       }
     case USER_CLEAR:
-        return {}
+      return {}
     default:
       return state
   }
@@ -84,10 +86,10 @@ export function chart(state = [], action) {
     case READ_CHART_DATA:
       return {
         ...state,
-        items:action.receivedJson.items
+        items: action.receivedJson.items
       }
     case USER_CLEAR:
-        return {}
+      return {}
     default:
       return state
   }
@@ -99,20 +101,25 @@ export function persons(state = [], action) {
     case READ_PERSONS:
       return {
         ...state,
-        personList:action.receivedJson.items
+        personList: action.receivedJson.items
       }
     case READ_PERSON:
+      return {
+        ...state,
+        personInfo: action.receivedJson.items
+      }
+    case READ_PERSONFILE:
         return {
           ...state,
-          personInfo:action.receivedJson.items
+          personImgs: action.receivedJson.items
         }
-    case READ_PERSONFILE:
-            return {
-              ...state,
-              personImgs:action.receivedJson.items
-            }
+    case SAVE_PERSON:
+      return {
+        ...state,
+        saveResult: action.receivedJson.items
+      }
     case USER_CLEAR:
-        return {}
+      return {}
     default:
       return state
   }

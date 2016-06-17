@@ -8,6 +8,8 @@ import {message} from 'antd';
 export const READ_PERSONS = 'READ_PERSONS';
 export const READ_PERSON = 'READ_PERSON';
 export const READ_PERSONFILE = 'READ_PERSONFILE';
+export const SAVE_PERSON = 'SAVE_PERSON';
+
 export function readPersons() {
   return (dispatch, getState) => {
     let params={
@@ -18,6 +20,23 @@ export function readPersons() {
     return dispatch(fetchPosts(READ_PERSONS, params))
   }
 }
+export function savePerson(data) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:16,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      savetype:'update',
+      personid:data.UserID,
+      name:data.Name,
+      mobile:data.Mobile,
+      email:data.Email,
+      code:data.Code,
+      remark:data.Remark
+    };
+    return dispatch(fetchPosts(SAVE_PERSON, params))
+  }
+}
 export function readPerson(personID) {
   return (dispatch, getState) => {
     let params={
@@ -26,23 +45,11 @@ export function readPerson(personID) {
       userid:storeS.getItem('UserID'),
       personid:personID
     };
-    return dispatch(fetchPosts(READ_PERSON, params,cbreadPerson))
+    return dispatch(fetchPosts(READ_PERSON, params,cbReadPerson))
   }
 }
-function cbreadPerson (data,dispatch,params) {
-  if (!ifNull(data.items.item0[0].UserImages))
-  {
-    dispatch(readUploadFile(READ_PERSONFILE,data.items.item0[0].UserImages,'img'));
-  }
-  else {
-   dispatch(clearData(READ_PERSONFILE,{items:[]}))
-  }
-}
-export function clearData(actionType,data) {
-  return {
-    type: actionType,
-    receivedJson:data
-  }
+function cbReadPerson (data,dispatch,params) {
+  dispatch(readUploadFile(READ_PERSONFILE,data.items.item0[0].UserImages,'img'));
 }
 export function readUploadFile(actionType,fileFormID,gettype) {
   return (dispatch, getState) => {
@@ -144,7 +151,18 @@ export function readMainMenu() {
     return dispatch(fetchPosts(READ_MAIN_MENU, params))
   }
 }
-
+export const REMOVEFILE = 'REMOVEFILE'
+export function removeFile(fileid) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:17,
+      userid:storeS.getItem('UserID'),
+      sessionkey:storeS.getItem('sessionKey'),
+      fileid:fileid
+    };
+    return dispatch(fetchPosts(REMOVEFILE, params))
+  }
+}
 //收藏
 export const SET_FAVORITES = 'SET_FAVORITES'
 export const READ_FAVORITES = 'READ_FAVORITES'
