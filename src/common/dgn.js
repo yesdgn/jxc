@@ -60,7 +60,7 @@ export function generateMixedNum(length) {
 }
 
 
-export function getUrl(paramsObj)
+export function getUrl(type,paramsObj)
 {
  let params=paramsObj;
  let stringC='';
@@ -79,13 +79,20 @@ export function getUrl(paramsObj)
       stringB= (ifNull(stringB)?'':stringB+'&')+key+'=';
     }
     else {
-      stringC= (ifNull(stringC)?'':stringC+'&')+key+'='+params[key];
+      stringC= (ifNull(stringC)?'':stringC+'&')+key+'='+encodeURIComponent(params[key]);
     }
     return;
   })
 
  let sign=toUpper(MD5(stringC).toString());
- stringC=APP_CONFIG.APISERVERURL+'/'+params.apiid+'?'+stringC+'&sign='+sign+(ifNull(stringB)?'':'&'+stringB);
+ if (type=='get')
+  {
+    stringC=APP_CONFIG.APISERVERURL+'/'+params.apiid+'?'+stringC+'&sign='+sign+(ifNull(stringB)?'':'&'+stringB);
+  }
+  else if (type=='post')
+  {
+        stringC= stringC+'&sign='+sign+(ifNull(stringB)?'':'&'+stringB);
+  }
   return stringC
 }
 

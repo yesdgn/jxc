@@ -1,7 +1,7 @@
 import {APP_CONFIG} from '../entry/config';
 import {storeS,ifNull} from '../common/dgn';
 import {SHA1} from 'crypto-js';
-import {fetchPosts} from './actions_base';
+import {fetchPost,fetchGet} from './actions_base';
 import {message} from 'antd';
 
 //人员
@@ -17,7 +17,7 @@ export function readPersons() {
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getItem('UserID')
     };
-    return dispatch(fetchPosts(READ_PERSONS, params))
+    return dispatch(fetchPost(READ_PERSONS, params))
   }
 }
 export function savePerson(data) {
@@ -34,7 +34,7 @@ export function savePerson(data) {
       code:data.Code,
       remark:data.Remark
     };
-    return dispatch(fetchPosts(SAVE_PERSON, params))
+    return dispatch(fetchPost(SAVE_PERSON, params))
   }
 }
 export function readPerson(personID) {
@@ -45,7 +45,7 @@ export function readPerson(personID) {
       userid:storeS.getItem('UserID'),
       personid:personID
     };
-    return dispatch(fetchPosts(READ_PERSON, params,cbReadPerson))
+    return dispatch(fetchPost(READ_PERSON, params,cbReadPerson))
   }
 }
 function cbReadPerson (data,dispatch,params) {
@@ -60,7 +60,7 @@ export function readUploadFile(actionType,fileFormID,gettype) {
       formid:fileFormID,
       gettype:gettype
     };
-    return dispatch(fetchPosts(actionType, params))
+    return dispatch(fetchPost(actionType, params))
   }
 }
 //用户
@@ -81,7 +81,7 @@ export function userLogin(loginInfo) {
       usertype:APP_CONFIG.USERTYPE,
       password:SHA1(loginInfo.password).toString()
     };
-    return dispatch(fetchPosts(USER_LOGIN, params))
+    return dispatch(fetchPost(USER_LOGIN, params))
   }
 }
 
@@ -96,7 +96,7 @@ export function userReg(regInfo) {
       checkcode:'nocheck',
       password:SHA1(regInfo.password).toString()
     };
-    return dispatch(fetchPosts(USER_REG, params))
+    return dispatch(fetchPost(USER_REG, params))
   }
 }
 export function clearUser() {
@@ -121,7 +121,7 @@ export function readMessage() {
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getItem('UserID')
     };
-    return dispatch(fetchPosts(READ_USER_MESSAGE, params))
+    return dispatch(fetchPost(READ_USER_MESSAGE, params))
   }
 }
 export function messageFinished (msgID) {
@@ -132,7 +132,7 @@ export function messageFinished (msgID) {
       userid:storeS.getItem('UserID'),
       id:msgID
     };
-    return dispatch(fetchPosts(MESSAGE_DONE, params,cbMessageFinished))
+    return dispatch(fetchPost(MESSAGE_DONE, params,cbMessageFinished))
   }
 }
 function cbMessageFinished (data,dispatch,params) {
@@ -148,7 +148,7 @@ export function readMainMenu() {
       apiid:7,
       userid:storeS.getItem('UserID')
     };
-    return dispatch(fetchPosts(READ_MAIN_MENU, params))
+    return dispatch(fetchPost(READ_MAIN_MENU, params))
   }
 }
 export const REMOVEFILE = 'REMOVEFILE'
@@ -160,7 +160,7 @@ export function removeFile(fileid) {
       sessionkey:storeS.getItem('sessionKey'),
       fileid:fileid
     };
-    return dispatch(fetchPosts(REMOVEFILE, params))
+    return dispatch(fetchPost(REMOVEFILE, params))
   }
 }
 //收藏
@@ -175,7 +175,7 @@ export function setFavorites() {
       userid:storeS.getItem('UserID'),
       path:location.pathname,
     };
-    return dispatch(fetchPosts(SET_FAVORITES, params,cbSetFavorites))
+    return dispatch(fetchPost(SET_FAVORITES, params,cbSetFavorites))
   }
 }
 function cbSetFavorites (data,dispatch,params) {
@@ -189,7 +189,7 @@ export function readFavorites() {
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getItem('UserID')
     };
-    return dispatch(fetchPosts(READ_FAVORITES, params))
+    return dispatch(fetchPost(READ_FAVORITES, params))
   }
 }
 
@@ -204,6 +204,6 @@ export function readChartData() {
       endtime:'2056-01-01',
       sessionkey:storeS.getItem('sessionKey')
     };
-    return dispatch(fetchPosts(READ_CHART_DATA, params))
+    return dispatch(fetchPost(READ_CHART_DATA, params))
   }
 }

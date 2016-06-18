@@ -64,7 +64,7 @@ class Person extends React.Component {
     });
 
   };
-  handOnChange=(info)=>{
+  handleChange=(info)=>{
      if (info.file.status === 'done') {
         message.success(`${info.file.name} 上传成功。`);
         info.file.uid=info.file.response.items[0].FileID;
@@ -96,7 +96,7 @@ class Person extends React.Component {
         }
         return isImg;
       },
-      onChange:this.handOnChange,
+      onChange:this.handleChange,
       onPreview: (file) => {
         this.setState({priviewImage: file.url, priviewVisible: true});
       },
