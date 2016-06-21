@@ -66,10 +66,10 @@ componentWillReceiveProps(nextProps) {
           break;
         case 'persons':
                 return {personsDataSource:this.props.persons.personList?this.props.persons.personList:[]
-                ,onLoad:()=>this.props.dispatch(readPersons())}
+                ,onLoad:(pageSize,curPage)=>this.props.dispatch(readPersons(pageSize,curPage))}
             break;
         case '/person/:personID':
-                    return {personInfo:this.props.persons.personInfo?this.props.persons.personInfo:[]
+                    return {personInfo:this.props.persons.personInfo?this.props.persons.personInfo:{}
                     ,personImgs:this.props.persons.personImgs?this.props.persons.personImgs:[]
                     ,onLoad:()=>this.props.dispatch(readPerson(this.props.params.personID))
                     ,removeFile:(fileid)=>this.props.dispatch(removeFile(fileid))

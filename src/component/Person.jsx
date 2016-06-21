@@ -34,7 +34,8 @@ class Person extends React.Component {
     this.state = {
       priviewVisible: false,
       priviewImage: '',
-      fileList:[]
+      fileList:[],
+      width:800
     }
   };
   handleCancel = () => {
@@ -59,8 +60,9 @@ class Person extends React.Component {
       if (!!errors) {
         return;
       }
-      this.props.savePerson(values);
-      console.log('收到表单值：', values);
+      let v= {...values};
+      v.UserImages=imgGuid;
+      this.props.savePerson(v);
     });
 
   };
@@ -70,6 +72,7 @@ class Person extends React.Component {
         info.file.uid=info.file.response.items[0].FileID;
         info.file.url=APP_CONFIG.FILEURL+info.file.response.items[0].FileUrl;
         info.file.thumbUrl=APP_CONFIG.FILEURL+info.file.response.items[0].thumbUrl;
+        info.file.width= info.file.response.items[0].width;
         this.setState({fileList:info.fileList})
       } else if (info.file.status === 'error') {
         message.error(`${info.file.name} 上传失败。`);
@@ -98,7 +101,7 @@ class Person extends React.Component {
       },
       onChange:this.handleChange,
       onPreview: (file) => {
-        this.setState({priviewImage: file.url, priviewVisible: true});
+        this.setState({priviewImage: file.url, priviewVisible: true,width:file.width });
       },
       fileList: this.state.fileList
     };
@@ -164,7 +167,7 @@ class Person extends React.Component {
                   <Icon type="plus"/>
                   <div className="ant-upload-text">上传照片</div>
                 </Upload>
-                <Modal visible={this.state.priviewVisible} footer={null} onCancel={this.handleCancel}>
+                <Modal visible={this.state.priviewVisible} width={this.state.width+30} footer={null} onCancel={this.handleCancel}>
                   <img alt="example" src={this.state.priviewImage}/>
                 </Modal>
               </div>
@@ -179,31 +182,31 @@ class Person extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (!props.personInfo.item0) {
+  if (!props.personInfo.UserID) {
     return {};
   } else {
-    imgGuid = ifNull(props.personInfo.item0[0].UserImages)
+    imgGuid = ifNull(props.personInfo.UserImages)
       ? getRand()
-      : props.personInfo.item0[0].UserImages;
+      : props.personInfo.UserImages;
 
     return {
       Code: {
-        value: props.personInfo.item0[0].Code
+        value: props.personInfo.Code
       },
       UserID: {
-        value: props.personInfo.item0[0].UserID
+        value: props.personInfo.UserID
       },
       Name: {
-        value: props.personInfo.item0[0].Name
+        value: props.personInfo.Name
       },
       Email: {
-        value: props.personInfo.item0[0].Email
+        value: props.personInfo.Email
       },
       Mobile: {
-        value: props.personInfo.item0[0].Mobile
+        value: props.personInfo.Mobile
       },
       Remark: {
-        value: props.personInfo.item0[0].Remark
+        value: props.personInfo.Remark
       }
     }
   }

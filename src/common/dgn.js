@@ -110,7 +110,8 @@ export function getUploadControlImgData(data) {
         name: x.UploadFileName,
         status: 'done',
         url: APP_CONFIG.FILEURL+url[0].ImageFileName,
-        thumbUrl: APP_CONFIG.FILEURL+thumbUrl[0].ImageFileName
+        thumbUrl: APP_CONFIG.FILEURL+thumbUrl[0].ImageFileName,
+        width:x.Width
       }
     )
 

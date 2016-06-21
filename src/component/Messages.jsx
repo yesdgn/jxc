@@ -70,7 +70,7 @@ class Messages extends React.Component {
     return (
       <Row type="flex" justify="center" align="middle"  >
         <Col span="24" >
-          <Table columns={columns} onRowClick={this.msgDone }
+          <Table columns={columns} onRowClick={this.msgDone}  rowKey={record => 'K'+record.ID} 
              dataSource={this.props.msgDataSource}
              />
         </Col>

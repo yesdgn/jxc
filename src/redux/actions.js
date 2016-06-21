@@ -10,12 +10,14 @@ export const READ_PERSON = 'READ_PERSON';
 export const READ_PERSONFILE = 'READ_PERSONFILE';
 export const SAVE_PERSON = 'SAVE_PERSON';
 
-export function readPersons() {
+export function readPersons(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:13,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID')
+      userid:storeS.getItem('UserID'),
+      pageSize:pageSize,
+      curPage:curPage
     };
     return dispatch(fetchPost(READ_PERSONS, params))
   }
@@ -34,7 +36,7 @@ export function savePerson(data) {
       code:data.Code,
       remark:data.Remark
     };
-    return dispatch(fetchPost(SAVE_PERSON, params))
+    return dispatch(fetchPost(SAVE_PERSON, params,data,{isShowResultMessage:true}))
   }
 }
 export function readPerson(personID) {
@@ -45,7 +47,7 @@ export function readPerson(personID) {
       userid:storeS.getItem('UserID'),
       personid:personID
     };
-    return dispatch(fetchPost(READ_PERSON, params,cbReadPerson))
+    return dispatch(fetchPost(READ_PERSON, params,null,null,cbReadPerson))
   }
 }
 function cbReadPerson (data,dispatch,params) {
@@ -132,7 +134,7 @@ export function messageFinished (msgID) {
       userid:storeS.getItem('UserID'),
       id:msgID
     };
-    return dispatch(fetchPost(MESSAGE_DONE, params,cbMessageFinished))
+    return dispatch(fetchPost(MESSAGE_DONE, params,null,null,cbMessageFinished))
   }
 }
 function cbMessageFinished (data,dispatch,params) {
@@ -175,7 +177,7 @@ export function setFavorites() {
       userid:storeS.getItem('UserID'),
       path:location.pathname,
     };
-    return dispatch(fetchPost(SET_FAVORITES, params,cbSetFavorites))
+    return dispatch(fetchPost(SET_FAVORITES, params,null,null,cbSetFavorites))
   }
 }
 function cbSetFavorites (data,dispatch,params) {

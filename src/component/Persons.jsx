@@ -2,7 +2,10 @@
 import React from 'react';
 import {Table, Icon,Steps ,  Row, Col,Modal } from 'antd';
 import {Link} from 'react-router';
+import {storeS } from '../common/dgn';
 const confirm = Modal.confirm;
+
+const pageSize=10;
 const  columns= [
     {
       title: '人员代码',
@@ -36,6 +39,8 @@ const  columns= [
     }
   ]
 
+
+
 class Persons extends React.Component {
   static defaultProps = {
    };
@@ -43,17 +48,40 @@ class Persons extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state={
+      currentPage:1
+    }
   };
-  componentDidMount() {
-    this.props.onLoad();
+  componentWillMount() {
+    this.props.onLoad(pageSize,this.state.currentPage);
+    let paginationPage= storeS.getItem("pagination");
+    if (paginationPage && this.props.route.path==JSON.parse(paginationPage).path)
+    {
+       this.setState({
+        currentPage:JSON.parse(paginationPage).currentPage
+      })
+    }
   }
-
+componentWillUnmount() {
+  storeS.setItem("pagination",JSON.stringify({currentPage:this.state.currentPage,path:this.props.route.path}));
+}
+ handlePageChange=(current)=>{
+     this.setState({
+       currentPage:current
+     })
+     this.props.onLoad(pageSize,current);
+  }
   render() {
+    const pagination = {
+    total: this.props.personsDataSource.length>0?this.props.personsDataSource[0].PageTotalSize:0,
+    defaultCurrent:this.state.currentPage,
+    onChange:this.handlePageChange
+    };
     return (
       <Row type="flex" justify="center" align="middle"  >
         <Col span="24" >
           <Table columns={columns}   rowKey={record => 'K'+record.UserID}
-             dataSource={this.props.personsDataSource}
+             dataSource={this.props.personsDataSource}  pagination={pagination}
              />
         </Col>
       </Row>

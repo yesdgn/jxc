@@ -1,3 +1,5 @@
+import {concat}  from 'lodash';
+
 import {
   USER_LOGIN,
   USER_REG,
@@ -101,12 +103,12 @@ export function persons(state = [], action) {
     case READ_PERSONS:
       return {
         ...state,
-        personList: action.receivedJson.items
+        personList: state.personList?concat(state.personList,action.receivedJson.items):action.receivedJson.items
       }
     case READ_PERSON:
       return {
         ...state,
-        personInfo: action.receivedJson.items
+        personInfo: action.receivedJson.items.item0[0]
       }
     case READ_PERSONFILE:
         return {
@@ -116,7 +118,8 @@ export function persons(state = [], action) {
     case SAVE_PERSON:
       return {
         ...state,
-        saveResult: action.receivedJson.items
+        saveResult: action.receivedJson.items,
+        personInfo:action.srcData
       }
     case USER_CLEAR:
       return {}
