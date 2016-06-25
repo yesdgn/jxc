@@ -4,6 +4,49 @@ import {SHA1} from 'crypto-js';
 import {fetchPost,fetchGet} from './actions_base';
 import {message} from 'antd';
 
+//基础数据
+//商品
+export const READ_GOODSES = 'READ_GOODSES';
+export const READ_GOODS = 'READ_GOODS';
+export const READ_GOODS_FILE = 'READ_GOODS_FILE';
+export const SAVE_GOODS = 'SAVE_GOODS';
+export function readGoodses(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:5,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      pageSize:pageSize,
+      curPage:curPage,
+    };
+    return dispatch(fetchPost(READ_GOODSES, params))
+  }
+}
+export function readGoods(goodsID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:18,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      goodsid:goodsID
+    };
+    return dispatch(fetchPost(READ_GOODS, params,null,null,cbReadGoods))
+  }
+}
+function cbReadGoods (data,dispatch,params) {
+  dispatch(readUploadFile(READ_GOODS_FILE,data.items[0].GoodsImages,'img'));
+}
+export function saveGoods(jsonData) {
+return (dispatch, getState) => {
+  let params={
+    apiid:19,
+    sessionkey:storeS.getItem('sessionKey'),
+    userid:storeS.getItem('UserID'),
+    jsonData:JSON.stringify(jsonData)
+  };
+  return dispatch(fetchPost(SAVE_GOODS, params,jsonData,{isShowResultMessage:true}))
+}
+}
 //人员
 export const READ_PERSONS = 'READ_PERSONS';
 export const READ_PERSON = 'READ_PERSON';
@@ -17,7 +60,8 @@ export function readPersons(pageSize,curPage) {
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getItem('UserID'),
       pageSize:pageSize,
-      curPage:curPage
+      curPage:curPage,
+      filter:''
     };
     return dispatch(fetchPost(READ_PERSONS, params))
   }

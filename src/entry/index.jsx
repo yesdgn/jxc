@@ -16,6 +16,10 @@ import RegUser from '../component/RegUser';
 import NewPass from '../component/NewPass';
 import Message from '../component/Message';
 import Messages from '../component/Messages';
+import Company from '../component/Company';
+import Companies from '../component/Companies';
+import Goods from '../component/Goods';
+import Goodses from '../component/Goodses';
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -39,7 +43,12 @@ ReactDOM.render(
       <Route path="newPass" breadcrumbName="忘记密码"  component={NewPass}/>
       <Route path="messages" breadcrumbName="消息列表"  onEnter={requireAuthApp}   component={Messages} />
       <Route path="/message/:id" breadcrumbName="消息"   onEnter={requireAuthApp}  component={Message}/>
-      <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
+      <Route path="companies" breadcrumbName="公司列表"  onEnter={requireAuthApp}   component={Companies} />
+      <Route path="/company/:companyID" breadcrumbName="公司"   onEnter={requireAuthApp}  component={Company}/>
+      <Route path="goodses" breadcrumbName="商品列表"  onEnter={requireAuthApp}   component={Goodses} />
+      <Route path="/goods/:goodsID" breadcrumbName="商品"   onEnter={requireAuthApp}  component={Goods}/>
+
+    <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
       <Route path="*" breadcrumbName="未找到页面" component={NoMatch}/>
     </Route>
   </Router>

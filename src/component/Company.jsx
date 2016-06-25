@@ -35,7 +35,7 @@ class Person extends React.Component {
       priviewVisible: false,
       priviewImage: '',
       fileList:[],
-      width:1200
+      width:800
     }
   };
   handleCancel = () => {
@@ -49,9 +49,9 @@ class Person extends React.Component {
     if (nextProps.params.personID !== this.props.params.personID) {
       this.props.onLoad();
     }
-    if (nextProps.dataItemImgs!==this.props.dataItemImgs)
+    if (nextProps.personImgs!==this.props.personImgs)
     {
-      this.setState({fileList:getUploadControlImgData(nextProps.dataItemImgs)})
+      this.setState({fileList:getUploadControlImgData(nextProps.personImgs)})
     }
   }
   handleSubmit = (e) => {
@@ -62,7 +62,7 @@ class Person extends React.Component {
       }
       let v= {...values};
       v.UserImages=imgGuid;
-      this.props.saveDataItem(v);
+      this.props.savePerson(v);
     });
 
   };
@@ -101,7 +101,7 @@ class Person extends React.Component {
       },
       onChange:this.handleChange,
       onPreview: (file) => {
-        this.setState({priviewImage: file.url, priviewVisible: true,width:file.width?file.width:1200  });
+        this.setState({priviewImage: file.url, priviewVisible: true,width:file.width });
       },
       fileList: this.state.fileList
     };
@@ -182,31 +182,31 @@ class Person extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (!props.dataItem.UserID) {
+  if (!props.personInfo.UserID) {
     return {};
   } else {
-    imgGuid = ifNull(props.dataItem.UserImages)
+    imgGuid = ifNull(props.personInfo.UserImages)
       ? getRand()
-      : props.dataItem.UserImages;
+      : props.personInfo.UserImages;
 
     return {
       Code: {
-        value: props.dataItem.Code
+        value: props.personInfo.Code
       },
       UserID: {
-        value: props.dataItem.UserID
+        value: props.personInfo.UserID
       },
       Name: {
-        value: props.dataItem.Name
+        value: props.personInfo.Name
       },
       Email: {
-        value: props.dataItem.Email
+        value: props.personInfo.Email
       },
       Mobile: {
-        value: props.dataItem.Mobile
+        value: props.personInfo.Mobile
       },
       Remark: {
-        value: props.dataItem.Remark
+        value: props.personInfo.Remark
       }
     }
   }

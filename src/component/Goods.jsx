@@ -26,7 +26,7 @@ const formItemLayout = {
   }
 };
 
-class Person extends React.Component {
+class Goods extends React.Component {
   static defaultProps = {};
   static propTypes = {};
   constructor(props) {
@@ -46,7 +46,7 @@ class Person extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.personID !== this.props.params.personID) {
+    if (nextProps.params.goodsID !== this.props.params.goodsID) {
       this.props.onLoad();
     }
     if (nextProps.dataItemImgs!==this.props.dataItemImgs)
@@ -60,9 +60,13 @@ class Person extends React.Component {
       if (!!errors) {
         return;
       }
-      let v= {...values};
-      v.UserImages=imgGuid;
-      this.props.saveDataItem(v);
+      let form0= {...values};
+      form0.GoodsImages=imgGuid;
+      let form0Arr=[];
+      form0Arr.push(form0);
+      let jsonData=[];
+      jsonData.push({"key":"GoodsID","items":form0Arr});
+      this.props.saveDataItem(jsonData);
     });
 
   };
@@ -101,16 +105,16 @@ class Person extends React.Component {
       },
       onChange:this.handleChange,
       onPreview: (file) => {
-        this.setState({priviewImage: file.url, priviewVisible: true,width:file.width?file.width:1200  });
+        this.setState({priviewImage: file.url, priviewVisible: true,width:file.width?file.width:1200 });
       },
       fileList: this.state.fileList
     };
-    const nameProps = getFieldProps('Name', {
+    const nameProps = getFieldProps('GoodsName', {
       rules: [
         {
           required: true,
           min: 1,
-          message: '姓名至少为 1 个字符'
+          message: '商品名称至少为 1 个字符'
         }
       ]
     });
@@ -126,42 +130,47 @@ class Person extends React.Component {
             <FormItem style={{
               display: 'none'
             }}>
-              <Input {...getFieldProps('UserID')}/>
+              <Input {...getFieldProps('GoodsID')}/>
+            </FormItem>
+            <FormItem style={{
+              display: 'none'
+            }}>
+              <Input {...getFieldProps('dgnDataState')}/>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="12">
-            <FormItem {...formItemLayout} label="代码">
-              <Input {...getFieldProps('Code')}/>
+            <FormItem {...formItemLayout} label="商品代码">
+              <Input {...getFieldProps('GoodsCode')}/>
             </FormItem>
           </Col>
           <Col span="12">
-            <FormItem {...formItemLayout} label="姓名">
+            <FormItem {...formItemLayout} label="商品名称">
               <Input {...nameProps}/>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="12">
-            <FormItem {...formItemLayout} label="手机">
-              <Input {...getFieldProps('Mobile')}/>
+            <FormItem {...formItemLayout} label="价格">
+              <Input {...getFieldProps('Price')}/>
             </FormItem>
           </Col>
           <Col span="12">
-            <FormItem {...formItemLayout} label="电子邮箱">
-              <Input type="email" {...getFieldProps('Email')}/>
+            <FormItem {...formItemLayout} label="商品分类">
+              <Input type="GoodsCategory" {...getFieldProps('GoodsCategory')}/>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="12">
-            <FormItem {...formItemLayout} label="备注">
-              <Input type="textarea" rows="4" {...getFieldProps('Remark')}/>
+            <FormItem {...formItemLayout} label="商品描述">
+              <Input type="textarea" rows="4" {...getFieldProps('GoodsDescribe')}/>
             </FormItem>
           </Col>
           <Col span="12">
-            <FormItem {...formItemLayout} label="头像">
+            <FormItem {...formItemLayout} label="商品图像">
               <div className="clearfix">
                 <Upload {...props}>
                   <Icon type="plus"/>
@@ -182,36 +191,36 @@ class Person extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (!props.dataItem.UserID) {
+  if (!props.dataItem.GoodsID) {
     return {};
   } else {
-    imgGuid = ifNull(props.dataItem.UserImages)
+    imgGuid = ifNull(props.dataItem.GoodsImages)
       ? getRand()
-      : props.dataItem.UserImages;
+      : props.dataItem.GoodsImages;
 
     return {
-      Code: {
-        value: props.dataItem.Code
+      GoodsCode: {
+        value: props.dataItem.GoodsCode
       },
-      UserID: {
-        value: props.dataItem.UserID
+      GoodsID: {
+        value: props.dataItem.GoodsID
       },
-      Name: {
-        value: props.dataItem.Name
+      GoodsName: {
+        value: props.dataItem.GoodsName
       },
-      Email: {
-        value: props.dataItem.Email
+      Price: {
+        value: props.dataItem.Price
       },
-      Mobile: {
-        value: props.dataItem.Mobile
+      GoodsCategory: {
+        value: props.dataItem.GoodsCategory
       },
-      Remark: {
-        value: props.dataItem.Remark
+      GoodsDescribe: {
+        value: props.dataItem.GoodsDescribe
       }
     }
   }
 
 }
 
-Person = Form.create({mapPropsToFields: mapPropsToFields})(Person);
-export default Person
+Goods = Form.create({mapPropsToFields: mapPropsToFields})(Goods);
+export default Goods

@@ -8,31 +8,31 @@ const confirm = Modal.confirm;
 const pageSize=10;
 const  columns= [
     {
-      title: '人员代码',
-      dataIndex: 'Code',
-      key: 'Code'
+      title: '公司代码',
+      dataIndex: 'CompCode',
+      key: 'CompCode'
     }, {
-      title: '姓名',
-      dataIndex: 'Name',
-      key: 'Name'
+      title: '公司名称',
+      dataIndex: 'CompName',
+      key: 'CompName'
     }, {
-      title: '电子邮箱',
-      dataIndex: 'Email',
-      key: 'Email'
+      title: '公司电话',
+      dataIndex: 'CompTel',
+      key: 'CompTel'
     }, {
-      title: '手机',
-      dataIndex: 'Mobile',
-      key: 'Mobile'
+      title: '公司传真',
+      dataIndex: 'CompFax',
+      key: 'CompFax'
     }, {
-      title: '头像',
-      dataIndex: 'UserImages',
-      key: 'UserImages'
+      title: '公司地址',
+      dataIndex: 'CompAddr',
+      key: 'CompAddr'
     }, {
       title: '操作',
       key: 'operation',
       render(text, record) {
         return (<span>
-          <Link to={`/person/`+record.UserID}>编辑</Link>
+          <Link to={`/company/`+record.CompID}>编辑</Link>
           </span>
         );
       }
@@ -41,7 +41,7 @@ const  columns= [
 
 
 
-class Persons extends React.Component {
+class Companies extends React.Component {
   static defaultProps = {
    };
   static propTypes = {};
@@ -73,15 +73,15 @@ componentWillUnmount() {
   }
   render() {
     const pagination = {
-    total: this.props.dataSource.length>0?parseInt(this.props.dataSource[0].TotalSize):0,
+    total: this.props.personsDataSource.length>0?this.props.personsDataSource[0].PageTotalSize:0,
     defaultCurrent:this.state.currentPage,
     onChange:this.handlePageChange
     };
     return (
       <Row type="flex" justify="center" align="middle"  >
         <Col span="24" >
-          <Table columns={columns}   rowKey={record => 'K'+record.ID}
-             dataSource={this.props.dataSource}  pagination={pagination}
+          <Table columns={columns}   rowKey={record => 'K'+record.UserID}
+             dataSource={this.props.personsDataSource}  pagination={pagination}
              />
         </Col>
       </Row>
@@ -89,4 +89,4 @@ componentWillUnmount() {
   }
 };
 
-export default  Persons
+export default  Companies

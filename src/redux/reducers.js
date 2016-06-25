@@ -16,7 +16,11 @@ import {
   READ_PERSON,
   READ_PERSONFILE,
   SAVE_PERSON,
-  REMOVEFILE
+  REMOVEFILE,
+  READ_GOODSES,
+  READ_GOODS,
+  READ_GOODS_FILE,
+  SAVE_GOODS
 } from './actions'
 
 export function user(state = {}, action) {
@@ -103,7 +107,7 @@ export function persons(state = [], action) {
     case READ_PERSONS:
       return {
         ...state,
-        personList: state.personList?concat(state.personList,action.receivedJson.items):action.receivedJson.items
+        personList: action.receivedJson.items
       }
     case READ_PERSON:
       return {
@@ -123,6 +127,36 @@ export function persons(state = [], action) {
       }
     case USER_CLEAR:
       return {}
+    default:
+      return state
+  }
+
+}
+
+//基础数据
+export function baseData(state = [], action) {
+  switch (action.type) {
+    case READ_GOODSES:
+      return {
+        ...state,
+        goodses: action.receivedJson.items
+      }
+    case READ_GOODS:
+        return {
+          ...state,
+          goods: action.receivedJson.items[0]
+        }
+    case READ_GOODS_FILE:
+            return {
+              ...state,
+              goodsImgs: action.receivedJson.items
+            }
+    case SAVE_GOODS:
+                return {
+                  ...state,
+                  saveGoodsResult: action.receivedJson.items[0],
+                  goods:action.srcData
+                }
     default:
       return state
   }

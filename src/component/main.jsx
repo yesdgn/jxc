@@ -34,7 +34,7 @@ class Main extends React.Component {
        alias: '数量'
      }
    });
-   chart.interval().position('ProductCategory*qty').color('ProductCategory')
+   chart.interval().position('GoodsCategory*qty').color('GoodsCategory')
    chart.render();
  }
  showChart1(data) {
@@ -66,14 +66,14 @@ class Main extends React.Component {
      height: 300 // 指定图表高度
    });
    chart.source(data?data:[], {
-     ProductCategory: {
+     GoodsCategory: {
        alias: '商品类型' // 列定义，定义该属性显示的别名
      },
      qty: {
        alias: '数量'
      }
    });
-   chart.interval().position('ProductCategory*qty').color('ProductCategory')
+   chart.interval().position('GoodsCategory*qty').color('GoodsCategory')
    chart.render();
 
  }
@@ -83,10 +83,10 @@ class Main extends React.Component {
   this.props.onLoad();
   }
  componentWillReceiveProps(nextProps) {
-  if ( nextProps.chartDataSource.item0 && nextProps.chartDataSource.item0!==this.props.chartDataSource.item0)
-    {this.showChart(nextProps.chartDataSource.item0);}
-  if ( nextProps.chartDataSource.item1 && nextProps.chartDataSource.item1!==this.props.chartDataSource.item1)
-      {this.showChart2(nextProps.chartDataSource.item1);}
+  if ( nextProps.dataSource.item0 && nextProps.dataSource.item0!==this.props.dataSource.item0)
+    {this.showChart(nextProps.dataSource.item0);}
+  if ( nextProps.dataSource.item1 && nextProps.dataSource.item1!==this.props.dataSource.item1)
+      {this.showChart2(nextProps.dataSource.item1);}
  }
   render() {
     return (

@@ -8,31 +8,31 @@ const confirm = Modal.confirm;
 const pageSize=10;
 const  columns= [
     {
-      title: '人员代码',
-      dataIndex: 'Code',
-      key: 'Code'
+      title: '商品代码',
+      dataIndex: 'GoodsCode',
+      key: 'GoodsCode'
     }, {
-      title: '姓名',
-      dataIndex: 'Name',
-      key: 'Name'
+      title: '商品名称',
+      dataIndex: 'GoodsName',
+      key: 'GoodsName'
     }, {
-      title: '电子邮箱',
-      dataIndex: 'Email',
-      key: 'Email'
+      title: '商品价格',
+      dataIndex: 'Price',
+      key: 'Price'
     }, {
-      title: '手机',
-      dataIndex: 'Mobile',
-      key: 'Mobile'
+      title: '商品分类',
+      dataIndex: 'GoodsCategory',
+      key: 'GoodsCategory'
     }, {
-      title: '头像',
-      dataIndex: 'UserImages',
-      key: 'UserImages'
+      title: '标签',
+      dataIndex: 'GoodsLabel',
+      key: 'GoodsLabel'
     }, {
       title: '操作',
       key: 'operation',
       render(text, record) {
         return (<span>
-          <Link to={`/person/`+record.UserID}>编辑</Link>
+          <Link to={`/goods/`+record.GoodsID}>编辑</Link>
           </span>
         );
       }
@@ -41,11 +41,10 @@ const  columns= [
 
 
 
-class Persons extends React.Component {
+class Goodses extends React.Component {
   static defaultProps = {
    };
   static propTypes = {};
-
   constructor(props) {
     super(props);
     this.state={
@@ -89,4 +88,4 @@ componentWillUnmount() {
   }
 };
 
-export default  Persons
+export default  Goodses
