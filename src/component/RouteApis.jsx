@@ -16,39 +16,36 @@ const confirm = Modal.confirm;
 const pageSize = 10;
 const columns = [
   {
-    title: '公司代码',
-    dataIndex: 'CompCode',
-    key: 'CompCode'
+    title: 'ApiID',
+    dataIndex: 'ApiID',
+    key: 'ApiID'
   }, {
-    title: '公司名称',
-    dataIndex: 'CompName',
-    key: 'CompName'
+    title: '执行SQL',
+    dataIndex: 'ApiExecSql',
+    key: 'ApiExecSql'
   }, {
-    title: '公司地址',
-    dataIndex: 'CompAddr',
-    key: 'CompAddr'
-  }, {
-    title: '公司电话',
-    dataIndex: 'CompTel',
-    key: 'CompTel'
-  }, {
-    title: '公司类型',
-    dataIndex: 'CompType',
-    key: 'CompType'
+    title: '是否开放API',
+    dataIndex: 'IsOpen',
+    key: 'IsOpen'
+  }
+  , {
+    title: '返回类型',
+    dataIndex: 'TransformJsonType',
+    key: 'RouterStr'
   }, {
     title: '操作',
     key: 'operation',
     render(text, record) {
       return (
         <span>
-          <Link to={`/company/` + record.CompID}>编辑</Link>
+          <Link to={`/routeapi/` + record.RouteID}>编辑</Link>
         </span>
       );
     }
   }
 ]
 
-class Companies extends React.Component {
+class RouteApis extends React.Component {
   static defaultProps = {};
   static propTypes = {};
   constructor(props) {
@@ -91,7 +88,7 @@ class Companies extends React.Component {
           <Col span="2">
 
             <Button type="primary">
-              <Link to="/company/0">新增</Link>
+              <Link to="/routeapi/0">新增</Link>
             </Button>
 
           </Col>
@@ -105,4 +102,4 @@ class Companies extends React.Component {
   }
 };
 
-export default Companies
+export default RouteApis

@@ -16,19 +16,19 @@ const confirm = Modal.confirm;
 const pageSize = 10;
 const columns = [
   {
-    title: '公司代码',
+    title: '客户代码',
     dataIndex: 'CompCode',
     key: 'CompCode'
   }, {
-    title: '公司名称',
+    title: '客户名称',
     dataIndex: 'CompName',
     key: 'CompName'
   }, {
-    title: '公司地址',
+    title: '客户地址',
     dataIndex: 'CompAddr',
     key: 'CompAddr'
   }, {
-    title: '公司电话',
+    title: '客户电话',
     dataIndex: 'CompTel',
     key: 'CompTel'
   }, {
@@ -41,14 +41,14 @@ const columns = [
     render(text, record) {
       return (
         <span>
-          <Link to={`/company/` + record.CompID}>编辑</Link>
+          <Link to={`/customer/` + record.CompID}>编辑</Link>
         </span>
       );
     }
   }
 ]
 
-class Companies extends React.Component {
+class Customers extends React.Component {
   static defaultProps = {};
   static propTypes = {};
   constructor(props) {
@@ -91,7 +91,7 @@ class Companies extends React.Component {
           <Col span="2">
 
             <Button type="primary">
-              <Link to="/company/0">新增</Link>
+              <Link to="/customer/0">新增</Link>
             </Button>
 
           </Col>
@@ -105,4 +105,4 @@ class Companies extends React.Component {
   }
 };
 
-export default Companies
+export default Customers

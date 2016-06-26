@@ -5,6 +5,230 @@ import {fetchPost,fetchGet} from './actions_base';
 import {message} from 'antd';
 
 //基础数据
+export const READ_DICT_GOODSCATEGORY = 'READ_DICT_GOODSCATEGORY';
+export const READ_DICT_COMPTYPE = 'READ_DICT_COMPTYPE';
+export const READ_DICT_ROUTERETURNTYPE = 'READ_DICT_ROUTERETURNTYPE';
+
+export function readDict(actionType,dictTypeID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:20,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      dicttypeid:dictTypeID
+    };
+    return dispatch(fetchPost(actionType, params))
+  }
+}
+//平台路由
+export const READ_ROUTERS = 'READ_ROUTERS';
+export const READ_ROUTER = 'READ_ROUTER';
+export const SAVE_ROUTER = 'SAVE_ROUTER';
+
+export function readRoutes(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:29,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      pageSize:pageSize,
+      curPage:curPage,
+    };
+    return dispatch(fetchPost(READ_ROUTERS, params))
+  }
+}
+export function readRoute(routeID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:30,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      routeid:routeID
+    };
+    return dispatch(fetchPost(READ_ROUTER, params ))
+  }
+}
+
+export function saveRoute(jsonData) {
+return (dispatch, getState) => {
+  let params={
+    apiid:31,
+    sessionkey:storeS.getItem('sessionKey'),
+    userid:storeS.getItem('UserID'),
+    jsonData:JSON.stringify(jsonData)
+  };
+  return dispatch(fetchPost(SAVE_ROUTER, params,jsonData,{isShowResultMessage:true}))
+}
+}
+//仓库warehouses
+export const READ_WAREHOUSES = 'READ_WAREHOUSES';
+export const READ_WAREHOUSE = 'READ_WAREHOUSE';
+export const SAVE_WAREHOUSE = 'SAVE_WAREHOUSE';
+
+export function readWarehouses(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:26,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      pageSize:pageSize,
+      curPage:curPage,
+    };
+    return dispatch(fetchPost(READ_WAREHOUSES, params))
+  }
+}
+export function readWarehouse(WarehouseID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:28,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      warehouseid:WarehouseID
+    };
+    return dispatch(fetchPost(READ_WAREHOUSE, params ))
+  }
+}
+
+export function saveWarehouse(jsonData) {
+return (dispatch, getState) => {
+  let params={
+    apiid:27,
+    sessionkey:storeS.getItem('sessionKey'),
+    userid:storeS.getItem('UserID'),
+    jsonData:JSON.stringify(jsonData)
+  };
+  return dispatch(fetchPost(SAVE_WAREHOUSE, params,jsonData,{isShowResultMessage:true}))
+}
+}
+//供应商
+export const READ_SUPPLIERS = 'READ_SUPPLIERS';
+export const READ_SUPPLIER = 'READ_SUPPLIER';
+export const SAVE_SUPPLIER = 'SAVE_SUPPLIER';
+export const READ_SUPPLIER_FILE = 'READ_SUPPLIER_FILE';
+
+export function readSuppliers(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:25,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      pageSize:pageSize,
+      curPage:curPage,
+    };
+    return dispatch(fetchPost(READ_SUPPLIERS, params))
+  }
+}
+export function readSupplier(SupplierID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:22,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      compid:SupplierID
+    };
+    return dispatch(fetchPost(READ_SUPPLIER, params,null,null,cbReadSupplier))
+  }
+}
+function cbReadSupplier (data,dispatch,params) {
+  dispatch(readUploadFile(READ_SUPPLIER_FILE,data.items[0].CompImages,'img'));
+}
+export function saveSupplier(jsonData) {
+return (dispatch, getState) => {
+  let params={
+    apiid:23,
+    sessionkey:storeS.getItem('sessionKey'),
+    userid:storeS.getItem('UserID'),
+    jsonData:JSON.stringify(jsonData)
+  };
+  return dispatch(fetchPost(SAVE_SUPPLIER, params,jsonData,{isShowResultMessage:true}))
+}
+}
+//客户customer
+export const READ_CUSTOMERS = 'READ_CUSTOMERS';
+export const READ_CUSTOMER = 'READ_CUSTOMER';
+export const SAVE_CUSTOMER = 'SAVE_CUSTOMER';
+export const READ_CUSTOMER_FILE = 'READ_CUSTOMER_FILE';
+
+export function readCustomers(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:24,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      pageSize:pageSize,
+      curPage:curPage,
+    };
+    return dispatch(fetchPost(READ_CUSTOMERS, params))
+  }
+}
+export function readCustomer(CustomerID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:22,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      compid:CustomerID
+    };
+    return dispatch(fetchPost(READ_CUSTOMER, params,null,null,cbReadCustomer))
+  }
+}
+function cbReadCustomer (data,dispatch,params) {
+  dispatch(readUploadFile(READ_CUSTOMER_FILE,data.items[0].CompImages,'img'));
+}
+export function saveCustomer(jsonData) {
+return (dispatch, getState) => {
+  let params={
+    apiid:23,
+    sessionkey:storeS.getItem('sessionKey'),
+    userid:storeS.getItem('UserID'),
+    jsonData:JSON.stringify(jsonData)
+  };
+  return dispatch(fetchPost(SAVE_CUSTOMER, params,jsonData,{isShowResultMessage:true}))
+}
+}
+//公司
+export const READ_COMPANIES = 'READ_COMPANIES';
+export const READ_COMPANY = 'READ_COMPANY';
+export const SAVE_COMPANY = 'SAVE_COMPANY';
+export const READ_COMPANY_FILE = 'READ_COMPANY_FILE';
+
+export function readCompanies(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:21,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      pageSize:pageSize,
+      curPage:curPage,
+    };
+    return dispatch(fetchPost(READ_COMPANIES, params))
+  }
+}
+export function readCompany(companyID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:22,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getItem('UserID'),
+      compid:companyID
+    };
+    return dispatch(fetchPost(READ_COMPANY, params,null,null,cbReadCompany))
+  }
+}
+function cbReadCompany (data,dispatch,params) {
+  dispatch(readUploadFile(READ_COMPANY_FILE,data.items[0].CompImages,'img'));
+}
+export function saveCompany(jsonData) {
+return (dispatch, getState) => {
+  let params={
+    apiid:23,
+    sessionkey:storeS.getItem('sessionKey'),
+    userid:storeS.getItem('UserID'),
+    jsonData:JSON.stringify(jsonData)
+  };
+  return dispatch(fetchPost(SAVE_COMPANY, params,jsonData,{isShowResultMessage:true}))
+}
+}
 //商品
 export const READ_GOODSES = 'READ_GOODSES';
 export const READ_GOODS = 'READ_GOODS';

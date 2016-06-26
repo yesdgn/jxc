@@ -1,4 +1,6 @@
-import {concat}  from 'lodash';
+import {
+  concat
+} from 'lodash';
 
 import {
   USER_LOGIN,
@@ -20,7 +22,28 @@ import {
   READ_GOODSES,
   READ_GOODS,
   READ_GOODS_FILE,
-  SAVE_GOODS
+  SAVE_GOODS,
+  READ_DICT_GOODSCATEGORY,
+  READ_COMPANIES,
+  READ_COMPANY,
+  SAVE_COMPANY,
+  READ_DICT_COMPTYPE,
+  READ_COMPANY_FILE,
+  READ_CUSTOMERS,
+  READ_CUSTOMER,
+  SAVE_CUSTOMER,
+  READ_CUSTOMER_FILE,
+  READ_SUPPLIERS,
+  READ_SUPPLIER,
+  SAVE_SUPPLIER,
+  READ_SUPPLIER_FILE,
+  READ_WAREHOUSES,
+  READ_WAREHOUSE,
+  SAVE_WAREHOUSE,
+  READ_ROUTERS,
+  READ_ROUTER,
+  SAVE_ROUTER,
+  READ_DICT_ROUTERETURNTYPE
 } from './actions'
 
 export function user(state = {}, action) {
@@ -80,6 +103,21 @@ export function common(state = [], action) {
         ...state,
         mainMenu: action.receivedJson.items
       }
+      case READ_DICT_GOODSCATEGORY:
+        return {
+          ...state,
+          GoodsCategory:action.receivedJson.items
+        }
+        case READ_DICT_COMPTYPE:
+          return {
+            ...state,
+            CompType:action.receivedJson.items
+          }
+          case READ_DICT_ROUTERETURNTYPE:
+            return {
+              ...state,
+              RouteReturnType:action.receivedJson.items
+            }
     case USER_CLEAR:
       return {}
     default:
@@ -115,15 +153,15 @@ export function persons(state = [], action) {
         personInfo: action.receivedJson.items.item0[0]
       }
     case READ_PERSONFILE:
-        return {
-          ...state,
-          personImgs: action.receivedJson.items
-        }
+      return {
+        ...state,
+        personImgs: action.receivedJson.items
+      }
     case SAVE_PERSON:
       return {
         ...state,
         saveResult: action.receivedJson.items,
-        personInfo:action.srcData
+        personInfo: action.srcData
       }
     case USER_CLEAR:
       return {}
@@ -133,8 +171,8 @@ export function persons(state = [], action) {
 
 }
 
-//基础数据
-export function baseData(state = [], action) {
+//商品数据
+export function goods(state = [], action) {
   switch (action.type) {
     case READ_GOODSES:
       return {
@@ -142,21 +180,176 @@ export function baseData(state = [], action) {
         goodses: action.receivedJson.items
       }
     case READ_GOODS:
+      return {
+        ...state,
+        goods: action.receivedJson.items[0]
+      }
+    case READ_GOODS_FILE:
+      return {
+        ...state,
+        goodsImgs: action.receivedJson.items
+      }
+    case SAVE_GOODS:
+      return {
+        ...state,
+        saveGoodsResult: action.receivedJson.items[0]
+      }
+    case RESULT_CLEAR:
+      return {
+        ...state,
+        saveGoodsResult:{}
+      }
+    default:
+      return state
+  }
+}
+
+//公司数据
+export function company(state = [], action) {
+  switch (action.type) {
+    case READ_COMPANIES:
+      return {
+        ...state,
+        companies: action.receivedJson.items
+      }
+    case READ_COMPANY:
+      return {
+        ...state,
+        company: action.receivedJson.items[0]
+      }
+      case READ_COMPANY_FILE:
         return {
           ...state,
-          goods: action.receivedJson.items[0]
+          compImgs: action.receivedJson.items
         }
-    case READ_GOODS_FILE:
-            return {
-              ...state,
-              goodsImgs: action.receivedJson.items
-            }
-    case SAVE_GOODS:
-                return {
-                  ...state,
-                  saveGoodsResult: action.receivedJson.items[0],
-                  goods:action.srcData
-                }
+    case SAVE_COMPANY:
+      return {
+        ...state,
+        saveCompanyResult: action.receivedJson.items[0]
+      }
+    case RESULT_CLEAR:
+      return {
+        ...state,
+        saveCompanyResult:{}
+      }
+    default:
+      return state
+  }
+}
+//客户数据
+export function customer(state = [], action) {
+  switch (action.type) {
+    case READ_CUSTOMERS:
+      return {
+        ...state,
+        customers: action.receivedJson.items
+      }
+    case READ_CUSTOMER:
+      return {
+        ...state,
+        customer: action.receivedJson.items[0]
+      }
+      case READ_CUSTOMER_FILE:
+        return {
+          ...state,
+          customerImgs: action.receivedJson.items
+        }
+    case SAVE_CUSTOMER:
+      return {
+        ...state,
+        saveCustomerResult: action.receivedJson.items[0]
+      }
+    case RESULT_CLEAR:
+      return {
+        ...state,
+        saveCustomerResult:{}
+      }
+    default:
+      return state
+  }
+}
+//供应商数据
+export function supplier(state = [], action) {
+  switch (action.type) {
+    case READ_SUPPLIERS:
+      return {
+        ...state,
+        suppliers: action.receivedJson.items
+      }
+    case READ_SUPPLIER:
+      return {
+        ...state,
+        supplier: action.receivedJson.items[0]
+      }
+      case READ_SUPPLIER_FILE:
+        return {
+          ...state,
+          supplierImgs: action.receivedJson.items
+        }
+    case SAVE_SUPPLIER:
+      return {
+        ...state,
+        saveSupplierResult: action.receivedJson.items[0]
+      }
+    case RESULT_CLEAR:
+      return {
+        ...state,
+        saveSupplierResult:{}
+      }
+    default:
+      return state
+  }
+}
+//仓库数据
+export function warehouse(state = [], action) {
+  switch (action.type) {
+    case READ_WAREHOUSES:
+      return {
+        ...state,
+        warehouses: action.receivedJson.items
+      }
+    case READ_WAREHOUSE:
+      return {
+        ...state,
+        warehouse: action.receivedJson.items[0]
+      }
+    case SAVE_WAREHOUSE:
+      return {
+        ...state,
+        saveWarehouseResult: action.receivedJson.items[0]
+      }
+    case RESULT_CLEAR:
+      return {
+        ...state,
+        saveWarehouseResult:{}
+      }
+    default:
+      return state
+  }
+}
+//路由表
+export function routeApi(state = [], action) {
+  switch (action.type) {
+    case READ_ROUTERS:
+      return {
+        ...state,
+        routes: action.receivedJson.items
+      }
+    case READ_ROUTER:
+      return {
+        ...state,
+        route: action.receivedJson.items[0]
+      }
+    case SAVE_ROUTER:
+      return {
+        ...state,
+        saveRouteResult: action.receivedJson.items[0]
+      }
+    case RESULT_CLEAR:
+      return {
+        ...state,
+        saveRouteResult:{}
+      }
     default:
       return state
   }

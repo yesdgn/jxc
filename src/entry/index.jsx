@@ -20,6 +20,14 @@ import Company from '../component/Company';
 import Companies from '../component/Companies';
 import Goods from '../component/Goods';
 import Goodses from '../component/Goodses';
+import Customer from '../component/Customer';
+import Customers from '../component/Customers';
+import Supplier from '../component/Supplier';
+import Suppliers from '../component/Suppliers';
+import Warehouse from '../component/Warehouse';
+import Warehouses from '../component/Warehouses';
+import RouteApi from '../component/RouteApi';
+import RouteApis from '../component/RouteApis';
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -47,8 +55,15 @@ ReactDOM.render(
       <Route path="/company/:companyID" breadcrumbName="公司"   onEnter={requireAuthApp}  component={Company}/>
       <Route path="goodses" breadcrumbName="商品列表"  onEnter={requireAuthApp}   component={Goodses} />
       <Route path="/goods/:goodsID" breadcrumbName="商品"   onEnter={requireAuthApp}  component={Goods}/>
-
-    <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
+      <Route path="customers" breadcrumbName="客户列表"  onEnter={requireAuthApp}   component={Customers} />
+      <Route path="/customer/:customerID" breadcrumbName="客户"   onEnter={requireAuthApp}  component={Customer}/>
+      <Route path="suppliers" breadcrumbName="供应商列表"  onEnter={requireAuthApp}   component={Suppliers} />
+      <Route path="/supplier/:supplierID" breadcrumbName="供应商"   onEnter={requireAuthApp}  component={Supplier}/>
+      <Route path="warehouses" breadcrumbName="仓库列表"  onEnter={requireAuthApp}   component={Warehouses} />
+      <Route path="/warehouse/:warehouseID" breadcrumbName="仓库"   onEnter={requireAuthApp}  component={Warehouse}/>
+      <Route path="routeapis" breadcrumbName="路由API列表"  onEnter={requireAuthApp}   component={RouteApis} />
+      <Route path="/routeapi/:routeID" breadcrumbName="路由API"   onEnter={requireAuthApp}  component={RouteApi}/>
+      <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
       <Route path="*" breadcrumbName="未找到页面" component={NoMatch}/>
     </Route>
   </Router>

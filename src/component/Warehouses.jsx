@@ -16,39 +16,35 @@ const confirm = Modal.confirm;
 const pageSize = 10;
 const columns = [
   {
-    title: '公司代码',
-    dataIndex: 'CompCode',
-    key: 'CompCode'
+    title: '仓库代码',
+    dataIndex: 'WarehouseCode',
+    key: 'WarehouseCode'
   }, {
-    title: '公司名称',
-    dataIndex: 'CompName',
-    key: 'CompName'
+    title: '仓库名称',
+    dataIndex: 'WarehouseName',
+    key: 'WarehouseName'
   }, {
-    title: '公司地址',
-    dataIndex: 'CompAddr',
-    key: 'CompAddr'
+    title: '仓库地址',
+    dataIndex: 'WarehouseAddr',
+    key: 'WarehouseAddr'
   }, {
-    title: '公司电话',
-    dataIndex: 'CompTel',
-    key: 'CompTel'
-  }, {
-    title: '公司类型',
-    dataIndex: 'CompType',
-    key: 'CompType'
+    title: '仓库电话',
+    dataIndex: 'WarehouseTel',
+    key: 'WarehouseTel'
   }, {
     title: '操作',
     key: 'operation',
     render(text, record) {
       return (
         <span>
-          <Link to={`/company/` + record.CompID}>编辑</Link>
+          <Link to={`/warehouse/` + record.WarehouseID}>编辑</Link>
         </span>
       );
     }
   }
 ]
 
-class Companies extends React.Component {
+class Warehouses extends React.Component {
   static defaultProps = {};
   static propTypes = {};
   constructor(props) {
@@ -79,7 +75,7 @@ class Companies extends React.Component {
     const pagination = {
       total: this.props.dataSource.length > 0
         ? parseInt(this.props.dataSource[0].TotalSize)
-        : this.props.dataSource.length,
+        :this.props.dataSource.length,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -91,7 +87,7 @@ class Companies extends React.Component {
           <Col span="2">
 
             <Button type="primary">
-              <Link to="/company/0">新增</Link>
+              <Link to="/warehouse/0">新增</Link>
             </Button>
 
           </Col>
@@ -105,4 +101,4 @@ class Companies extends React.Component {
   }
 };
 
-export default Companies
+export default Warehouses

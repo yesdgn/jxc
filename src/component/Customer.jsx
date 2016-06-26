@@ -29,7 +29,7 @@ const formItemLayout = {
   }
 };
 
-class Company extends React.Component {
+class Customer extends React.Component {
   static defaultProps = {};
   static propTypes = {};
   static contextTypes = {
@@ -51,23 +51,23 @@ class Company extends React.Component {
     imgGuid = getRand();
     primaryKey = getRand();
     this.props.onLoad();
-    if (this.props.params.companyID != 0) {
+    if (this.props.params.customerID != 0) {
       this.props.onLoadDataItem();
     }
 
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.companyID !== this.props.params.companyID) {
+    if (nextProps.params.customerID !== this.props.params.customerID) {
       this.props.onLoadDataItem();
     }
-    if (nextProps.dataItem.compImgs !== this.props.dataItem.compImgs) {
+    if (nextProps.dataItem.customerImgs !== this.props.dataItem.customerImgs) {
       this.setState({
-        fileList: getUploadControlImgData(nextProps.dataItem.compImgs)
+        fileList: getUploadControlImgData(nextProps.dataItem.customerImgs)
       })
     }
-    if (!ifNull(nextProps.dataItem.saveCompanyResult) && nextProps.dataItem.saveCompanyResult.result == 'success') {
-      this.context.router.push('/company/' + primaryKey);
+    if (!ifNull(nextProps.dataItem.saveCustomerResult) && nextProps.dataItem.saveCustomerResult.result == 'success') {
+      this.context.router.push('/customer/' + primaryKey);
       this.props.onLoadDataItem();
       this.props.clearResult()
     }
@@ -149,7 +149,7 @@ class Company extends React.Component {
         {
           required: true,
           min: 1,
-          message: '公司名称至少为 1 个字符'
+          message: '客户名称至少为 1 个字符'
         }
       ]
     });
@@ -172,19 +172,19 @@ class Company extends React.Component {
         </Row>
         <Row>
           <Col span="12">
-            <FormItem {...formItemLayout} label="公司代码">
+            <FormItem {...formItemLayout} label="客户代码">
               <Input {...getFieldProps('CompCode')}/>
             </FormItem>
           </Col>
           <Col span="12">
-            <FormItem {...formItemLayout} label="公司名称">
+            <FormItem {...formItemLayout} label="客户名称">
               <Input {...nameProps}/>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="12">
-            <FormItem {...formItemLayout} label="公司电话">
+            <FormItem {...formItemLayout} label="客户电话">
               <Input {...getFieldProps('CompTel')}/>
             </FormItem>
           </Col>
@@ -199,12 +199,12 @@ class Company extends React.Component {
         </Row>
         <Row>
           <Col span="12">
-            <FormItem {...formItemLayout} label="公司描述">
+            <FormItem {...formItemLayout} label="客户描述">
               <Input type="textarea" rows="4" {...getFieldProps('CompDescribe')}/>
             </FormItem>
           </Col>
           <Col span="12">
-            <FormItem {...formItemLayout} label="公司照片">
+            <FormItem {...formItemLayout} label="客户照片">
               <div className="clearfix">
                 <Upload {...props}>
                   <Icon type="plus"/>
@@ -225,34 +225,34 @@ class Company extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.companyID == 0 || !props.dataItem.company) {
+  if (props.params.customerID == 0 || !props.dataItem.customer) {
     return {};
   } else {
-    imgGuid = props.dataItem.company.CompImages;
-    primaryKey = props.dataItem.company.CompID;
+    imgGuid = props.dataItem.customer.CompImages;
+    primaryKey = props.dataItem.customer.CompID;
     return {
       ID: {
-        value: props.dataItem.company.ID
+        value: props.dataItem.customer.ID
       },
       CompCode: {
-        value: props.dataItem.company.CompCode
+        value: props.dataItem.customer.CompCode
       },
       CompName: {
-        value: props.dataItem.company.CompName
+        value: props.dataItem.customer.CompName
       },
       CompTel: {
-        value: props.dataItem.company.CompTel
+        value: props.dataItem.customer.CompTel
       },
       CompType: {
-        value: props.dataItem.company.CompType
+        value: props.dataItem.customer.CompType
       },
       CompDescribe: {
-        value: props.dataItem.company.CompDescribe
+        value: props.dataItem.customer.CompDescribe
       }
     }
   }
 
 }
 
-Company = Form.create({mapPropsToFields: mapPropsToFields})(Company);
-export default Company
+Customer = Form.create({mapPropsToFields: mapPropsToFields})(Customer);
+export default Customer

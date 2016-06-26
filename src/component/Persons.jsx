@@ -53,13 +53,13 @@ class Persons extends React.Component {
     }
   };
   componentWillMount() {
-    this.props.onLoad(pageSize,this.state.currentPage);
     let paginationPage= storeS.getItem("pagination");
-    if (paginationPage && this.props.route.path==JSON.parse(paginationPage).path)
-    {
-       this.setState({
-        currentPage:JSON.parse(paginationPage).currentPage
-      })
+    if (paginationPage && this.props.route.path == JSON.parse(paginationPage).path) {
+      this.setState({currentPage: JSON.parse(paginationPage).currentPage})
+      this.props.onLoad(pageSize, JSON.parse(paginationPage).currentPage);
+    }
+    else {
+      this.props.onLoad(pageSize, this.state.currentPage );
     }
   }
 componentWillUnmount() {
@@ -73,7 +73,7 @@ componentWillUnmount() {
   }
   render() {
     const pagination = {
-    total: this.props.dataSource.length>0?parseInt(this.props.dataSource[0].TotalSize):0,
+    total: this.props.dataSource.length>0?parseInt(this.props.dataSource[0].TotalSize):this.props.dataSource.length,
     defaultCurrent:this.state.currentPage,
     onChange:this.handlePageChange
     };
