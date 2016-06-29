@@ -40,7 +40,10 @@ import {
   saveWarehouse,
   readRoutes,
   readRoute,
-  saveRoute
+  saveRoute,
+  readInStorageList,
+  readInStorage,
+  saveInStorage
 } from '../redux/actions'
 import Head from './Head';
 import Left from './Left';
@@ -68,7 +71,7 @@ class App extends React.Component {
   }
   logout = () => {
     storeS.removeItem("sessionKey");
-    storeS.removeItem("UserID");
+    storeS.removeItem("userInfo");
     this.props.dispatch(clearUser())
     this.context.router.push('/login');
   }
@@ -98,7 +101,7 @@ class App extends React.Component {
           onLoad: this.mainLoad
         }
         break;
-      case 'messages':
+      case 'messageList':
         return {
           dataSource: this.props.user.userMessage
             ? this.props.user.userMessage.items
@@ -107,7 +110,7 @@ class App extends React.Component {
           onLoad: () => this.props.dispatch(readMessage())
         }
         break;
-      case 'persons':
+      case 'personList':
         return {
           dataSource: this.props.persons.personList
             ? this.props.persons.personList
@@ -128,7 +131,7 @@ class App extends React.Component {
           saveDataItem: (data) => this.props.dispatch(savePerson(data))
         }
         break;
-      case 'goodses':
+      case 'goodsList':
         return {
           dataSource: this.props.goods.goodses
             ? this.props.goods.goodses
@@ -151,7 +154,7 @@ class App extends React.Component {
           clearResult: () => this.props.dispatch(clearResult())
         }
         break;
-      case 'companies':
+      case 'companyList':
         return {
           dataSource: this.props.company.companies
             ? this.props.company.companies
@@ -174,7 +177,7 @@ class App extends React.Component {
           clearResult: () => this.props.dispatch(clearResult())
         }
         break;
-      case 'customers':
+      case 'customerList':
         return {
           dataSource: this.props.customer.customers
             ? this.props.customer.customers
@@ -197,7 +200,7 @@ class App extends React.Component {
           clearResult: () => this.props.dispatch(clearResult())
         }
         break;
-      case 'suppliers':
+      case 'supplierList':
         return {
           dataSource: this.props.supplier.suppliers
             ? this.props.supplier.suppliers
@@ -220,7 +223,7 @@ class App extends React.Component {
           clearResult: () => this.props.dispatch(clearResult())
         }
         break;
-      case 'warehouses':
+      case 'warehouseList':
         return {
           dataSource: this.props.warehouse.warehouses
             ? this.props.warehouse.warehouses
@@ -239,7 +242,7 @@ class App extends React.Component {
           clearResult: () => this.props.dispatch(clearResult())
         }
         break;
-        case 'routeapis':
+        case 'routeApiList':
           return {
             dataSource: this.props.routeApi.routes
               ? this.props.routeApi.routes
@@ -247,7 +250,7 @@ class App extends React.Component {
             onLoad: (pageSize, curPage) => this.props.dispatch(readRoutes(pageSize, curPage))
           }
           break;
-          case '/routeapi/:routeID':
+          case '/routeApi/:routeID':
             return {
               dataItem: this.props.routeApi,
               common: this.props.common,
@@ -261,6 +264,28 @@ class App extends React.Component {
               clearResult: () => this.props.dispatch(clearResult())
             }
             break;
+            case 'inStorageList':
+              return {
+                dataSource: this.props.inStorage.inStorageList
+                  ? this.props.inStorage.inStorageList
+                  : [],
+                onLoad: (pageSize, curPage) => this.props.dispatch(readInStorageList(pageSize, curPage))
+              }
+              break;
+              case '/inStorage/:formID':
+                return {
+                  dataItem: this.props.inStorage,
+                  common: this.props.common,
+                  onLoad: () => {
+                    this.props.dispatch(readDict(READ_DICT_ROUTERETURNTYPE, '6365673372633792594'))
+                  },
+                  onLoadDataItem: () => {
+                    this.props.dispatch(readInStorage(this.props.params.formID))
+                  },
+                  saveDataItem: (data) => this.props.dispatch(saveInStorage(data)),
+                  clearResult: () => this.props.dispatch(clearResult())
+                }
+                break;
       default:
         return {};
     }
@@ -321,7 +346,8 @@ function mapStateToProps(state) {
     customer,
     supplier,
     warehouse,
-    routeApi
+    routeApi,
+    inStorage
   } = state
   return {
     common,
@@ -333,7 +359,8 @@ function mapStateToProps(state) {
     customer,
     supplier,
     warehouse,
-    routeApi
+    routeApi,
+    inStorage
   }
 }
 

@@ -121,7 +121,7 @@ class Customer extends React.Component {
       listType: 'picture-card',
       multiple: false,
       data: {
-        userid: storeS.getItem('UserID'),
+        userid: storeS.getItem('userInfo').UserID,
         imgguid: imgGuid,
         thumbSize: 150
       },

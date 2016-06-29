@@ -14,12 +14,53 @@ export function readDict(actionType,dictTypeID) {
     let params={
       apiid:20,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       dicttypeid:dictTypeID
     };
     return dispatch(fetchPost(actionType, params))
   }
 }
+//入库
+export const READ_INSTORAGE_LIST = 'READ_INSTORAGE_LIST';
+export const READ_INSTORAGE = 'READ_INSTORAGE';
+export const SAVE_INSTORAGE = 'SAVE_INSTORAGE';
+
+export function readInStorageList(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:32,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      pageSize:pageSize,
+      curPage:curPage,
+    };
+    return dispatch(fetchPost(READ_INSTORAGE_LIST, params))
+  }
+}
+export function readInStorage(formID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:33,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      formid:formID
+    };
+    return dispatch(fetchPost(READ_INSTORAGE, params ))
+  }
+}
+
+export function saveInStorage(jsonData) {
+return (dispatch, getState) => {
+  let params={
+    apiid:34,
+    sessionkey:storeS.getItem('sessionKey'),
+    userid:storeS.getJson('userInfo').UserID,
+    jsonData:JSON.stringify(jsonData)
+  };
+  return dispatch(fetchPost(SAVE_INSTORAGE, params,jsonData,{isShowResultMessage:true}))
+}
+}
+
 //平台路由
 export const READ_ROUTERS = 'READ_ROUTERS';
 export const READ_ROUTER = 'READ_ROUTER';
@@ -30,7 +71,7 @@ export function readRoutes(pageSize,curPage) {
     let params={
       apiid:29,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
       curPage:curPage,
     };
@@ -42,7 +83,7 @@ export function readRoute(routeID) {
     let params={
       apiid:30,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       routeid:routeID
     };
     return dispatch(fetchPost(READ_ROUTER, params ))
@@ -54,7 +95,7 @@ return (dispatch, getState) => {
   let params={
     apiid:31,
     sessionkey:storeS.getItem('sessionKey'),
-    userid:storeS.getItem('UserID'),
+    userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
   return dispatch(fetchPost(SAVE_ROUTER, params,jsonData,{isShowResultMessage:true}))
@@ -70,7 +111,7 @@ export function readWarehouses(pageSize,curPage) {
     let params={
       apiid:26,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
       curPage:curPage,
     };
@@ -82,7 +123,7 @@ export function readWarehouse(WarehouseID) {
     let params={
       apiid:28,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       warehouseid:WarehouseID
     };
     return dispatch(fetchPost(READ_WAREHOUSE, params ))
@@ -94,7 +135,7 @@ return (dispatch, getState) => {
   let params={
     apiid:27,
     sessionkey:storeS.getItem('sessionKey'),
-    userid:storeS.getItem('UserID'),
+    userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
   return dispatch(fetchPost(SAVE_WAREHOUSE, params,jsonData,{isShowResultMessage:true}))
@@ -111,7 +152,7 @@ export function readSuppliers(pageSize,curPage) {
     let params={
       apiid:25,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
       curPage:curPage,
     };
@@ -123,7 +164,7 @@ export function readSupplier(SupplierID) {
     let params={
       apiid:22,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       compid:SupplierID
     };
     return dispatch(fetchPost(READ_SUPPLIER, params,null,null,cbReadSupplier))
@@ -137,7 +178,7 @@ return (dispatch, getState) => {
   let params={
     apiid:23,
     sessionkey:storeS.getItem('sessionKey'),
-    userid:storeS.getItem('UserID'),
+    userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
   return dispatch(fetchPost(SAVE_SUPPLIER, params,jsonData,{isShowResultMessage:true}))
@@ -154,7 +195,7 @@ export function readCustomers(pageSize,curPage) {
     let params={
       apiid:24,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
       curPage:curPage,
     };
@@ -166,7 +207,7 @@ export function readCustomer(CustomerID) {
     let params={
       apiid:22,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       compid:CustomerID
     };
     return dispatch(fetchPost(READ_CUSTOMER, params,null,null,cbReadCustomer))
@@ -180,7 +221,7 @@ return (dispatch, getState) => {
   let params={
     apiid:23,
     sessionkey:storeS.getItem('sessionKey'),
-    userid:storeS.getItem('UserID'),
+    userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
   return dispatch(fetchPost(SAVE_CUSTOMER, params,jsonData,{isShowResultMessage:true}))
@@ -197,7 +238,7 @@ export function readCompanies(pageSize,curPage) {
     let params={
       apiid:21,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
       curPage:curPage,
     };
@@ -209,7 +250,7 @@ export function readCompany(companyID) {
     let params={
       apiid:22,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       compid:companyID
     };
     return dispatch(fetchPost(READ_COMPANY, params,null,null,cbReadCompany))
@@ -223,7 +264,7 @@ return (dispatch, getState) => {
   let params={
     apiid:23,
     sessionkey:storeS.getItem('sessionKey'),
-    userid:storeS.getItem('UserID'),
+    userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
   return dispatch(fetchPost(SAVE_COMPANY, params,jsonData,{isShowResultMessage:true}))
@@ -239,7 +280,7 @@ export function readGoodses(pageSize,curPage) {
     let params={
       apiid:5,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
       curPage:curPage,
     };
@@ -251,7 +292,7 @@ export function readGoods(goodsID) {
     let params={
       apiid:18,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       goodsid:goodsID
     };
     return dispatch(fetchPost(READ_GOODS, params,null,null,cbReadGoods))
@@ -265,7 +306,7 @@ return (dispatch, getState) => {
   let params={
     apiid:19,
     sessionkey:storeS.getItem('sessionKey'),
-    userid:storeS.getItem('UserID'),
+    userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
   return dispatch(fetchPost(SAVE_GOODS, params,jsonData,{isShowResultMessage:true}))
@@ -282,7 +323,7 @@ export function readPersons(pageSize,curPage) {
     let params={
       apiid:13,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
       curPage:curPage,
       filter:''
@@ -295,7 +336,7 @@ export function savePerson(data) {
     let params={
       apiid:16,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       savetype:'update',
       personid:data.UserID,
       name:data.Name,
@@ -312,7 +353,7 @@ export function readPerson(personID) {
     let params={
       apiid:14,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       personid:personID
     };
     return dispatch(fetchPost(READ_PERSON, params,null,null,cbReadPerson))
@@ -326,7 +367,7 @@ export function readUploadFile(actionType,fileFormID,gettype) {
     let params={
       apiid:15,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       formid:fileFormID,
       gettype:gettype
     };
@@ -389,7 +430,7 @@ export function readMessage() {
     let params={
       apiid:10,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID')
+      userid:storeS.getJson('userInfo').UserID
     };
     return dispatch(fetchPost(READ_USER_MESSAGE, params))
   }
@@ -399,7 +440,7 @@ export function messageFinished (msgID) {
     let params={
       apiid:11,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       id:msgID
     };
     return dispatch(fetchPost(MESSAGE_DONE, params,null,null,cbMessageFinished))
@@ -416,7 +457,7 @@ export function readMainMenu() {
   return (dispatch, getState) => {
     let params={
       apiid:7,
-      userid:storeS.getItem('UserID')
+      userid:storeS.getJson('userInfo').UserID
     };
     return dispatch(fetchPost(READ_MAIN_MENU, params))
   }
@@ -426,7 +467,7 @@ export function removeFile(fileid) {
   return (dispatch, getState) => {
     let params={
       apiid:17,
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       sessionkey:storeS.getItem('sessionKey'),
       fileid:fileid
     };
@@ -442,7 +483,7 @@ export function setFavorites() {
     let params={
       apiid:8,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       path:location.pathname,
     };
     return dispatch(fetchPost(SET_FAVORITES, params,null,null,cbSetFavorites))
@@ -457,7 +498,7 @@ export function readFavorites() {
     let params={
       apiid:9,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getItem('UserID')
+      userid:storeS.getJson('userInfo').UserID
     };
     return dispatch(fetchPost(READ_FAVORITES, params))
   }
@@ -469,7 +510,7 @@ export function readChartData() {
   return (dispatch, getState) => {
     let params={
       apiid:12,
-      userid:storeS.getItem('UserID'),
+      userid:storeS.getJson('userInfo').UserID,
       starttime:'2016-01-01',
       endtime:'2056-01-01',
       sessionkey:storeS.getItem('sessionKey')

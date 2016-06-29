@@ -1,4 +1,4 @@
-import {isString,isNaN,isNil,isNull,now,chain,keys,sortBy,value,toUpper,filter,isArray}  from 'lodash';
+import {isString,isNaN,isNil,isNull,now,chain,keys,sortBy,value,toUpper,filter,isArray,isPlainObject}  from 'lodash';
 import {MD5} from 'crypto-js';
 import {APP_CONFIG} from '../entry/config';
 
@@ -8,15 +8,26 @@ function s2()
 {return window.sessionStorage;}
 */
 
-/* 第二种使用：自定义对象下的函数
-var s={};
-s.setItem=function(a,b)
-{alert(a);}
-export  const  storeS =s ;
-*/
+//  第二种使用：自定义对象下的函数
+var  storeStemp={};
+storeStemp.getItem=function(item)
+{ return window.sessionStorage.getItem(item);}
+
+storeStemp.setItem=function(item,value)
+{ window.sessionStorage.setItem(item,value) ;}
+storeStemp.removeItem=function(item)
+{ window.sessionStorage.removeItem(item) ;}
+storeStemp.getJson=function(item)
+{ return JSON.parse(window.sessionStorage.getItem(item));}
+
+storeStemp.setJson=function(item,value)
+{ window.sessionStorage.setItem(item,JSON.stringify(value)) ;}
+
+export  const  storeS= storeStemp ;
+
 
 //第三种：直接使用
-export const storeS = window.sessionStorage;
+//export const storeS = window.sessionStorage;
 export const storeL = window.localStorage;
 export function ifNull(obj)
 {

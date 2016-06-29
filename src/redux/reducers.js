@@ -43,7 +43,10 @@ import {
   READ_ROUTERS,
   READ_ROUTER,
   SAVE_ROUTER,
-  READ_DICT_ROUTERETURNTYPE
+  READ_DICT_ROUTERETURNTYPE,
+  READ_INSTORAGE_LIST,
+  READ_INSTORAGE,
+  SAVE_INSTORAGE
 } from './actions'
 
 export function user(state = {}, action) {
@@ -349,6 +352,33 @@ export function routeApi(state = [], action) {
       return {
         ...state,
         saveRouteResult:{}
+      }
+    default:
+      return state
+  }
+}
+//采购入库
+export function inStorage(state = [], action) {
+  switch (action.type) {
+    case READ_INSTORAGE_LIST:
+      return {
+        ...state,
+        inStorageList: action.receivedJson.items
+      }
+    case READ_INSTORAGE:
+      return {
+        ...state,
+        inStorage: action.receivedJson.items[0]
+      }
+    case SAVE_INSTORAGE:
+      return {
+        ...state,
+        saveInStorageResult: action.receivedJson.items[0]
+      }
+    case RESULT_CLEAR:
+      return {
+        ...state,
+        saveInStorageResult:{}
       }
     default:
       return state

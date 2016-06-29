@@ -45,18 +45,18 @@ class RouteApi extends React.Component {
   componentWillMount() {
     primaryKey = getRand();
     this.props.onLoad();
-    if (this.props.params.ID != 0) {
+    if (this.props.params.routeID != 0) {
       this.props.onLoadDataItem();
     }
 
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.ID !== this.props.params.ID) {
+    if (nextProps.params.routeID !== this.props.params.routeID) {
       this.props.onLoadDataItem();
     }
      if (!ifNull(nextProps.dataItem.saveRouteResult) && nextProps.dataItem.saveRouteResult.result == 'success') {
-      this.context.router.push('/routeapi/' + primaryKey);
+      this.context.router.push('/routeApi/' + primaryKey);
       this.props.onLoadDataItem();
       this.props.clearResult()
     }

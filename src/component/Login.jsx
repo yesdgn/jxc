@@ -44,7 +44,7 @@ class Login extends React.Component {
           storeL.setItem("user",fieldsValue.userName);
         }
         storeS.setItem("sessionKey",nextProps.user.userLoginResult.items.item0[0].accessToken);
-        storeS.setItem("UserID",nextProps.user.userInfo.UserID)
+        storeS.setJson("userInfo", nextProps.user.userInfo );
         this.props.dispatch(clearResult());
         this.context.router.push('/main') ;
       }

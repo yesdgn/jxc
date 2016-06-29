@@ -10,24 +10,26 @@ import App from '../component/App';
 import NoMatch from '../component/NoMatch';
 import Login from '../component/Login';
 import Main from '../component/Main';
-import Persons from '../component/Persons';
+import PersonList from '../component/PersonList';
 import Person from '../component/Person';
 import RegUser from '../component/RegUser';
 import NewPass from '../component/NewPass';
 import Message from '../component/Message';
-import Messages from '../component/Messages';
+import MessageList from '../component/MessageList';
 import Company from '../component/Company';
-import Companies from '../component/Companies';
+import CompanyList from '../component/CompanyList';
 import Goods from '../component/Goods';
-import Goodses from '../component/Goodses';
+import GoodsList from '../component/GoodsList';
 import Customer from '../component/Customer';
-import Customers from '../component/Customers';
+import CustomerList from '../component/CustomerList';
 import Supplier from '../component/Supplier';
-import Suppliers from '../component/Suppliers';
+import SupplierList from '../component/SupplierList';
 import Warehouse from '../component/Warehouse';
-import Warehouses from '../component/Warehouses';
+import WarehouseList from '../component/WarehouseList';
 import RouteApi from '../component/RouteApi';
-import RouteApis from '../component/RouteApis';
+import RouteApiList from '../component/RouteApiList';
+import InStorage from '../component/InStorage';
+import InStorageList from '../component/InStorageList';
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -46,23 +48,26 @@ ReactDOM.render(
       <IndexRoute component={Login}/>
       <Route path="login"  breadcrumbName="登录" component={Login}/>
       <Route path="main" breadcrumbName="主页"  onEnter={requireAuthApp}  component={Main} />
-      <Route path="persons" breadcrumbName="人员列表"  onEnter={requireAuthApp}   component={Persons} />
+      <Route path="personList" breadcrumbName="人员列表"  onEnter={requireAuthApp}   component={PersonList} />
       <Route path="/person/:personID" breadcrumbName="人员"  onEnter={requireAuthApp}   component={Person}/>
       <Route path="newPass" breadcrumbName="忘记密码"  component={NewPass}/>
-      <Route path="messages" breadcrumbName="消息列表"  onEnter={requireAuthApp}   component={Messages} />
+      <Route path="messageList" breadcrumbName="消息列表"  onEnter={requireAuthApp}   component={MessageList} />
       <Route path="/message/:id" breadcrumbName="消息"   onEnter={requireAuthApp}  component={Message}/>
-      <Route path="companies" breadcrumbName="公司列表"  onEnter={requireAuthApp}   component={Companies} />
+      <Route path="companyList" breadcrumbName="公司列表"  onEnter={requireAuthApp}   component={CompanyList} />
       <Route path="/company/:companyID" breadcrumbName="公司"   onEnter={requireAuthApp}  component={Company}/>
-      <Route path="goodses" breadcrumbName="商品列表"  onEnter={requireAuthApp}   component={Goodses} />
+      <Route path="goodsList" breadcrumbName="商品列表"  onEnter={requireAuthApp}   component={GoodsList} />
       <Route path="/goods/:goodsID" breadcrumbName="商品"   onEnter={requireAuthApp}  component={Goods}/>
-      <Route path="customers" breadcrumbName="客户列表"  onEnter={requireAuthApp}   component={Customers} />
+      <Route path="customerList" breadcrumbName="客户列表"  onEnter={requireAuthApp}   component={CustomerList} />
       <Route path="/customer/:customerID" breadcrumbName="客户"   onEnter={requireAuthApp}  component={Customer}/>
-      <Route path="suppliers" breadcrumbName="供应商列表"  onEnter={requireAuthApp}   component={Suppliers} />
+      <Route path="supplierList" breadcrumbName="供应商列表"  onEnter={requireAuthApp}   component={SupplierList} />
       <Route path="/supplier/:supplierID" breadcrumbName="供应商"   onEnter={requireAuthApp}  component={Supplier}/>
-      <Route path="warehouses" breadcrumbName="仓库列表"  onEnter={requireAuthApp}   component={Warehouses} />
+      <Route path="warehouseList" breadcrumbName="仓库列表"  onEnter={requireAuthApp}   component={WarehouseList} />
       <Route path="/warehouse/:warehouseID" breadcrumbName="仓库"   onEnter={requireAuthApp}  component={Warehouse}/>
-      <Route path="routeapis" breadcrumbName="路由API列表"  onEnter={requireAuthApp}   component={RouteApis} />
-      <Route path="/routeapi/:routeID" breadcrumbName="路由API"   onEnter={requireAuthApp}  component={RouteApi}/>
+      <Route path="routeApiList" breadcrumbName="路由API列表"  onEnter={requireAuthApp}   component={RouteApiList} />
+      <Route path="/routeApi/:routeID" breadcrumbName="路由API"   onEnter={requireAuthApp}  component={RouteApi}/>
+      <Route path="inStorageList" breadcrumbName="采购入库单列表"  onEnter={requireAuthApp}   component={InStorageList} />
+      <Route path="/inStorage/:formID" breadcrumbName="采购入库单"   onEnter={requireAuthApp}  component={InStorage}/>
+
       <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
       <Route path="*" breadcrumbName="未找到页面" component={NoMatch}/>
     </Route>

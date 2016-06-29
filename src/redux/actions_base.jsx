@@ -30,7 +30,7 @@ export function fetchGet(actionType, params, srcData, option, callBack) {
           } else if (data.returnCode == 1003 || data.returnCode == 1004) {
             message.error(data.returnDescribe);
             storeS.removeItem("sessionKey");
-            storeS.removeItem("UserID");
+            storeS.removeItem("userInfo");
             dispatch(userLogout());
           } else {
             message.error(data.returnDescribe);
@@ -77,7 +77,7 @@ export function fetchPost(actionType, params, srcData, option, callBack) {
           } else if (data.returnCode == 1003 || data.returnCode == 1004) {
             message.error(data.returnDescribe);
             storeS.removeItem("sessionKey");
-            storeS.removeItem("UserID");
+            storeS.removeItem("userInfo");
             dispatch(userLogout());
           } else {
             message.error(data.returnDescribe);
