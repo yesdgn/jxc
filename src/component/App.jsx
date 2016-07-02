@@ -5,6 +5,7 @@ import {Breadcrumb} from 'antd';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux'
+import * as actionsType from '../redux/actionsType';
 import {
   clearUser,
   messageFinished,
@@ -22,9 +23,6 @@ import {
   readGoodses,
   readGoods,
   saveGoods,
-  READ_DICT_GOODSCATEGORY,
-  READ_DICT_COMPTYPE,
-  READ_DICT_ROUTERETURNTYPE,
   readDict,
   readCompanies,
   readCompany,
@@ -144,7 +142,7 @@ class App extends React.Component {
           dataItem: this.props.goods,
           common: this.props.common,
           onLoad: () => {
-            this.props.dispatch(readDict(READ_DICT_GOODSCATEGORY, '6365673372633792522'))
+            this.props.dispatch(readDict(actionsType.READ_DICT_GOODSCATEGORY, '6365673372633792522'))
           },
           onLoadDataItem: () => {
             this.props.dispatch(readGoods(this.props.params.goodsID))
@@ -167,7 +165,7 @@ class App extends React.Component {
           dataItem: this.props.company,
           common: this.props.common,
           onLoad: () => {
-            this.props.dispatch(readDict(READ_DICT_COMPTYPE, '6365673372633792525'))
+            this.props.dispatch(readDict(actionsType.READ_DICT_COMPTYPE, '6365673372633792525'))
           },
           onLoadDataItem: () => {
             this.props.dispatch(readCompany(this.props.params.companyID))
@@ -190,7 +188,7 @@ class App extends React.Component {
           dataItem: this.props.customer,
           common: this.props.common,
           onLoad: () => {
-            this.props.dispatch(readDict(READ_DICT_COMPTYPE, '6365673372633792525'))
+            this.props.dispatch(readDict(actionsType.READ_DICT_COMPTYPE, '6365673372633792525'))
           },
           onLoadDataItem: () => {
             this.props.dispatch(readCustomer(this.props.params.customerID))
@@ -213,7 +211,7 @@ class App extends React.Component {
           dataItem: this.props.supplier,
           common: this.props.common,
           onLoad: () => {
-            this.props.dispatch(readDict(READ_DICT_COMPTYPE, '6365673372633792525'))
+            this.props.dispatch(readDict(actionsType.READ_DICT_COMPTYPE, '6365673372633792525'))
           },
           onLoadDataItem: () => {
             this.props.dispatch(readSupplier(this.props.params.supplierID))
@@ -255,7 +253,7 @@ class App extends React.Component {
               dataItem: this.props.routeApi,
               common: this.props.common,
               onLoad: () => {
-                this.props.dispatch(readDict(READ_DICT_ROUTERETURNTYPE, '6365673372633792594'))
+                this.props.dispatch(readDict(actionsType.READ_DICT_ROUTERETURNTYPE, '6365673372633792594'))
               },
               onLoadDataItem: () => {
                 this.props.dispatch(readRoute(this.props.params.routeID))
@@ -272,22 +270,9 @@ class App extends React.Component {
                 onLoad: (pageSize, curPage) => this.props.dispatch(readInStorageList(pageSize, curPage))
               }
               break;
-              case '/inStorage/:formID':
-                return {
-                  dataItem: this.props.inStorage,
-                  common: this.props.common,
-                  onLoad: () => {
-                    this.props.dispatch(readDict(READ_DICT_ROUTERETURNTYPE, '6365673372633792594'))
-                  },
-                  onLoadDataItem: () => {
-                    this.props.dispatch(readInStorage(this.props.params.formID))
-                  },
-                  saveDataItem: (data) => this.props.dispatch(saveInStorage(data)),
-                  clearResult: () => this.props.dispatch(clearResult())
-                }
-                break;
+
       default:
-        return {};
+        return {dispatch:this.props.dispatch};
     }
 
   }

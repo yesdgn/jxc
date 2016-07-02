@@ -1,4 +1,4 @@
-import {isString,isNaN,isNil,isNull,now,chain,keys,sortBy,value,toUpper,filter,isArray,isPlainObject}  from 'lodash';
+import {isString,isNaN,isNil,isNull,now,chain,keys,sortBy,value,toUpper,isArray}  from 'lodash';
 import {MD5} from 'crypto-js';
 import {APP_CONFIG} from '../entry/config';
 
@@ -105,28 +105,4 @@ export function getUrl(type,paramsObj)
         stringC= stringC+'&sign='+sign+(ifNull(stringB)?'':'&'+stringB);
   }
   return stringC
-}
-
-
-export function getUploadControlImgData(data) {
-  if (ifNull(data))
-    { return [];}
-  let imgArray=[];
-  data.item0.map(function (x) {
-    let url= filter(data.item1, function(o) { return o.ImageType==0 && o.FileID==x.FileID }) ;
-    let thumbUrl= filter(data.item1, function(o) { return o.ImageType==1  && o.FileID==x.FileID }) ;
-    imgArray.push(
-      {
-        uid: x.FileID,
-        name: x.UploadFileName,
-        status: 'done',
-        url: APP_CONFIG.FILEURL+url[0].ImageFileName,
-        thumbUrl: APP_CONFIG.FILEURL+thumbUrl[0].ImageFileName,
-        width:x.Width
-      }
-    )
-
-  })
-
-  return imgArray;
 }

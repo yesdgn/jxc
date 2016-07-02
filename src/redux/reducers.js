@@ -1,95 +1,49 @@
 import {
   concat
 } from 'lodash';
-
-import {
-  USER_LOGIN,
-  USER_REG,
-  READ_MAIN_MENU,
-  USER_CLEAR,
-  SET_FAVORITES,
-  RESULT_CLEAR,
-  READ_FAVORITES,
-  READ_USER_MESSAGE,
-  MESSAGE_DONE,
-  READ_CHART_DATA,
-  USER_LOGOUT,
-  READ_PERSONS,
-  READ_PERSON,
-  READ_PERSONFILE,
-  SAVE_PERSON,
-  REMOVEFILE,
-  READ_GOODSES,
-  READ_GOODS,
-  READ_GOODS_FILE,
-  SAVE_GOODS,
-  READ_DICT_GOODSCATEGORY,
-  READ_COMPANIES,
-  READ_COMPANY,
-  SAVE_COMPANY,
-  READ_DICT_COMPTYPE,
-  READ_COMPANY_FILE,
-  READ_CUSTOMERS,
-  READ_CUSTOMER,
-  SAVE_CUSTOMER,
-  READ_CUSTOMER_FILE,
-  READ_SUPPLIERS,
-  READ_SUPPLIER,
-  SAVE_SUPPLIER,
-  READ_SUPPLIER_FILE,
-  READ_WAREHOUSES,
-  READ_WAREHOUSE,
-  SAVE_WAREHOUSE,
-  READ_ROUTERS,
-  READ_ROUTER,
-  SAVE_ROUTER,
-  READ_DICT_ROUTERETURNTYPE,
-  READ_INSTORAGE_LIST,
-  READ_INSTORAGE,
-  SAVE_INSTORAGE
-} from './actions'
-
+import * as actionsType from './actionsType';
 export function user(state = {}, action) {
   switch (action.type) {
-    case USER_LOGIN:
+    case actionsType.USER_LOGIN:
       return {
         ...state,
         userLoginResult: action.receivedJson,
         userInfo: action.receivedJson.items.item0[0].result == 'success' ? action.receivedJson.items.item1[0] : {}
       }
-    case USER_REG:
+    case actionsType.USER_REG:
       return {
         ...state,
+
         regInfo: action.receivedJson
       }
-    case USER_CLEAR:
+    case actionsType.USER_CLEAR:
       return {}
-    case SET_FAVORITES:
+    case actionsType.SET_FAVORITES:
       return {
         ...state,
         favoriteResult: action.receivedJson
       }
-    case READ_FAVORITES:
+    case actionsType.READ_FAVORITES:
       return {
         ...state,
         favorites: action.receivedJson
       }
-    case RESULT_CLEAR:
+    case actionsType.RESULT_CLEAR:
       return {
         ...state,
         userLoginResult: {}
       }
-    case READ_USER_MESSAGE:
+    case actionsType.READ_USER_MESSAGE:
       return {
         ...state,
         userMessage: action.receivedJson
       }
-    case MESSAGE_DONE:
+    case actionsType.MESSAGE_DONE:
       return {
         ...state,
         messageDoneResult: action.receivedJson
       }
-    case USER_LOGOUT:
+    case actionsType.USER_LOGOUT:
       return {
         ...state,
         userLogout: true
@@ -101,27 +55,32 @@ export function user(state = {}, action) {
 
 export function common(state = [], action) {
   switch (action.type) {
-    case READ_MAIN_MENU:
+    case actionsType.READ_MAIN_MENU:
       return {
         ...state,
         mainMenu: action.receivedJson.items
       }
-      case READ_DICT_GOODSCATEGORY:
-        return {
-          ...state,
-          GoodsCategory:action.receivedJson.items
-        }
-        case READ_DICT_COMPTYPE:
-          return {
-            ...state,
-            CompType:action.receivedJson.items
-          }
-          case READ_DICT_ROUTERETURNTYPE:
-            return {
-              ...state,
-              RouteReturnType:action.receivedJson.items
-            }
-    case USER_CLEAR:
+    case actionsType.READ_DICT_GOODSCATEGORY:
+      return {
+        ...state,
+        GoodsCategory: action.receivedJson.items
+      }
+    case actionsType.READ_DICT_COMPTYPE:
+      return {
+        ...state,
+        CompType: action.receivedJson.items
+      }
+    case actionsType.READ_DICT_ROUTERETURNTYPE:
+      return {
+        ...state,
+        RouteReturnType: action.receivedJson.items
+      }
+    case actionsType.READ_DICT_INSTORAGESTATE:
+      return {
+        ...state,
+        InstorageState: action.receivedJson.items
+      }
+    case actionsType.USER_CLEAR:
       return {}
     default:
       return state
@@ -130,12 +89,12 @@ export function common(state = [], action) {
 
 export function chart(state = [], action) {
   switch (action.type) {
-    case READ_CHART_DATA:
+    case actionsType.READ_CHART_DATA:
       return {
         ...state,
         items: action.receivedJson.items
       }
-    case USER_CLEAR:
+    case actionsType.USER_CLEAR:
       return {}
     default:
       return state
@@ -145,28 +104,28 @@ export function chart(state = [], action) {
 
 export function persons(state = [], action) {
   switch (action.type) {
-    case READ_PERSONS:
+    case actionsType.READ_PERSONS:
       return {
         ...state,
         personList: action.receivedJson.items
       }
-    case READ_PERSON:
+    case actionsType.READ_PERSON:
       return {
         ...state,
         personInfo: action.receivedJson.items.item0[0]
       }
-    case READ_PERSONFILE:
+    case actionsType.READ_PERSONFILE:
       return {
         ...state,
         personImgs: action.receivedJson.items
       }
-    case SAVE_PERSON:
+    case actionsType.SAVE_PERSON:
       return {
         ...state,
         saveResult: action.receivedJson.items,
         personInfo: action.srcData
       }
-    case USER_CLEAR:
+    case actionsType.USER_CLEAR:
       return {}
     default:
       return state
@@ -177,30 +136,30 @@ export function persons(state = [], action) {
 //商品数据
 export function goods(state = [], action) {
   switch (action.type) {
-    case READ_GOODSES:
+    case actionsType.READ_GOODSES:
       return {
         ...state,
         goodses: action.receivedJson.items
       }
-    case READ_GOODS:
+    case actionsType.READ_GOODS:
       return {
         ...state,
         goods: action.receivedJson.items[0]
       }
-    case READ_GOODS_FILE:
+    case actionsType.READ_GOODS_FILE:
       return {
         ...state,
         goodsImgs: action.receivedJson.items
       }
-    case SAVE_GOODS:
+    case actionsType.SAVE_GOODS:
       return {
         ...state,
         saveGoodsResult: action.receivedJson.items[0]
       }
-    case RESULT_CLEAR:
+    case actionsType.RESULT_CLEAR:
       return {
         ...state,
-        saveGoodsResult:{}
+        saveGoodsResult: {}
       }
     default:
       return state
@@ -210,30 +169,30 @@ export function goods(state = [], action) {
 //公司数据
 export function company(state = [], action) {
   switch (action.type) {
-    case READ_COMPANIES:
+    case actionsType.READ_COMPANIES:
       return {
         ...state,
         companies: action.receivedJson.items
       }
-    case READ_COMPANY:
+    case actionsType.READ_COMPANY:
       return {
         ...state,
         company: action.receivedJson.items[0]
       }
-      case READ_COMPANY_FILE:
-        return {
-          ...state,
-          compImgs: action.receivedJson.items
-        }
-    case SAVE_COMPANY:
+    case actionsType.READ_COMPANY_FILE:
+      return {
+        ...state,
+        compImgs: action.receivedJson.items
+      }
+    case actionsType.SAVE_COMPANY:
       return {
         ...state,
         saveCompanyResult: action.receivedJson.items[0]
       }
-    case RESULT_CLEAR:
+    case actionsType.RESULT_CLEAR:
       return {
         ...state,
-        saveCompanyResult:{}
+        saveCompanyResult: {}
       }
     default:
       return state
@@ -242,30 +201,30 @@ export function company(state = [], action) {
 //客户数据
 export function customer(state = [], action) {
   switch (action.type) {
-    case READ_CUSTOMERS:
+    case actionsType.READ_CUSTOMERS:
       return {
         ...state,
         customers: action.receivedJson.items
       }
-    case READ_CUSTOMER:
+    case actionsType.READ_CUSTOMER:
       return {
         ...state,
         customer: action.receivedJson.items[0]
       }
-      case READ_CUSTOMER_FILE:
-        return {
-          ...state,
-          customerImgs: action.receivedJson.items
-        }
-    case SAVE_CUSTOMER:
+    case actionsType.READ_CUSTOMER_FILE:
+      return {
+        ...state,
+        customerImgs: action.receivedJson.items
+      }
+    case actionsType.SAVE_CUSTOMER:
       return {
         ...state,
         saveCustomerResult: action.receivedJson.items[0]
       }
-    case RESULT_CLEAR:
+    case actionsType.RESULT_CLEAR:
       return {
         ...state,
-        saveCustomerResult:{}
+        saveCustomerResult: {}
       }
     default:
       return state
@@ -274,30 +233,30 @@ export function customer(state = [], action) {
 //供应商数据
 export function supplier(state = [], action) {
   switch (action.type) {
-    case READ_SUPPLIERS:
+    case actionsType.READ_SUPPLIERS:
       return {
         ...state,
-        suppliers: action.receivedJson.items
+        suppliers: action.receivedJson.items,
       }
-    case READ_SUPPLIER:
+    case actionsType.READ_SUPPLIER:
       return {
         ...state,
         supplier: action.receivedJson.items[0]
       }
-      case READ_SUPPLIER_FILE:
-        return {
-          ...state,
-          supplierImgs: action.receivedJson.items
-        }
-    case SAVE_SUPPLIER:
+    case actionsType.READ_SUPPLIER_FILE:
+      return {
+        ...state,
+        supplierImgs: action.receivedJson.items
+      }
+    case actionsType.SAVE_SUPPLIER:
       return {
         ...state,
         saveSupplierResult: action.receivedJson.items[0]
       }
-    case RESULT_CLEAR:
+    case actionsType.RESULT_CLEAR:
       return {
         ...state,
-        saveSupplierResult:{}
+        saveSupplierResult: {}
       }
     default:
       return state
@@ -306,25 +265,25 @@ export function supplier(state = [], action) {
 //仓库数据
 export function warehouse(state = [], action) {
   switch (action.type) {
-    case READ_WAREHOUSES:
+    case actionsType.READ_WAREHOUSES:
       return {
         ...state,
         warehouses: action.receivedJson.items
       }
-    case READ_WAREHOUSE:
+    case actionsType.READ_WAREHOUSE:
       return {
         ...state,
         warehouse: action.receivedJson.items[0]
       }
-    case SAVE_WAREHOUSE:
+    case actionsType.SAVE_WAREHOUSE:
       return {
         ...state,
         saveWarehouseResult: action.receivedJson.items[0]
       }
-    case RESULT_CLEAR:
+    case actionsType.RESULT_CLEAR:
       return {
         ...state,
-        saveWarehouseResult:{}
+        saveWarehouseResult: {}
       }
     default:
       return state
@@ -333,25 +292,25 @@ export function warehouse(state = [], action) {
 //路由表
 export function routeApi(state = [], action) {
   switch (action.type) {
-    case READ_ROUTERS:
+    case actionsType.READ_ROUTERS:
       return {
         ...state,
         routes: action.receivedJson.items
       }
-    case READ_ROUTER:
+    case actionsType.READ_ROUTER:
       return {
         ...state,
         route: action.receivedJson.items[0]
       }
-    case SAVE_ROUTER:
+    case actionsType.SAVE_ROUTER:
       return {
         ...state,
         saveRouteResult: action.receivedJson.items[0]
       }
-    case RESULT_CLEAR:
+    case actionsType.RESULT_CLEAR:
       return {
         ...state,
-        saveRouteResult:{}
+        saveRouteResult: {}
       }
     default:
       return state
@@ -360,25 +319,25 @@ export function routeApi(state = [], action) {
 //采购入库
 export function inStorage(state = [], action) {
   switch (action.type) {
-    case READ_INSTORAGE_LIST:
+    case actionsType.READ_INSTORAGE_LIST:
       return {
         ...state,
         inStorageList: action.receivedJson.items
       }
-    case READ_INSTORAGE:
+    case actionsType.READ_INSTORAGE:
       return {
         ...state,
         inStorage: action.receivedJson.items[0]
       }
-    case SAVE_INSTORAGE:
+    case actionsType.SAVE_INSTORAGE:
       return {
         ...state,
         saveInStorageResult: action.receivedJson.items[0]
       }
-    case RESULT_CLEAR:
+    case actionsType.RESULT_CLEAR:
       return {
         ...state,
-        saveInStorageResult:{}
+        saveInStorageResult: {}
       }
     default:
       return state

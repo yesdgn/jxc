@@ -2,7 +2,8 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {APP_CONFIG} from '../entry/config';
-import {storeS, getRand, ifNull, getUploadControlImgData} from '../common/dgn';
+import {storeS, getRand, ifNull} from '../common/dgn';
+import {getUploadControlImgData} from '../common/dgnControlAssist';
 import {
   Button,
   Row,
@@ -20,6 +21,7 @@ var primaryKey;
 const Option = Select.Option;
 const createForm = Form.create;
 const FormItem = Form.Item;
+const userInfo=storeS.getJson('userInfo');
 const formItemLayout = {
   labelCol: {
     span: 6
@@ -121,7 +123,7 @@ class Goods extends React.Component {
       listType: 'picture-card',
       multiple: false,
       data: {
-        userid: storeS.getItem('userInfo').UserID,
+        userid: userInfo.UserID,
         imgguid: imgGuid,
         thumbSize: 150
       },

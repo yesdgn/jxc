@@ -2,7 +2,8 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {APP_CONFIG} from '../entry/config';
-import {storeS, getRand, ifNull, getUploadControlImgData} from '../common/dgn';
+import {storeS, getRand, ifNull} from '../common/dgn';
+
 import {
   Button,
   Row,
@@ -77,7 +78,7 @@ class Warehouse extends React.Component {
     });
 
   };
- 
+
 
   render() {
     const {getFieldProps} = this.props.form;
