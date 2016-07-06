@@ -2,7 +2,8 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {APP_CONFIG} from '../entry/config';
-import {storeS, getRand, ifNull, getUploadControlImgData} from '../common/dgn';
+import {storeS, getRand, ifNull} from '../common/dgn';
+import {getSelectOption, checkDate} from '../common/dgnControlAssist';
 import {
   Button,
   Row,
@@ -71,9 +72,11 @@ class RouteApi extends React.Component {
         ...values
       };
       form0.RouteID = primaryKey;
-      let form0Arr = [];
+      let formArr = [];
+      let form0Arr=[];
       form0Arr.push(form0);
-      this.props.saveDataItem(form0Arr);
+      formArr.push(form0Arr);
+      this.props.saveDataItem(formArr);
     });
 
   };
@@ -141,9 +144,11 @@ class RouteApi extends React.Component {
             </FormItem>
           </Col>
           <Col span="12">
-            <FormItem {...formItemLayout} label="是否自动生成SQL语句">
-              <Checkbox  {...getFieldProps('IsAutoGenerateSql', { valuePropName: 'checked' })} />
-            </FormItem>
+            <FormItem {...formItemLayout} label="自动生成SQL语句类型">
+              <Select id="select" size="large"   {...getFieldProps('AutoGenerateSqlType')}>
+                  {getSelectOption(this.props.common.AutoGenerateSqlType, 'DictID', 'DictName')}
+              </Select>
+          </FormItem>
           </Col>
 
         </Row>
@@ -192,8 +197,8 @@ function mapPropsToFields(props) {
       TransformJsonType: {
         value: props.dataItem.route.TransformJsonType
       },
-      IsAutoGenerateSql: {
-        value: props.dataItem.route.IsAutoGenerateSql
+      AutoGenerateSqlType: {
+        value: props.dataItem.route.AutoGenerateSqlType
       },
       AutoGenerateSqlTableName: {
         value: props.dataItem.route.AutoGenerateSqlTableName

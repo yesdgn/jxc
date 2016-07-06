@@ -253,7 +253,8 @@ class App extends React.Component {
               dataItem: this.props.routeApi,
               common: this.props.common,
               onLoad: () => {
-                this.props.dispatch(readDict(actionsType.READ_DICT_ROUTERETURNTYPE, '6365673372633792594'))
+                this.props.dispatch(readDict(actionsType.READ_DICT_ROUTERETURNTYPE, '6365673372633792594')),
+                this.props.dispatch(readDict(actionsType.READ_DICT_AUTOGENERATESQLTYPE, '6365687725642743810'));
               },
               onLoadDataItem: () => {
                 this.props.dispatch(readRoute(this.props.params.routeID))

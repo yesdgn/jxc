@@ -86,9 +86,9 @@ class Warehouses extends React.Component {
         }}>
           <Col span="2">
 
-            <Button type="primary">
-              <Link to="/warehouse/0">新增</Link>
-            </Button>
+            <Link to="/warehouse/0">
+              <Button type="primary">新增</Button>
+            </Link>
 
           </Col>
           <Col span="2">

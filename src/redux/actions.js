@@ -37,10 +37,10 @@ export function readInStorageList(pageSize,curPage) {
 export function readInStorage(formID) {
   return (dispatch, getState) => {
     let params={
-      apiid:33,
+      apiid:35,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      formid:formID
+      jsonData:JSON.stringify([{formid:formID},{formid:formID}])
     };
     return dispatch(fetchPost(actionsType.READ_INSTORAGE, params ))
   }

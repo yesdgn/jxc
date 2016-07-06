@@ -35,7 +35,7 @@ const columns = [
     title: '操作人',
     dataIndex: 'Operator',
     key: 'Operator'
-  },{
+  }, {
     title: '操作时间',
     dataIndex: 'OperationTime',
     key: 'OperationTime'
@@ -66,9 +66,8 @@ class InStorageList extends React.Component {
     if (paginationPage && this.props.route.path == JSON.parse(paginationPage).path) {
       this.setState({currentPage: JSON.parse(paginationPage).currentPage})
       this.props.onLoad(pageSize, JSON.parse(paginationPage).currentPage);
-    }
-    else {
-      this.props.onLoad(pageSize, this.state.currentPage );
+    } else {
+      this.props.onLoad(pageSize, this.state.currentPage);
     }
 
   }
@@ -83,7 +82,7 @@ class InStorageList extends React.Component {
     const pagination = {
       total: this.props.dataSource.length > 0
         ? parseInt(this.props.dataSource[0].TotalSize)
-        :this.props.dataSource.length,
+        : this.props.dataSource.length,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -94,10 +93,9 @@ class InStorageList extends React.Component {
         }}>
           <Col span="2">
 
-            <Button type="primary">
-              <Link to="/inStorage/0">新增</Link>
-            </Button>
-
+            <Link to="/inStorage/0">
+              <Button type="primary">新增</Button>
+            </Link>
           </Col>
           <Col span="2">
             <Button type="primary">导出</Button>

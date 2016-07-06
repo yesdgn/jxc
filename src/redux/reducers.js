@@ -80,6 +80,11 @@ export function common(state = [], action) {
         ...state,
         InstorageState: action.receivedJson.items
       }
+      case actionsType.READ_DICT_AUTOGENERATESQLTYPE:
+        return {
+          ...state,
+          AutoGenerateSqlType: action.receivedJson.items
+        }
     case actionsType.USER_CLEAR:
       return {}
     default:
@@ -327,7 +332,7 @@ export function inStorage(state = [], action) {
     case actionsType.READ_INSTORAGE:
       return {
         ...state,
-        inStorage: action.receivedJson.items[0]
+        inStorage: action.receivedJson.items
       }
     case actionsType.SAVE_INSTORAGE:
       return {
