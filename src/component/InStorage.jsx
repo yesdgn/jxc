@@ -56,8 +56,25 @@ var columns = [
   width: 80
 },
 {
+  key: 'GoodsID',
+  name: '商品编号',
+},
+{
   key: 'GoodsName',
   name: '商品',
+},
+{
+  key: 'Unit',
+  name: '单位',
+},
+{
+  key: 'Price',
+  name: '价格',
+  editable : true
+},
+{
+  key: 'Quantity',
+  name: '数量',
   editable : true
 }
 ]
@@ -69,28 +86,31 @@ class InStorage extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.state = {
-      rows:[{ID:1,GoodsID:"123",GoodsName:"abc",key:1,Price:1,Quantity:1,Amount:1}, {ID:1,GoodsID:"123",GoodsName:"abc",key:1,Price:1,Quantity:1,Amount:1}]
-    }
+    this.state = {rows:[]}
   };
 
   componentWillMount() {
     primaryKey = getRand();
     this.props.dispatch(readDict(READ_DICT_INSTORAGESTATE, '6365673372633792599'));
-    this.props.dispatch(readSuppliers(100, 0));
-    this.props.dispatch(readWarehouses(100, 0));
+    this.props.dispatch(readSuppliers(50, 0));
+    this.props.dispatch(readWarehouses(50, 0));
     if (this.props.params.formID != 0) {
       this.props.dispatch(readInStorage(this.props.params.formID));
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps){
     if (nextProps.params.formID !== this.props.params.formID) {
       this.props.dispatch(readInStorage(nextProps.params.formID));
     }
     if (!ifNull(nextProps.inStorage.saveInStorageResult) && nextProps.inStorage.saveInStorageResult.result == 'success') {
       this.context.router.push('/inStorage/' + primaryKey);
       this.props.dispatch(clearResult());
+    }
+    if (nextProps.inStorage.inStorage && this.props.inStorage.inStorage && nextProps.inStorage.inStorage.item1 !== this.props.inStorage.inStorage.item1) {
+      this.setState({
+        rows:nextProps.inStorage.inStorage.item1
+      });
     }
   }
   handleSubmit = (e) => {
@@ -104,12 +124,10 @@ class InStorage extends React.Component {
       };
       form0.StorageDate = moment(form0.StorageDate).format('YYYY-MM-DD');
       form0.OperationTime = moment(form0.OperationTime).format('YYYY-MM-DD HH:mm:ss');
-      let form1={ID:undefined,FormID:primaryKey,GoodsID:"6365489664551289797",Price:1,Quantity:1,Amount:1};
       let formArr = [];
       let form0Arr=[];
-      let form1Arr=[];
+      let form1Arr=this.state.rows;
       form0Arr.push(form0);
-      form1Arr.push(form1);
       formArr.push(form0Arr);
       formArr.push(form1Arr);
             console.log(formArr);
@@ -120,8 +138,8 @@ class InStorage extends React.Component {
   showCombox() {
     alert(1);
   }
-  rowGetter(rowIdx){
-   return {ID:1,GoodsID:"123",GoodsName:"abc",key:1}
+  rowGetter=(rowIdx)=>{
+   return this.state.rows[rowIdx];
  }
  handleRowUpdated =(e)=>{
     //merge updated row with current row and rerender by setting state
