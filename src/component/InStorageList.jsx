@@ -11,6 +11,7 @@ import {
 } from 'antd';
 import {Link} from 'react-router';
 import {storeS} from '../common/dgn';
+
 const confirm = Modal.confirm;
 
 const pageSize = 10;

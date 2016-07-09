@@ -85,6 +85,11 @@ export function common(state = [], action) {
           ...state,
           AutoGenerateSqlType: action.receivedJson.items
         }
+        case actionsType.READ_DICT_GRIDSELECT:
+          return {
+            ...state,
+            Unit: action.receivedJson.items
+          }
     case actionsType.USER_CLEAR:
       return {}
     default:
@@ -339,6 +344,11 @@ export function inStorage(state = [], action) {
         ...state,
         saveInStorageResult: action.receivedJson.items[0]
       }
+    case actionsType.READ_GOODS_SELECT:
+        return {
+          ...state,
+          searchResult: action.receivedJson.items
+        }
     case actionsType.RESULT_CLEAR:
       return {
         ...state,

@@ -171,7 +171,7 @@ class RouteApi extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.ID == 0 || !props.dataItem.route) {
+  if (props.params.RouteID == 0 || !props.dataItem.route) {
     return {};
   } else {
     primaryKey = props.dataItem.route.RouteID;

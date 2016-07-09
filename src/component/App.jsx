@@ -268,6 +268,7 @@ class App extends React.Component {
                 dataSource: this.props.inStorage.inStorageList
                   ? this.props.inStorage.inStorageList
                   : [],
+                  common: this.props.common,
                 onLoad: (pageSize, curPage) => this.props.dispatch(readInStorageList(pageSize, curPage))
               }
               break;

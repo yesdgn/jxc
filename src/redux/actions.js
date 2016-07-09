@@ -19,6 +19,28 @@ export function readDict(actionType,dictTypeID) {
     return dispatch(fetchPost(actionType, params))
   }
 }
+export function readDictGridSelect(actionType,dictTypeID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:36,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      dicttypeid:dictTypeID
+    };
+    return dispatch(fetchPost(actionType, params))
+  }
+}
+export function readGoodsSelect(searchStr) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:37,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      searchStr: '%'+searchStr+'%'
+    };
+    return dispatch(fetchPost(actionsType.READ_GOODS_SELECT, params))
+  }
+}
 //入库
 
 
@@ -29,7 +51,7 @@ export function readInStorageList(pageSize,curPage) {
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
-      curPage:curPage,
+      curPage:curPage
     };
     return dispatch(fetchPost(actionsType.READ_INSTORAGE_LIST, params))
   }

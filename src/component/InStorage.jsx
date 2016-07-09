@@ -1,23 +1,29 @@
 'use strict';
 import React from 'react';
+import  addonsupdate  from 'react-addons-update';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import ReactDataGrid from 'react-data-grid';
-import ReactDataGridPlugins from 'react-data-grid/addons';
+import * as ReactDataGridPlugins  from 'react-data-grid/addons';
+import  SearchInput  from './SearchInput';
 import {APP_CONFIG} from '../entry/config';
 var moment = require('moment');
+import {sample}  from 'lodash';
 import {storeS, getRand, ifNull} from '../common/dgn';
 import {getSelectOption, checkDate} from '../common/dgnControlAssist';
+
 import {
   readDict,
   readSuppliers,
   saveInStorage,
   clearResult,
   readInStorage,
-  readWarehouses
+  readWarehouses,
+  readDictGridSelect,
+  readGoodsSelect
 } from '../redux/actions';
-import {READ_DICT_INSTORAGESTATE} from '../redux/actionsType';
+import {READ_DICT_INSTORAGESTATE,READ_DICT_GRIDSELECT} from '../redux/actionsType';
 import {
   Button,
   Row,
@@ -33,6 +39,8 @@ import {
 } from 'antd';
 
 var primaryKey;
+var mainData;
+var mainDataIsModify =false;
 const userInfo = storeS.getJson('userInfo');
 const Option = Select.Option;
 const createForm = Form.create;
@@ -49,35 +57,10 @@ const formItemLayout = {
 const disabledDate = function(current) {
   return current && current.getTime() > Date.now();
 };
-var columns = [
-{
-  key: 'ID',
-  name: 'ID',
-  width: 80
-},
-{
-  key: 'GoodsID',
-  name: '商品编号',
-},
-{
-  key: 'GoodsName',
-  name: '商品',
-},
-{
-  key: 'Unit',
-  name: '单位',
-},
-{
-  key: 'Price',
-  name: '价格',
-  editable : true
-},
-{
-  key: 'Quantity',
-  name: '数量',
-  editable : true
-}
-]
+
+var AutoCompleteEditor = ReactDataGridPlugins.Editors.AutoComplete;
+
+
 class InStorage extends React.Component {
   static defaultProps = {};
   static propTypes = {};
@@ -92,6 +75,7 @@ class InStorage extends React.Component {
   componentWillMount() {
     primaryKey = getRand();
     this.props.dispatch(readDict(READ_DICT_INSTORAGESTATE, '6365673372633792599'));
+    this.props.dispatch(readDictGridSelect(READ_DICT_GRIDSELECT, '6365673372633792600'));
     this.props.dispatch(readSuppliers(50, 0));
     this.props.dispatch(readWarehouses(50, 0));
     if (this.props.params.formID != 0) {
@@ -105,13 +89,16 @@ class InStorage extends React.Component {
     }
     if (!ifNull(nextProps.inStorage.saveInStorageResult) && nextProps.inStorage.saveInStorageResult.result == 'success') {
       this.context.router.push('/inStorage/' + primaryKey);
+      this.props.dispatch(readInStorage(primaryKey));
       this.props.dispatch(clearResult());
     }
-    if (nextProps.inStorage.inStorage && this.props.inStorage.inStorage && nextProps.inStorage.inStorage.item1 !== this.props.inStorage.inStorage.item1) {
+    if ( nextProps.params.formID!=0 && ((nextProps.inStorage.inStorage  && this.state.rows.length===0)
+    ||  ( nextProps.inStorage.inStorage && this.props.inStorage.inStorage &&  nextProps.inStorage.inStorage.item1!==this.props.inStorage.inStorage.item1))) {
       this.setState({
         rows:nextProps.inStorage.inStorage.item1
       });
     }
+
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -130,7 +117,6 @@ class InStorage extends React.Component {
       form0Arr.push(form0);
       formArr.push(form0Arr);
       formArr.push(form1Arr);
-            console.log(formArr);
       this.props.dispatch(saveInStorage(formArr));
     });
 
@@ -143,12 +129,81 @@ class InStorage extends React.Component {
  }
  handleRowUpdated =(e)=>{
     //merge updated row with current row and rerender by setting state
-    var rows =  this.state.rows;
+    let rows =  this.state.rows;
     Object.assign(rows[e.rowIdx], e.updated);
     this.setState({rows:rows});
   }
+  handleAddRow=(e,rowObj)=>{
+    let newRow ;
+    if (rowObj===undefined)
+    {
+        newRow = {
+        ID: undefined,
+        FormID: primaryKey,
+        GoodsID :0,
+        GoodsName : '',
+        Unit:0,
+        Price:0,
+        Quantity:0
+      };
+    }
+    else {
+      newRow=rowObj;
+    }
+
+    let rows = addonsupdate(this.state.rows, {$push : [newRow]});
+    this.setState({rows : rows});
+}
+  onSearch=(searchStr)=>{
+    this.props.dispatch(readGoodsSelect(searchStr));
+  }
+  onSelect=(data)=>{
+    let newRow = {
+      ID: undefined,
+      FormID: primaryKey,
+      GoodsID :data.GoodsID,
+      GoodsName :data.GoodsName,
+      Unit:data.Unit,
+      Price:data.Price,
+      Quantity:0
+    };
+     this.handleAddRow(null,newRow);
+  }
   render() {
     const {getFieldProps} = this.props.form;
+    var columns = [
+    {
+      key: 'ID',
+      name: 'ID'
+    },
+    {
+      key: 'FormID',
+      name: '单据编号',
+    },
+    {
+      key: 'GoodsID',
+      name: '商品编号',
+    },
+    {
+      key: 'GoodsName',
+      name: '商品',
+    },
+    {
+      key: 'Unit',
+      name: '单位',
+      editor : <AutoCompleteEditor options={this.props.common.Unit}/>
+    },
+    {
+      key: 'Price',
+      name: '价格',
+      editable : true
+    },
+    {
+      key: 'Quantity',
+      name: '数量',
+      editable : true
+    }
+    ];
 
     return (
       <div>
@@ -214,29 +269,35 @@ class InStorage extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col span="12" >
               <FormItem {...formItemLayout} label="备注">
                 <Input type="textarea" rows="4" {...getFieldProps('Remark')}/>
               </FormItem>
+            </Col>
+            <Col span="12">
             </Col>
           </Row>
         </Form>
         <Row>
           <Col span="1"></Col>
           <Col span="4">
-            <Input size="large" placeholder="输入商品代码、条码、名称搜索"/>
-          </Col>
-          <Col span="2">
-            <Button type="ghost" size="large" icon="search" onClick={this.showCombox}>弹出商品选择</Button>
-          </Col>
+            <SearchInput placeholder="输入商品代码、条码、名称搜索" style={{ width: 200 }}
+              onSearch={this.onSearch}  searchResult={this.props.inStorage.searchResult}
+              onSelect={this.onSelect}
+              ></SearchInput>
+           </Col>
         </Row>
         <Row>
-          <Col span="24">
+          <Col span="1"></Col>
+          <Col span="22">
 
-        <ReactDataGrid enableCellSelect={true} rowGetter={this.rowGetter}
-           columns={columns} rowsCount={this.state.rows.length} minHeight={500}   onRowUpdated={this.handleRowUpdated} />
+            <ReactDataGrid enableCellSelect={true} rowGetter={this.rowGetter}
+               columns={columns} rowsCount={this.state.rows.length} minHeight={500}
+                onRowUpdated={this.handleRowUpdated} cellNavigationMode="changeRow"
+               />
 
           </Col>
+          <Col span="1"> </Col>
         </Row>
       </div>
     );
@@ -244,8 +305,9 @@ class InStorage extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.formID == 0) {
-    return {
+
+  if (  props.params.formID == 0) {
+    mainData=mainDataIsModify===false?{
       CompID: {
         value: userInfo.CompID
       },
@@ -264,10 +326,11 @@ function mapPropsToFields(props) {
       OperationTime: {
         value: new Date()
       }
-    };
+    }:mainData;
+    return mainData ;
   } else if (props.inStorage.inStorage) {
     primaryKey = props.inStorage.inStorage.item0[0].FormID;
-    return {
+    mainData=mainDataIsModify===false?{
       ID: {
         value: props.inStorage.inStorage.item0[0].ID
       },
@@ -298,15 +361,21 @@ function mapPropsToFields(props) {
       Remark: {
         value: props.inStorage.inStorage.item0[0].Remark
       }
-    }
+    }:mainData;
+    return  mainData
   } else {
-    return {};
+    return  {};
   }
+}
+
+function onFieldsChange(props, fields) {
+  mainDataIsModify=true;
+  mainData[sample(fields).name]={value:sample(fields).value};
 }
 
 function mapStateToProps(state) {
   const {common, supplier, warehouse, inStorage} = state
   return {common, supplier, warehouse, inStorage}
 }
-InStorage = Form.create({mapPropsToFields: mapPropsToFields})(InStorage);
+InStorage = Form.create({mapPropsToFields: mapPropsToFields,onFieldsChange:onFieldsChange})(InStorage);
 export default connect(mapStateToProps)(InStorage)
