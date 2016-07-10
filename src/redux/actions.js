@@ -51,7 +51,7 @@ export function readInStorageList(pageSize,curPage) {
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
-      curPage:curPage
+      curPage:curPage-1
     };
     return dispatch(fetchPost(actionsType.READ_INSTORAGE_LIST, params))
   }

@@ -1,4 +1,4 @@
-import {isString,isNaN,isNil,isNull,now,chain,keys,sortBy,value,toUpper,isArray}  from 'lodash';
+import {isString,isNaN,isNil,isNull,now,chain,keys,sortBy,value,toUpper,isArray,size,isPlainObject}  from 'lodash';
 import {MD5} from 'crypto-js';
 import {APP_CONFIG} from '../entry/config';
 
@@ -34,6 +34,7 @@ export function ifNull(obj)
   if (isString(obj) && obj==='' ) return true;
   if (isArray(obj) && obj.length===0 ) return true;
   if (obj===undefined ) return true;
+  if (isPlainObject(obj) && size(obj)<=0)  return true;
   if (isNaN(obj)) return true;
   if (isNil(obj)) return true;
   if (isNull(obj)) return true;

@@ -22,20 +22,20 @@ const columns = [
     key: 'FormID'
   }, {
     title: '仓库',
-    dataIndex: 'WarehouseID',
-    key: 'WarehouseID'
+    dataIndex: 'WarehouseName',
+    key: 'WarehouseName'
   }, {
     title: '入库日期',
     dataIndex: 'StorageDate',
     key: 'StorageDate'
   }, {
     title: '单据状态',
-    dataIndex: 'FormState',
-    key: 'FormState'
+    dataIndex: 'FormStateName',
+    key: 'FormStateName'
   }, {
     title: '操作人',
-    dataIndex: 'Operator',
-    key: 'Operator'
+    dataIndex: 'OperatorName',
+    key: 'OperatorName'
   }, {
     title: '操作时间',
     dataIndex: 'OperationTime',

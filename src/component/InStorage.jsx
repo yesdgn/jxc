@@ -40,7 +40,7 @@ import {
 
 var primaryKey;
 var mainData;
-var mainDataIsModify =false;
+var mainDataHasModify =false;
 const userInfo = storeS.getJson('userInfo');
 const Option = Select.Option;
 const createForm = Form.create;
@@ -59,7 +59,20 @@ const disabledDate = function(current) {
 };
 
 var AutoCompleteEditor = ReactDataGridPlugins.Editors.AutoComplete;
-
+const searchPageColumns = [
+  {
+    title: '商品编号',
+    dataIndex: 'GoodsID',
+    key: 'GoodsID'
+  },{
+    title: '商品名称',
+    dataIndex: 'GoodsName',
+    key: 'GoodsName'
+  },{
+    title: '价格',
+    dataIndex: 'Price',
+    key: 'Price'
+  }];
 
 class InStorage extends React.Component {
   static defaultProps = {};
@@ -82,7 +95,9 @@ class InStorage extends React.Component {
       this.props.dispatch(readInStorage(this.props.params.formID));
     }
   }
-
+componentWillUnmount() {
+   mainDataHasModify =false;
+}
   componentWillReceiveProps(nextProps){
     if (nextProps.params.formID !== this.props.params.formID) {
       this.props.dispatch(readInStorage(nextProps.params.formID));
@@ -91,6 +106,7 @@ class InStorage extends React.Component {
       this.context.router.push('/inStorage/' + primaryKey);
       this.props.dispatch(readInStorage(primaryKey));
       this.props.dispatch(clearResult());
+      mainDataHasModify=false;
     }
     if ( nextProps.params.formID!=0 && ((nextProps.inStorage.inStorage  && this.state.rows.length===0)
     ||  ( nextProps.inStorage.inStorage && this.props.inStorage.inStorage &&  nextProps.inStorage.inStorage.item1!==this.props.inStorage.inStorage.item1))) {
@@ -121,9 +137,7 @@ class InStorage extends React.Component {
     });
 
   };
-  showCombox() {
-    alert(1);
-  }
+
   rowGetter=(rowIdx)=>{
    return this.state.rows[rowIdx];
  }
@@ -150,24 +164,28 @@ class InStorage extends React.Component {
     else {
       newRow=rowObj;
     }
-
-    let rows = addonsupdate(this.state.rows, {$push : [newRow]});
+    //let rows = addonsupdate(this.state.rows, {$push : [newRow]});
+    let rows=this.state.rows;
+    rows.push(newRow);
     this.setState({rows : rows});
 }
   onSearch=(searchStr)=>{
     this.props.dispatch(readGoodsSelect(searchStr));
   }
   onSelect=(data)=>{
-    let newRow = {
-      ID: undefined,
-      FormID: primaryKey,
-      GoodsID :data.GoodsID,
-      GoodsName :data.GoodsName,
-      Unit:data.Unit,
-      Price:data.Price,
-      Quantity:0
-    };
-     this.handleAddRow(null,newRow);
+    console.log(data);
+    data.map(function (x) {
+      let newRow = {
+        ID: undefined,
+        FormID: primaryKey,
+        GoodsID :x.GoodsID,
+        GoodsName :x.GoodsName,
+        Unit:x.Unit,
+        Price:x.Price,
+        Quantity:0
+      };
+      this.handleAddRow(null,newRow);
+    }.bind(this));
   }
   render() {
     const {getFieldProps} = this.props.form;
@@ -281,9 +299,9 @@ class InStorage extends React.Component {
         <Row>
           <Col span="1"></Col>
           <Col span="4">
-            <SearchInput placeholder="输入商品代码、条码、名称搜索" style={{ width: 200 }}
-              onSearch={this.onSearch}  searchResult={this.props.inStorage.searchResult}
-              onSelect={this.onSelect}
+            <SearchInput placeholder="输入商品代码、条码、名称搜索" style={{ width: 250,marginBottom:5 }}
+              onSearch={this.onSearch}  dataSource={this.props.inStorage.searchResult}
+              onSelect={this.onSelect}  columns={searchPageColumns}
               ></SearchInput>
            </Col>
         </Row>
@@ -307,9 +325,9 @@ class InStorage extends React.Component {
 function mapPropsToFields(props) {
 
   if (  props.params.formID == 0) {
-    mainData=mainDataIsModify===false?{
+    mainData=mainDataHasModify===false?{
       CompID: {
-        value: userInfo.CompID
+        value: userInfo===undefined?null:userInfo.CompID
       },
       FormID: {
         value: primaryKey
@@ -330,7 +348,7 @@ function mapPropsToFields(props) {
     return mainData ;
   } else if (props.inStorage.inStorage) {
     primaryKey = props.inStorage.inStorage.item0[0].FormID;
-    mainData=mainDataIsModify===false?{
+    mainData=mainDataHasModify===false?{
       ID: {
         value: props.inStorage.inStorage.item0[0].ID
       },
@@ -369,7 +387,9 @@ function mapPropsToFields(props) {
 }
 
 function onFieldsChange(props, fields) {
-  mainDataIsModify=true;
+  if (ifNull(fields))
+  {return;}
+  mainDataHasModify=true;
   mainData[sample(fields).name]={value:sample(fields).value};
 }
 
