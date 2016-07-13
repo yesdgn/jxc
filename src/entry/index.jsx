@@ -32,6 +32,8 @@ import InStorage from '../component/project/InStorage';
 import InStorageList from '../component/project/InStorageList';
 import Dictionary from '../component/base/Dictionary';
 import DictionaryList from '../component/base/DictionaryList';
+import OutStorage from '../component/project/OutStorage';
+import OutStorageList from '../component/project/OutStorageList';
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -71,6 +73,8 @@ ReactDOM.render(
       <Route path="/inStorage/:formID" breadcrumbName="采购入库单"   onEnter={requireAuthApp}  component={InStorage}/>
       <Route path="dictionaryList" breadcrumbName="数据字典列表"  onEnter={requireAuthApp}   component={DictionaryList} />
       <Route path="/dictionary/:dictionaryID" breadcrumbName="数据字典"   onEnter={requireAuthApp}  component={Dictionary}/>
+      <Route path="outStorageList" breadcrumbName="销售出库单列表"  onEnter={requireAuthApp}   component={OutStorageList} />
+      <Route path="/outStorage/:formID" breadcrumbName="销售出库单"   onEnter={requireAuthApp}  component={OutStorage}/>
 
       <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
       <Route path="*" breadcrumbName="未找到页面" component={NoMatch}/>

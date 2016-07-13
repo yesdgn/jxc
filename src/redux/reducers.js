@@ -80,6 +80,11 @@ export function common(state = [], action) {
         ...state,
         InstorageState: action.receivedJson.items
       }
+    case actionsType.READ_DICT_OUTSTORAGESTATE:
+        return {
+          ...state,
+          OutstorageState: action.receivedJson.items
+        }
       case actionsType.READ_DICT_AUTOGENERATESQLTYPE:
         return {
           ...state,
@@ -335,6 +340,39 @@ export function inStorage(state = [], action) {
           formImgs: action.receivedJson.items
         }
     case actionsType.READ_INSTORAGE_FILE:
+            return {
+              ...state,
+              formFiles: action.receivedJson.items
+            }
+
+    case actionsType.READ_GOODS_SELECT:
+        return {
+          ...state,
+          searchResult: action.receivedJson.items
+        }
+    default:
+      return state
+  }
+}
+//销售出库
+export function outStorage(state = [], action) {
+  switch (action.type) {
+    case actionsType.READ_OUTSTORAGE_LIST:
+      return {
+        ...state,
+        outStorageList: action.receivedJson.items
+      }
+    case actionsType.READ_OUTSTORAGE:
+      return {
+        ...state,
+        outStorage: action.receivedJson.items
+      }
+    case actionsType.READ_OUTSTORAGE_IMG:
+        return {
+          ...state,
+          formImgs: action.receivedJson.items
+        }
+    case actionsType.READ_OUTSTORAGE_FILE:
             return {
               ...state,
               formFiles: action.receivedJson.items

@@ -77,8 +77,6 @@ return (dispatch, getState) => {
 }
 }
 //入库
-
-
 export function readInStorageList(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
@@ -117,7 +115,45 @@ return (dispatch, getState) => {
   return dispatch(fetchPost(actionsType.SAVE_INSTORAGE, params,cb))
 }
 }
-
+//出库
+export function readOutStorageList(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:43,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      pageSize:pageSize,
+      curPage:curPage-1
+    };
+    return dispatch(fetchPost(actionsType.READ_OUTSTORAGE_LIST, params))
+  }
+}
+export function readOutStorage(formID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:41,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      jsonData:JSON.stringify([{formid:formID},{formid:formID}])
+    };
+    return dispatch(fetchPost(actionsType.READ_OUTSTORAGE, params,cbReadOutStorage ))
+  }
+}
+function cbReadOutStorage (data,params,dispatch) {
+    dispatch(readUploadFile(actionsType.READ_OUTSTORAGE_IMG,data.items.item0[0].FormImages,'img'));
+    dispatch(readUploadFile(actionsType.READ_OUTSTORAGE_FILE,data.items.item0[0].FormFiles,'file'));
+  }
+export function saveOutStorage(jsonData,cb) {
+return (dispatch, getState) => {
+  let params={
+    apiid:42,
+    sessionkey:storeS.getItem('sessionKey'),
+    userid:storeS.getJson('userInfo').UserID,
+    jsonData:JSON.stringify(jsonData)
+  };
+  return dispatch(fetchPost(actionsType.SAVE_OUTSTORAGE, params,cb))
+}
+}
 //平台路由
 
 

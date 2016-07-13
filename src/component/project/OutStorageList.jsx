@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import {connect} from 'react-redux'
 import {
   Table,
   Icon,
@@ -11,7 +12,7 @@ import {
 } from 'antd';
 import {Link} from 'react-router';
 import {storeS} from '../../common/dgn';
-
+import {readOutStorageList} from '../../redux/actions';
 const confirm = Modal.confirm;
 
 const pageSize = 10;
@@ -25,9 +26,9 @@ const columns = [
     dataIndex: 'WarehouseName',
     key: 'WarehouseName'
   }, {
-    title: '入库日期',
-    dataIndex: 'InDate',
-    key: 'InDate'
+    title: '出库日期',
+    dataIndex: 'OutDate',
+    key: 'OutDate'
   }, {
     title: '单据状态',
     dataIndex: 'FormStateName',
@@ -46,14 +47,14 @@ const columns = [
     render(text, record) {
       return (
         <span>
-          <Link to={`/inStorage/` + record.FormID}>编辑</Link>
+          <Link to={`/outStorage/` + record.FormID}>编辑</Link>
         </span>
       );
     }
   }
 ]
 
-class InStorageList extends React.Component {
+class OutStorageList extends React.Component {
   static defaultProps = {};
   static propTypes = {};
   constructor(props) {
@@ -66,9 +67,9 @@ class InStorageList extends React.Component {
     let paginationPage = storeS.getItem("pagination");
     if (paginationPage && this.props.route.path == JSON.parse(paginationPage).path) {
       this.setState({currentPage: JSON.parse(paginationPage).currentPage})
-      this.props.onLoad(pageSize, JSON.parse(paginationPage).currentPage);
+      this.props.dispatch(readOutStorageList(pageSize, JSON.parse(paginationPage).currentPage));
     } else {
-      this.props.onLoad(pageSize, this.state.currentPage);
+      this.props.dispatch(readOutStorageList(pageSize, this.state.currentPage));
     }
 
   }
@@ -77,13 +78,11 @@ class InStorageList extends React.Component {
   }
   handlePageChange = (current) => {
     this.setState({currentPage: current})
-    this.props.onLoad(pageSize, current);
+    this.props.dispatch(readOutStorageList(pageSize, current));
   }
   render() {
     const pagination = {
-      total: this.props.dataSource.length > 0
-        ? parseInt(this.props.dataSource[0].TotalSize)
-        : this.props.dataSource.length,
+      total: this.props.outStorage.outStorageList?this.props.outStorage.outStorageList.length:0 ,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -94,7 +93,7 @@ class InStorageList extends React.Component {
         }}>
           <Col span="2">
 
-            <Link to="/inStorage/0">
+            <Link to="/outStorage/0">
               <Button type="primary">新增</Button>
             </Link>
           </Col>
@@ -102,10 +101,14 @@ class InStorageList extends React.Component {
             <Button type="primary">导出</Button>
           </Col>
         </Row>
-        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource} pagination={pagination}/>
+        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.outStorage.outStorageList} pagination={pagination}/>
       </div>
     );
   }
 };
 
-export default InStorageList
+function mapStateToProps(state) {
+  const {outStorage} = state
+  return {outStorage}
+}
+export default connect(mapStateToProps)(OutStorageList)
