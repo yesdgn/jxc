@@ -6,7 +6,7 @@ import {storeS, getUrl} from '../common/dgn';
 import {APP_CONFIG} from '../entry/config';
 //params:传给服务端的各种参数，srcData:类似于保存时表单的数据 传入后可以给reducers使用,
 //option:一些选项，用来控制是否需要显示服务端消息等。
-export function fetchGet(actionType, params, srcData, option, callBack) {
+export function fetchGet(actionType, params, callBack, srcData, option) {
   return dispatch => {
     //  dispatch(requestPosts(userid))
     let url = getUrl('get', params)
@@ -14,17 +14,8 @@ export function fetchGet(actionType, params, srcData, option, callBack) {
       if (res.ok) {
         res.json().then(data => {
           if (data.returnCode == 0) {
-            if (option && option.isShowResultMessage) {
-              if (data.items && isArray(data.items) && data.items.length == 1) {
-                if (data.items[0].result == 'success') {
-                  message.success(data.items[0].resultDescribe);
-                } else {
-                  message.error(data.items[0].resultDescribe);
-                }
-              }
-            }
             if (isFunction(callBack)) {
-              callBack(data, dispatch, params);
+              callBack(data, params, dispatch);
             }
             dispatch(receiveData(actionType, data, srcData))
           } else if (data.returnCode == 1003 || data.returnCode == 1004) {
@@ -47,7 +38,7 @@ export function fetchGet(actionType, params, srcData, option, callBack) {
   }
 }
 
-export function fetchPost(actionType, params, srcData, option, callBack) {
+export function fetchPost(actionType, params, callBack, srcData, option) {
   return dispatch => {
     //  dispatch(requestPosts(userid))
     let url = APP_CONFIG.APISERVERURL + '/' + params.apiid;
@@ -61,17 +52,8 @@ export function fetchPost(actionType, params, srcData, option, callBack) {
       if (res.ok) {
         res.json().then(data => {
           if (data.returnCode == 0) {
-            if (option && option.isShowResultMessage) {
-              if (data.items && isArray(data.items) && data.items.length == 1) {
-                if (data.items[0].result == 'success') {
-                  message.success(data.items[0].resultDescribe);
-                } else {
-                  message.error(data.items[0].resultDescribe);
-                }
-              }
-            }
             if (isFunction(callBack)) {
-              callBack(data, dispatch, params);
+              callBack(data, params, dispatch);
             }
             dispatch(receiveData(actionType, data, srcData))
           } else if (data.returnCode == 1003 || data.returnCode == 1004) {

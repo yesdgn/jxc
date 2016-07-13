@@ -1,50 +1,43 @@
 'use strict';
 import React from 'react';
+import {connect} from 'react-redux'
 import {
   Table,
   Icon,
-  Steps,
   Row,
   Col,
   Modal,
   Button
 } from 'antd';
+import {readDictionaryList} from '../../redux/actions';
 import {Link} from 'react-router';
-import {storeS} from '../common/dgn';
+import {storeS} from '../../common/dgn';
 const confirm = Modal.confirm;
 
 const pageSize = 10;
 const columns = [
   {
-    title: '仓库代码',
-    dataIndex: 'WarehouseCode',
-    key: 'WarehouseCode'
+    title: '数据字典编号',
+    dataIndex: 'DictTypeID',
+    key: 'DictTypeID'
   }, {
-    title: '仓库名称',
-    dataIndex: 'WarehouseName',
-    key: 'WarehouseName'
-  }, {
-    title: '仓库地址',
-    dataIndex: 'WarehouseAddr',
-    key: 'WarehouseAddr'
-  }, {
-    title: '仓库电话',
-    dataIndex: 'WarehouseTel',
-    key: 'WarehouseTel'
+    title: '数据字典名称',
+    dataIndex: 'DictTypeName',
+    key: 'DictTypeName'
   }, {
     title: '操作',
     key: 'operation',
     render(text, record) {
       return (
         <span>
-          <Link to={`/warehouse/` + record.WarehouseID}>编辑</Link>
+          <Link to={`/dictionary/` + record.DictTypeID}>编辑</Link>
         </span>
       );
     }
   }
 ]
 
-class Warehouses extends React.Component {
+class DictionaryList extends React.Component {
   static defaultProps = {};
   static propTypes = {};
   constructor(props) {
@@ -57,10 +50,10 @@ class Warehouses extends React.Component {
     let paginationPage = storeS.getItem("pagination");
     if (paginationPage && this.props.route.path == JSON.parse(paginationPage).path) {
       this.setState({currentPage: JSON.parse(paginationPage).currentPage})
-      this.props.onLoad(pageSize, JSON.parse(paginationPage).currentPage);
+      this.props.dispatch(readDictionaryList(pageSize, JSON.parse(paginationPage).currentPage));
     }
     else {
-      this.props.onLoad(pageSize, this.state.currentPage );
+      this.props.dispatch(readDictionaryList(pageSize, this.state.currentPage));
     }
 
   }
@@ -69,13 +62,11 @@ class Warehouses extends React.Component {
   }
   handlePageChange = (current) => {
     this.setState({currentPage: current})
-    this.props.onLoad(pageSize, current);
+    this.props.dispatch(readDictionaryList(pageSize, current));
   }
   render() {
     const pagination = {
-      total: this.props.dataSource.length > 0
-        ? parseInt(this.props.dataSource[0].TotalSize)
-        :this.props.dataSource.length,
+      total:  this.props.dictionary.dictionaryList?this.props.dictionary.dictionaryList.length:0,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -86,7 +77,7 @@ class Warehouses extends React.Component {
         }}>
           <Col span="2">
 
-            <Link to="/warehouse/0">
+            <Link to="/dictionary/0">
               <Button type="primary">新增</Button>
             </Link>
 
@@ -95,10 +86,13 @@ class Warehouses extends React.Component {
             <Button type="primary">导出</Button>
           </Col>
         </Row>
-        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource} pagination={pagination}/>
+        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dictionary.dictionaryList} pagination={pagination}/>
       </div>
     );
   }
 };
-
-export default Warehouses
+function mapStateToProps(state) {
+  const {dictionary} = state
+  return {dictionary}
+}
+export default  connect(mapStateToProps)(DictionaryList)

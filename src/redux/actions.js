@@ -41,6 +41,41 @@ export function readGoodsSelect(searchStr) {
     return dispatch(fetchPost(actionsType.READ_GOODS_SELECT, params))
   }
 }
+//数据字典
+export function readDictionaryList(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:38,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      pageSize:pageSize,
+      curPage:curPage-1
+    };
+    return dispatch(fetchPost(actionsType.READ_DICTIONARY_LIST, params))
+  }
+}
+export function readDictionary(dictTypeID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:39,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      jsonData:JSON.stringify([{dictTypeID:dictTypeID},{dictTypeID:dictTypeID}])
+    };
+    return dispatch(fetchPost(actionsType.READ_DICTIONARY, params ))
+  }
+}
+export function saveDictionary(jsonData,cb) {
+return (dispatch, getState) => {
+  let params={
+    apiid:40,
+    sessionkey:storeS.getItem('sessionKey'),
+    userid:storeS.getJson('userInfo').UserID,
+    jsonData:JSON.stringify(jsonData)
+  };
+  return dispatch(fetchPost(actionsType.SAVE_DICTIONARY, params,cb))
+}
+}
 //入库
 
 
@@ -64,11 +99,14 @@ export function readInStorage(formID) {
       userid:storeS.getJson('userInfo').UserID,
       jsonData:JSON.stringify([{formid:formID},{formid:formID}])
     };
-    return dispatch(fetchPost(actionsType.READ_INSTORAGE, params ))
+    return dispatch(fetchPost(actionsType.READ_INSTORAGE, params,cbReadInStorage ))
   }
 }
-
-export function saveInStorage(jsonData) {
+function cbReadInStorage (data,params,dispatch) {
+    dispatch(readUploadFile(actionsType.READ_INSTORAGE_IMG,data.items.item0[0].FormImages,'img'));
+    dispatch(readUploadFile(actionsType.READ_INSTORAGE_FILE,data.items.item0[0].FormFiles,'file'));
+  }
+export function saveInStorage(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:34,
@@ -76,7 +114,7 @@ return (dispatch, getState) => {
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
-  return dispatch(fetchPost(actionsType.SAVE_INSTORAGE, params,jsonData,{isShowResultMessage:true}))
+  return dispatch(fetchPost(actionsType.SAVE_INSTORAGE, params,cb))
 }
 }
 
@@ -101,13 +139,13 @@ export function readRoute(routeID) {
       apiid:30,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      routeid:routeID
+      jsonData:JSON.stringify([{routeid:routeID}])
     };
     return dispatch(fetchPost(actionsType.READ_ROUTER, params ))
   }
 }
 
-export function saveRoute(jsonData) {
+export function saveRoute(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:31,
@@ -115,7 +153,7 @@ return (dispatch, getState) => {
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
-  return dispatch(fetchPost(actionsType.SAVE_ROUTER, params,jsonData,{isShowResultMessage:true}))
+  return dispatch(fetchPost(actionsType.SAVE_ROUTER, params,cb))
 }
 }
 //仓库warehouses
@@ -178,10 +216,10 @@ export function readSupplier(SupplierID) {
       userid:storeS.getJson('userInfo').UserID,
       compid:SupplierID
     };
-    return dispatch(fetchPost(actionsType.READ_SUPPLIER, params,null,null,cbReadSupplier))
+    return dispatch(fetchPost(actionsType.READ_SUPPLIER, params,cbReadSupplier))
   }
 }
-function cbReadSupplier (data,dispatch,params) {
+function cbReadSupplier (data,params,dispatch) {
   dispatch(readUploadFile(actionsType.READ_SUPPLIER_FILE,data.items[0].CompImages,'img'));
 }
 export function saveSupplier(jsonData) {
@@ -217,10 +255,10 @@ export function readCustomer(CustomerID) {
       userid:storeS.getJson('userInfo').UserID,
       compid:CustomerID
     };
-    return dispatch(fetchPost(actionsType.READ_CUSTOMER, params,null,null,cbReadCustomer))
+    return dispatch(fetchPost(actionsType.READ_CUSTOMER, params,cbReadCustomer))
   }
 }
-function cbReadCustomer (data,dispatch,params) {
+function cbReadCustomer (data,params,dispatch) {
   dispatch(readUploadFile(actionsType.READ_CUSTOMER_FILE,data.items[0].CompImages,'img'));
 }
 export function saveCustomer(jsonData) {
@@ -256,10 +294,10 @@ export function readCompany(companyID) {
       userid:storeS.getJson('userInfo').UserID,
       compid:companyID
     };
-    return dispatch(fetchPost(actionsType.READ_COMPANY, params,null,null,cbReadCompany))
+    return dispatch(fetchPost(actionsType.READ_COMPANY, params,cbReadCompany ))
   }
 }
-function cbReadCompany (data,dispatch,params) {
+function cbReadCompany (data,params,dispatch) {
   dispatch(readUploadFile(actionsType.READ_COMPANY_FILE,data.items[0].CompImages,'img'));
 }
 export function saveCompany(jsonData) {
@@ -294,10 +332,10 @@ export function readGoods(goodsID) {
       userid:storeS.getJson('userInfo').UserID,
       goodsid:goodsID
     };
-    return dispatch(fetchPost(actionsType.READ_GOODS, params,null,null,cbReadGoods))
+    return dispatch(fetchPost(actionsType.READ_GOODS, params,cbReadGoods))
   }
 }
-function cbReadGoods (data,dispatch,params) {
+function cbReadGoods (data,params,dispatch) {
   dispatch(readUploadFile(actionsType.READ_GOODS_FILE,data.items[0].GoodsImages,'img'));
 }
 export function saveGoods(jsonData) {
@@ -351,10 +389,10 @@ export function readPerson(personID) {
       userid:storeS.getJson('userInfo').UserID,
       personid:personID
     };
-    return dispatch(fetchPost(actionsType.READ_PERSON, params,null,null,cbReadPerson))
+    return dispatch(fetchPost(actionsType.READ_PERSON, params,cbReadPerson))
   }
 }
-function cbReadPerson (data,dispatch,params) {
+function cbReadPerson (data,params,dispatch) {
   dispatch(readUploadFile(actionsType.READ_PERSONFILE,data.items.item0[0].UserImages,'img'));
 }
 export function readUploadFile(actionType,fileFormID,gettype) {
@@ -431,10 +469,10 @@ export function messageFinished (msgID) {
       userid:storeS.getJson('userInfo').UserID,
       id:msgID
     };
-    return dispatch(fetchPost(actionsType.MESSAGE_DONE, params,null,null,cbMessageFinished))
+    return dispatch(fetchPost(actionsType.MESSAGE_DONE, params,cbMessageFinished))
   }
 }
-function cbMessageFinished (data,dispatch,params) {
+function cbMessageFinished (data,params,dispatch) {
   //message.success(data.items[0].resultDescribe);
   dispatch(readMessage());
 }
@@ -449,7 +487,7 @@ export function readMainMenu() {
     return dispatch(fetchPost(actionsType.READ_MAIN_MENU, params))
   }
 }
-export const REMOVEFILE = 'REMOVEFILE'
+
 export function removeFile(fileid) {
   return (dispatch, getState) => {
     let params={
@@ -471,10 +509,10 @@ export function setFavorites() {
       userid:storeS.getJson('userInfo').UserID,
       path:location.pathname,
     };
-    return dispatch(fetchPost(actionsType.SET_FAVORITES, params,null,null,cbSetFavorites))
+    return dispatch(fetchPost(actionsType.SET_FAVORITES, params,cbSetFavorites))
   }
 }
-function cbSetFavorites (data,dispatch,params) {
+function cbSetFavorites (data,params,dispatch) {
   message.success(data.items[0].resultDescribe);
   dispatch(readFavorites());
 }

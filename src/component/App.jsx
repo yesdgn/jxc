@@ -37,11 +37,7 @@ import {
   readWarehouse,
   saveWarehouse,
   readRoutes,
-  readRoute,
-  saveRoute,
   readInStorageList,
-  readInStorage,
-  saveInStorage
 } from '../redux/actions'
 import Head from './Head';
 import Left from './Left';
@@ -248,22 +244,7 @@ class App extends React.Component {
             onLoad: (pageSize, curPage) => this.props.dispatch(readRoutes(pageSize, curPage))
           }
           break;
-          case '/routeApi/:routeID':
-            return {
-              dataItem: this.props.routeApi,
-              common: this.props.common,
-              onLoad: () => {
-                this.props.dispatch(readDict(actionsType.READ_DICT_ROUTERETURNTYPE, '6365673372633792594')),
-                this.props.dispatch(readDict(actionsType.READ_DICT_AUTOGENERATESQLTYPE, '6365687725642743810'));
-              },
-              onLoadDataItem: () => {
-                this.props.dispatch(readRoute(this.props.params.routeID))
-              },
-              saveDataItem: (data) => this.props.dispatch(saveRoute(data)),
-              clearResult: () => this.props.dispatch(clearResult())
-            }
-            break;
-            case 'inStorageList':
+        case 'inStorageList':
               return {
                 dataSource: this.props.inStorage.inStorageList
                   ? this.props.inStorage.inStorageList

@@ -310,17 +310,7 @@ export function routeApi(state = [], action) {
     case actionsType.READ_ROUTER:
       return {
         ...state,
-        route: action.receivedJson.items[0]
-      }
-    case actionsType.SAVE_ROUTER:
-      return {
-        ...state,
-        saveRouteResult: action.receivedJson.items[0]
-      }
-    case actionsType.RESULT_CLEAR:
-      return {
-        ...state,
-        saveRouteResult: {}
+        route: action.receivedJson.items
       }
     default:
       return state
@@ -339,20 +329,38 @@ export function inStorage(state = [], action) {
         ...state,
         inStorage: action.receivedJson.items
       }
-    case actionsType.SAVE_INSTORAGE:
-      return {
-        ...state,
-        saveInStorageResult: action.receivedJson.items[0]
-      }
+    case actionsType.READ_INSTORAGE_IMG:
+        return {
+          ...state,
+          formImgs: action.receivedJson.items
+        }
+    case actionsType.READ_INSTORAGE_FILE:
+            return {
+              ...state,
+              formFiles: action.receivedJson.items
+            }
+
     case actionsType.READ_GOODS_SELECT:
         return {
           ...state,
           searchResult: action.receivedJson.items
         }
-    case actionsType.RESULT_CLEAR:
+    default:
+      return state
+  }
+}
+//数据字典
+export function dictionary(state = [], action) {
+  switch (action.type) {
+    case actionsType.READ_DICTIONARY_LIST:
       return {
         ...state,
-        saveInStorageResult: {}
+        dictionaryList: action.receivedJson.items
+      }
+    case actionsType.READ_DICTIONARY:
+      return {
+        ...state,
+        dictionary: action.receivedJson.items
       }
     default:
       return state

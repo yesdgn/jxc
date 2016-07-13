@@ -10,45 +10,42 @@ import {
   Button
 } from 'antd';
 import {Link} from 'react-router';
-import {storeS} from '../common/dgn';
+import {storeS} from '../../common/dgn';
 const confirm = Modal.confirm;
 
 const pageSize = 10;
 const columns = [
   {
-    title: '供应商代码',
-    dataIndex: 'CompCode',
-    key: 'CompCode'
+    title: 'ApiID',
+    dataIndex: 'ApiID',
+    key: 'ApiID'
   }, {
-    title: '供应商名称',
-    dataIndex: 'CompName',
-    key: 'CompName'
+    title: '执行SQL',
+    dataIndex: 'ApiExecSql',
+    key: 'ApiExecSql'
   }, {
-    title: '供应商地址',
-    dataIndex: 'CompAddr',
-    key: 'CompAddr'
-  }, {
-    title: '供应商电话',
-    dataIndex: 'CompTel',
-    key: 'CompTel'
-  }, {
-    title: '公司类型',
-    dataIndex: 'CompType',
-    key: 'CompType'
+    title: '是否开放API',
+    dataIndex: 'IsOpen',
+    key: 'IsOpen'
+  }
+  , {
+    title: '返回类型',
+    dataIndex: 'TransformJsonType',
+    key: 'RouterStr'
   }, {
     title: '操作',
     key: 'operation',
     render(text, record) {
       return (
         <span>
-          <Link to={`/supplier/` + record.CompID}>编辑</Link>
+          <Link to={`/routeapi/` + record.RouteID}>编辑</Link>
         </span>
       );
     }
   }
 ]
 
-class Suppliers extends React.Component {
+class RouteApis extends React.Component {
   static defaultProps = {};
   static propTypes = {};
   constructor(props) {
@@ -90,7 +87,7 @@ class Suppliers extends React.Component {
         }}>
           <Col span="2">
 
-            <Link to="/supplier/0">
+            <Link to="/routeApi/0">
               <Button type="primary">新增</Button>
             </Link>
 
@@ -105,4 +102,4 @@ class Suppliers extends React.Component {
   }
 };
 
-export default Suppliers
+export default RouteApis

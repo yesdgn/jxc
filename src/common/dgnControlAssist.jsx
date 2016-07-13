@@ -57,3 +57,22 @@ export function getUploadControlImgData(data) {
 
   return imgArray;
 }
+
+export function getUploadControlFileData(data) {
+  if (ifNull(data))
+    { return [];}
+  let fileArray=[];
+  data.item0.map(function (x) {
+   fileArray.push(
+      {
+        uid: x.FileID,
+        name: x.UploadFileName,
+        status: 'done',
+        url: APP_CONFIG.FILEURL+x.NewFileName
+      }
+    )
+
+  })
+
+  return fileArray;
+}

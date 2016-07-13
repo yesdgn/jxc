@@ -10,7 +10,7 @@ import {
   Button
 } from 'antd';
 import {Link} from 'react-router';
-import {storeS} from '../common/dgn';
+import {storeS} from '../../common/dgn';
 
 const confirm = Modal.confirm;
 
@@ -26,8 +26,8 @@ const columns = [
     key: 'WarehouseName'
   }, {
     title: '入库日期',
-    dataIndex: 'StorageDate',
-    key: 'StorageDate'
+    dataIndex: 'InDate',
+    key: 'InDate'
   }, {
     title: '单据状态',
     dataIndex: 'FormStateName',

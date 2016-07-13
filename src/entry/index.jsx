@@ -10,26 +10,28 @@ import App from '../component/App';
 import NoMatch from '../component/NoMatch';
 import Login from '../component/Login';
 import Main from '../component/Main';
-import PersonList from '../component/PersonList';
-import Person from '../component/Person';
+import PersonList from '../component/base/PersonList';
+import Person from '../component/base/Person';
 import RegUser from '../component/RegUser';
 import NewPass from '../component/NewPass';
-import Message from '../component/Message';
-import MessageList from '../component/MessageList';
-import Company from '../component/Company';
-import CompanyList from '../component/CompanyList';
-import Goods from '../component/Goods';
-import GoodsList from '../component/GoodsList';
-import Customer from '../component/Customer';
-import CustomerList from '../component/CustomerList';
-import Supplier from '../component/Supplier';
-import SupplierList from '../component/SupplierList';
-import Warehouse from '../component/Warehouse';
-import WarehouseList from '../component/WarehouseList';
-import RouteApi from '../component/RouteApi';
-import RouteApiList from '../component/RouteApiList';
-import InStorage from '../component/InStorage';
-import InStorageList from '../component/InStorageList';
+import Message from '../component/base/Message';
+import MessageList from '../component/base/MessageList';
+import Company from '../component/base/Company';
+import CompanyList from '../component/base/CompanyList';
+import Goods from '../component/project/Goods';
+import GoodsList from '../component/project/GoodsList';
+import Customer from '../component/project/Customer';
+import CustomerList from '../component/project/CustomerList';
+import Supplier from '../component/project/Supplier';
+import SupplierList from '../component/project/SupplierList';
+import Warehouse from '../component/project/Warehouse';
+import WarehouseList from '../component/project/WarehouseList';
+import RouteApi from '../component/development/RouteApi';
+import RouteApiList from '../component/development/RouteApiList';
+import InStorage from '../component/project/InStorage';
+import InStorageList from '../component/project/InStorageList';
+import Dictionary from '../component/base/Dictionary';
+import DictionaryList from '../component/base/DictionaryList';
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -67,6 +69,8 @@ ReactDOM.render(
       <Route path="/routeApi/:routeID" breadcrumbName="路由API"   onEnter={requireAuthApp}  component={RouteApi}/>
       <Route path="inStorageList" breadcrumbName="采购入库单列表"  onEnter={requireAuthApp}   component={InStorageList} />
       <Route path="/inStorage/:formID" breadcrumbName="采购入库单"   onEnter={requireAuthApp}  component={InStorage}/>
+      <Route path="dictionaryList" breadcrumbName="数据字典列表"  onEnter={requireAuthApp}   component={DictionaryList} />
+      <Route path="/dictionary/:dictionaryID" breadcrumbName="数据字典"   onEnter={requireAuthApp}  component={Dictionary}/>
 
       <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
       <Route path="*" breadcrumbName="未找到页面" component={NoMatch}/>

@@ -1,9 +1,9 @@
 'use strict';
 import React from 'react';
 import {Link} from 'react-router';
-import {APP_CONFIG} from '../entry/config';
-import {storeS, getRand, ifNull} from '../common/dgn';
-import {getUploadControlImgData} from '../common/dgnControlAssist';
+import {APP_CONFIG} from '../../entry/config';
+import {storeS, getRand, ifNull} from '../../common/dgn';
+import {getUploadControlImgData} from '../../common/dgnControlAssist';
 import {
   Button,
   Row,
