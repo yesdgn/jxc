@@ -19,6 +19,10 @@ const columns = [
     title: 'ApiID',
     dataIndex: 'ApiID',
     key: 'ApiID'
+  },{
+    title: 'RouteName',
+    dataIndex: 'RouteName',
+    key: 'RouteName'
   }, {
     title: '执行SQL',
     dataIndex: 'ApiExecSql',

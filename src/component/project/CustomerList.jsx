@@ -31,11 +31,7 @@ const columns = [
     title: '客户电话',
     dataIndex: 'CompTel',
     key: 'CompTel'
-  }, {
-    title: '公司类型',
-    dataIndex: 'CompType',
-    key: 'CompType'
-  }, {
+  } , {
     title: '操作',
     key: 'operation',
     render(text, record) {

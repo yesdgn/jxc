@@ -1,6 +1,6 @@
 'use strict';
 import React from 'react';
-import {Table, Icon,Steps ,  Row, Col,Modal } from 'antd';
+import {Table, Icon,Steps ,  Row, Col,Modal,Button } from 'antd';
 import {Link} from 'react-router';
 import {storeS } from '../../common/dgn';
 const confirm = Modal.confirm;
@@ -23,11 +23,7 @@ const  columns= [
       title: '手机',
       dataIndex: 'Mobile',
       key: 'Mobile'
-    }, {
-      title: '头像',
-      dataIndex: 'UserImages',
-      key: 'UserImages'
-    }, {
+    } , {
       title: '操作',
       key: 'operation',
       render(text, record) {
@@ -78,14 +74,25 @@ componentWillUnmount() {
     onChange:this.handlePageChange
     };
     return (
-      <Row type="flex" justify="center" align="middle"  >
-        <Col span="24" >
-          <Table columns={columns}   rowKey={record => 'K'+record.ID}
-             dataSource={this.props.dataSource}  pagination={pagination}
-             />
-        </Col>
-      </Row>
-  );
+      <div>
+        <Row type="flex" justify="center" align="end" style={{
+          margin: 10
+        }}>
+          <Col span="2">
+
+            <Link to="/person/0">
+              <Button type="primary">新增</Button>
+            </Link>
+
+          </Col>
+          <Col span="2">
+            <Button type="primary">导出</Button>
+          </Col>
+        </Row>
+        <Table columns={columns} rowKey={record => 'K' + record.ID}
+          dataSource={this.props.dataSource} pagination={pagination}/>
+      </div>
+   );
   }
 };
 

@@ -1,9 +1,19 @@
 'use strict';
 import React from 'react';
+//import addonsupdate from 'react-addons-update';
 import {Link} from 'react-router';
+import {connect} from 'react-redux'
+import UploadImage from '../../common/UploadImage';
+import UploadFile from '../../common/UploadFile';
 import {APP_CONFIG} from '../../entry/config';
+var moment = require('moment');
+import {sample} from 'lodash';
 import {storeS, getRand, ifNull} from '../../common/dgn';
-import {getUploadControlImgData} from '../../common/dgnControlAssist';
+import {getSelectOption, checkDate, getUploadControlImgData} from '../../common/dgnControlAssist';
+import {
+readPerson,savePerson
+} from '../../redux/actions';
+
 import {
   Button,
   Row,
@@ -13,11 +23,21 @@ import {
   Upload,
   Icon,
   Modal,
-  message
+  message,
+  Select,
+  DatePicker
 } from 'antd';
+
+var primaryKey;
 var imgGuid;
+var fileGuid;
+var mainData;
+var mainDataHasModify = false;
+var userInfo;
+const Option = Select.Option;
 const createForm = Form.create;
 const FormItem = Form.Item;
+
 const formItemLayout = {
   labelCol: {
     span: 6
@@ -30,189 +50,187 @@ const formItemLayout = {
 class Person extends React.Component {
   static defaultProps = {};
   static propTypes = {};
+  static contextTypes = {
+    router: React.PropTypes.object.isRequired
+  };
   constructor(props) {
     super(props);
     this.state = {
-      priviewVisible: false,
-      priviewImage: '',
-      fileList:[],
-      width:1200
     }
   };
-  handleCancel = () => {
-    this.setState({priviewVisible: false});
-  }
-  componentWillMount() {
-    this.props.onLoad();
-  }
 
+  componentWillMount() {
+    if (this.props.params.personID != 0) {
+      this.props.dispatch(readPerson(this.props.params.personID));
+    }
+  }
+  componentWillUnmount() {
+    mainDataHasModify = false;
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.personID !== this.props.params.personID) {
-      this.props.onLoad();
+      this.props.dispatch(readPerson(nextProps.params.personID));
     }
-    if (nextProps.dataItemImgs!==this.props.dataItemImgs)
-    {
-      this.setState({fileList:getUploadControlImgData(nextProps.dataItemImgs)})
-    }
+
+
   }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((errors, values) => {
       if (!!errors) {
         return;
       }
-      let v= {...values};
-      v.UserImages=imgGuid;
-      this.props.saveDataItem(v);
+      let form0 = {
+        ...values
+      };
+      form0.UserImages = imgGuid;
+      //form0.FormFiles = fileGuid;
+      let formArr = [];
+      let form0Arr = [];
+      form0Arr.push(form0);
+      formArr.push(form0Arr);
+       this.props.dispatch(savePerson(formArr, function(data) {
+        if (data.returnCode == 0 && data.items[0].result == 'success') {
+          message.success(data.items[0].resultDescribe);
+          this.context.router.push('/person/' + primaryKey);
+          this.props.dispatch(readPerson(primaryKey));
+          mainDataHasModify = false;
+        } else {
+          message.error(data.items[0].resultDescribe);
+        }
+      }.bind(this)));
     });
 
   };
-  handleChange=(info)=>{
-     if (info.file.status === 'done') {
-        message.success(`${info.file.name} 上传成功。`);
-        info.file.uid=info.file.response.items[0].FileID;
-        info.file.url=APP_CONFIG.FILEURL+info.file.response.items[0].FileUrl;
-        info.file.thumbUrl=APP_CONFIG.FILEURL+info.file.response.items[0].thumbUrl;
-        info.file.width= info.file.response.items[0].width;
-        this.setState({fileList:info.fileList})
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} 上传失败。`);
-      }
-      else if (info.file.status==='removed')
-      {this.props.removeFile(info.file.uid);}
-   }
+
   render() {
     const {getFieldProps} = this.props.form;
-    const props = {
-      name: 'img',
-      action: APP_CONFIG.WEBSERVERURL + '/upload/img',
-      listType: 'picture-card',
-      multiple:false,
-      data: {
-        userid: storeS.getItem('userInfo').UserID,
-        imgguid: imgGuid,
-        thumbSize: 150
-      },
-      beforeUpload: function beforeUpload(file) {
-        let isImg = (file.type === 'image/jpeg' || file.type === 'image/png');
-        if (!isImg) {
-          message.error('只能上传 JPG|PNG 文件哦！');
-        }
-        return isImg;
-      },
-      onChange:this.handleChange,
-      onPreview: (file) => {
-        this.setState({priviewImage: file.url, priviewVisible: true,width:file.width?file.width:1200  });
-      },
-      fileList: this.state.fileList
-    };
-    const nameProps = getFieldProps('Name', {
-      rules: [
-        {
-          required: true,
-          min: 1,
-          message: '姓名至少为 1 个字符'
-        }
-      ]
-    });
     return (
-      <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>
-        <Row type="flex" justify="end">
-          <Col >
-            <FormItem >
-              <Button type="primary" htmlType="submit">保存</Button>
-            </FormItem>
-          </Col>
-          <Col span="1">
-            <FormItem style={{
-              display: 'none'
-            }}>
-              <Input {...getFieldProps('UserID')}/>
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="代码">
-              <Input {...getFieldProps('Code')}/>
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="姓名">
-              <Input {...nameProps}/>
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="手机">
-              <Input {...getFieldProps('Mobile')}/>
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="电子邮箱">
-              <Input type="email" {...getFieldProps('Email')}/>
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="备注">
-              <Input type="textarea" rows="4" {...getFieldProps('Remark')}/>
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="头像">
-              <div className="clearfix">
-                <Upload {...props}>
-                  <Icon type="plus"/>
-                  <div className="ant-upload-text">上传照片</div>
-                </Upload>
-                <Modal visible={this.state.priviewVisible} width={this.state.width+30} footer={null} onCancel={this.handleCancel}>
-                  <img alt="example" src={this.state.priviewImage}/>
-                </Modal>
-              </div>
-            </FormItem>
-          </Col>
-        </Row>
-
-      </Form>
-
+      <div>
+        <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>
+          <Row type="flex" justify="end">
+            <Col >
+              <FormItem >
+                <Button type="primary" htmlType="submit">保存</Button>
+              </FormItem>
+            </Col>
+            <Col span="1">
+              <FormItem style={{
+                display: 'none'
+              }}>
+                <Input {...getFieldProps('ID')}/>
+                <Input {...getFieldProps('UserID')}/>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="代码">
+                <Input {...getFieldProps('Code')}/>
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="姓名" required>
+                <Input { ...getFieldProps('Name', { rules: [ { required: true, whitespace: true, message: '请输入姓名' }, ], })}/>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="手机">
+                <Input {...getFieldProps('Mobile')}/>
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="电子邮箱">
+                <Input type="email" {...getFieldProps('Email')}/>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="备注">
+                <Input type="textarea" rows="4" {...getFieldProps('Remark')}/>
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="头像">
+                <UploadImage images={this.props.person.personImgs} imgGuid={imgGuid}></UploadImage>
+              </FormItem>
+            </Col>
+          </Row>
+        </Form>
+      </div>
     );
   }
 };
 
 function mapPropsToFields(props) {
-  if (!props.dataItem.UserID) {
-    return {};
-  } else {
-    imgGuid = ifNull(props.dataItem.UserImages)
-      ? getRand()
-      : props.dataItem.UserImages;
-
-    return {
-      Code: {
-        value: props.dataItem.Code
-      },
-      UserID: {
-        value: props.dataItem.UserID
-      },
-      Name: {
-        value: props.dataItem.Name
-      },
-      Email: {
-        value: props.dataItem.Email
-      },
-      Mobile: {
-        value: props.dataItem.Mobile
-      },
-      Remark: {
-        value: props.dataItem.Remark
+  if (props.params.personID == 0) {
+    if (!mainDataHasModify) {
+      primaryKey = getRand();
+      imgGuid = getRand();
+      fileGuid = getRand();
+      userInfo = storeS.getJson('userInfo');
+      mainData = {
+        UserID: {
+          value: primaryKey
+        }
       }
     }
+    return mainData;
+  } else if (props.person.person) {
+    if (!mainDataHasModify) {
+      primaryKey = props.person.person.item0[0].UserID;
+      imgGuid = props.person.person.item0[0].UserImages;
+      if (ifNull(imgGuid)) {
+        imgGuid = getRand();
+      }
+      userInfo = storeS.getJson('userInfo');
+      mainData = {
+        ID: {
+          value: props.person.person.item0[0].ID
+        },
+        UserID: {
+          value: props.person.person.item0[0].UserID
+        },
+        Code: {
+          value: props.person.person.item0[0].Code
+        },
+        Name: {
+          value: props.person.person.item0[0].Name
+        },
+        Email: {
+          value: props.person.person.item0[0].Email
+        },
+        Mobile: {
+          value: props.person.person.item0[0].Mobile
+        },
+        Remark: {
+          value:  props.person.person.item0[0].Remark
+        }
+      }
+    }
+    return mainData
+  } else {
+    return {};
   }
-
 }
 
-Person = Form.create({mapPropsToFields: mapPropsToFields})(Person);
-export default Person
+function onFieldsChange(props, fields) {
+  if (ifNull(fields)) {
+    return;
+  }
+  mainDataHasModify = true;
+  mainData[sample(fields).name] = {
+    value: sample(fields).value
+  };
+}
+
+function mapStateToProps(state) {
+  const {common, person} = state
+  return {common,person}
+}
+Person = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Person);
+export default connect(mapStateToProps)(Person)

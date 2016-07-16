@@ -1,9 +1,19 @@
 'use strict';
 import React from 'react';
+//import addonsupdate from 'react-addons-update';
 import {Link} from 'react-router';
+import {connect} from 'react-redux'
+import UploadImage from '../../common/UploadImage';
+import UploadFile from '../../common/UploadFile';
 import {APP_CONFIG} from '../../entry/config';
+var moment = require('moment');
+import {sample} from 'lodash';
 import {storeS, getRand, ifNull} from '../../common/dgn';
-import {getUploadControlImgData} from '../../common/dgnControlAssist';
+import {getSelectOption, checkDate, getUploadControlImgData} from '../../common/dgnControlAssist';
+import {
+readDict,readCustomer,saveCustomer
+} from '../../redux/actions';
+import {READ_DICT_COMPTYPE,READ_DICT_CUSTTYPE} from '../../redux/actionsType';
 import {
   Button,
   Row,
@@ -14,13 +24,20 @@ import {
   Icon,
   Modal,
   message,
-  Select
+  Select,
+  DatePicker
 } from 'antd';
-var imgGuid;
+
 var primaryKey;
+var imgGuid;
+var fileGuid;
+var mainData;
+var mainDataHasModify = false;
+var userInfo;
 const Option = Select.Option;
 const createForm = Form.create;
 const FormItem = Form.Item;
+
 const formItemLayout = {
   labelCol: {
     span: 6
@@ -39,40 +56,27 @@ class Customer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      priviewVisible: false,
-      priviewImage: '',
-      fileList: [],
-      width: 1200
     }
   };
-  handleCancel = () => {
-    this.setState({priviewVisible: false});
-  }
+
   componentWillMount() {
-    imgGuid = getRand();
-    primaryKey = getRand();
-    this.props.onLoad();
+    this.props.dispatch(readDict(READ_DICT_COMPTYPE, '6365673372633792525'));
+    this.props.dispatch(readDict(READ_DICT_CUSTTYPE, '146864635828377773'));
     if (this.props.params.customerID != 0) {
-      this.props.onLoadDataItem();
+      this.props.dispatch(readCustomer(this.props.params.customerID));
     }
-
   }
-
+  componentWillUnmount() {
+    mainDataHasModify = false;
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.customerID !== this.props.params.customerID) {
-      this.props.onLoadDataItem();
+      this.props.dispatch(readCustomer(nextProps.params.customerID));
     }
-    if (nextProps.dataItem.customerImgs !== this.props.dataItem.customerImgs) {
-      this.setState({
-        fileList: getUploadControlImgData(nextProps.dataItem.customerImgs)
-      })
-    }
-    if (!ifNull(nextProps.dataItem.saveCustomerResult) && nextProps.dataItem.saveCustomerResult.result == 'success') {
-      this.context.router.push('/customer/' + primaryKey);
-      this.props.onLoadDataItem();
-      this.props.clearResult()
-    }
+
+
   }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((errors, values) => {
@@ -83,177 +87,173 @@ class Customer extends React.Component {
         ...values
       };
       form0.CompImages = imgGuid;
-      form0.CompID = primaryKey;
+      //form0.FormFiles = fileGuid;
+      let formArr = [];
       let form0Arr = [];
       form0Arr.push(form0);
-      this.props.saveDataItem(form0Arr);
+      formArr.push(form0Arr);
+       this.props.dispatch(saveCustomer(formArr, function(data) {
+        if (data.returnCode == 0 && data.items[0].result == 'success') {
+          message.success(data.items[0].resultDescribe);
+          this.context.router.push('/customer/' + primaryKey);
+          this.props.dispatch(readCustomer(primaryKey));
+          mainDataHasModify = false;
+        } else {
+          message.error(data.items[0].resultDescribe);
+        }
+      }.bind(this)));
     });
 
   };
-  handleChange = (info) => {
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} 上传成功。`);
-      info.file.uid = info.file.response.items[0].FileID;
-      info.file.url = APP_CONFIG.FILEURL + info.file.response.items[0].FileUrl;
-      info.file.thumbUrl = APP_CONFIG.FILEURL + info.file.response.items[0].thumbUrl;
-      info.file.width = info.file.response.items[0].width;
-      this.setState({fileList: info.fileList})
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} 上传失败。`);
-    } else if (info.file.status === 'removed') {
-      this.props.removeFile(info.file.uid);
-    }
-  }
-  CompType = () => {
-    if (!this.props.common.CompType) {
-      return null
-    }
-    return (this.props.common.CompType.map((x) => {
-      return (
-        <Option key={x.ID} value={x.DictID}>{x.DictName}</Option>
-      )
-    }))
-  }
+
   render() {
     const {getFieldProps} = this.props.form;
-    const props = {
-      name: 'img',
-      action: APP_CONFIG.WEBSERVERURL + '/upload/img',
-      listType: 'picture-card',
-      multiple: false,
-      data: {
-        userid: storeS.getItem('userInfo').UserID,
-        imgguid: imgGuid,
-        thumbSize: 150
-      },
-      beforeUpload: function beforeUpload(file) {
-        let isImg = (file.type === 'image/jpeg' || file.type === 'image/png');
-        if (!isImg) {
-          message.error('只能上传 JPG|PNG 文件哦！');
-        }
-        return isImg;
-      },
-      onChange: this.handleChange,
-      onPreview: (file) => {
-        this.setState({
-          priviewImage: file.url,
-          priviewVisible: true,
-          width: file.width
-            ? file.width
-            : 1200
-        });
-      },
-      fileList: this.state.fileList
-    };
-    const nameProps = getFieldProps('CompName', {
-      rules: [
-        {
-          required: true,
-          min: 1,
-          message: '客户名称至少为 1 个字符'
-        }
-      ]
-    });
-
     return (
-      <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>
-        <Row type="flex" justify="end">
-          <Col >
-            <FormItem >
-              <Button type="primary" htmlType="submit">保存</Button>
-            </FormItem>
-          </Col>
-          <Col span="1">
-            <FormItem style={{
-              display: 'none'
-            }}>
-              <Input {...getFieldProps('ID')}/>
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="客户代码">
-              <Input {...getFieldProps('CompCode')}/>
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="客户名称">
-              <Input {...nameProps}/>
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="客户电话">
-              <Input {...getFieldProps('CompTel')}/>
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="公司类型" required>
-              <Select id="select" size="large" defaultValue="6365673372633792535" {...getFieldProps('CompType')}>
-                {this.CompType()}
-              </Select>
+      <div>
+        <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>
+          <Row type="flex" justify="end">
+            <Col >
+              <FormItem >
+                <Button type="primary" htmlType="submit">保存</Button>
+              </FormItem>
+            </Col>
+            <Col span="1">
+              <FormItem style={{
+                display: 'none'
+              }}>
+                <Input {...getFieldProps('ID')}/>
+                <Input {...getFieldProps('CompID')}/>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="客户代码">
+                <Input {...getFieldProps('CompCode')}/>
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="客户名称">
+                <Input { ...getFieldProps('CompName', { rules: [ { required: true, whitespace: true, message: '请输入客户名称' }, ], })}/>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="客户电话">
+                <Input {...getFieldProps('CompTel')}/>
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="公司类型"    >
+                <Select id="select" size="large"  disabled {...getFieldProps('CompType')}>
+                  {getSelectOption(this.props.common.CompType, 'DictID', 'DictName')}
+                </Select>
 
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="客户描述">
-              <Input type="textarea" rows="4" {...getFieldProps('CompDescribe')}/>
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="客户照片">
-              <div className="clearfix">
-                <Upload {...props}>
-                  <Icon type="plus"/>
-                  <div className="ant-upload-text">上传照片</div>
-                </Upload>
-                <Modal visible={this.state.priviewVisible} width={this.state.width + 30} footer={null} onCancel={this.handleCancel}>
-                  <img alt="example" src={this.state.priviewImage}/>
-                </Modal>
-              </div>
-            </FormItem>
-          </Col>
-        </Row>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="客户分类">
+                <Select id="select" size="large"   {...getFieldProps('CompCategory')}>
+                   {getSelectOption(this.props.common.CustomerCategory, 'DictID', 'DictName')}
+                </Select>
+              </FormItem>
+            </Col>
+            <Col span="12">
 
-      </Form>
-
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="客户描述">
+                <Input type="textarea" rows="4" {...getFieldProps('CompDescribe')}/>
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="客户照片">
+                  <UploadImage images={this.props.customer.customerImgs} imgGuid={imgGuid}></UploadImage>
+              </FormItem>
+            </Col>
+          </Row>
+        </Form>
+      </div>
     );
   }
 };
 
 function mapPropsToFields(props) {
-  if (props.params.customerID == 0 || !props.dataItem.customer) {
-    return {};
-  } else {
-    imgGuid = props.dataItem.customer.CompImages;
-    primaryKey = props.dataItem.customer.CompID;
-    return {
-      ID: {
-        value: props.dataItem.customer.ID
-      },
-      CompCode: {
-        value: props.dataItem.customer.CompCode
-      },
-      CompName: {
-        value: props.dataItem.customer.CompName
-      },
-      CompTel: {
-        value: props.dataItem.customer.CompTel
-      },
-      CompType: {
-        value: props.dataItem.customer.CompType
-      },
-      CompDescribe: {
-        value: props.dataItem.customer.CompDescribe
+  if (props.params.customerID == 0) {
+    if (!mainDataHasModify) {
+      primaryKey = getRand();
+      imgGuid = getRand();
+      fileGuid = getRand();
+      userInfo = storeS.getJson('userInfo');
+      mainData = {
+        CompID: {
+          value: primaryKey
+        },
+        CompType: {
+          value: "6365673372633792535"
+        }
       }
     }
+    return mainData;
+  } else if (props.customer.customer) {
+    if (!mainDataHasModify) {
+      primaryKey = props.customer.customer.item0[0].CompID;
+      imgGuid = props.customer.customer.item0[0].CompImages;
+      if (ifNull(imgGuid)) {
+        imgGuid = getRand();
+      }
+      userInfo = storeS.getJson('userInfo');
+      mainData = {
+        ID: {
+          value: props.customer.customer.item0[0].ID
+        },
+        CompID: {
+          value: props.customer.customer.item0[0].CompID
+        },
+        CompName: {
+          value: props.customer.customer.item0[0].CompName
+        },
+        CompCode: {
+          value: props.customer.customer.item0[0].CompCode
+        },
+        CompTel: {
+          value: props.customer.customer.item0[0].CompTel
+        },
+        CompType: {
+          value: props.customer.customer.item0[0].CompType
+        },
+        CompDescribe: {
+          value:  props.customer.customer.item0[0].CompDescribe
+        },
+        CompCategory: {
+          value:  props.customer.customer.item0[0].CompCategory
+        }
+      }
+    }
+    return mainData
+  } else {
+    return {};
   }
-
 }
 
-Customer = Form.create({mapPropsToFields: mapPropsToFields})(Customer);
-export default Customer
+function onFieldsChange(props, fields) {
+  if (ifNull(fields)) {
+    return;
+  }
+  mainDataHasModify = true;
+  mainData[sample(fields).name] = {
+    value: sample(fields).value
+  };
+}
+
+function mapStateToProps(state) {
+  const {common, customer} = state
+  return {common,customer}
+}
+Customer = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Customer);
+export default connect(mapStateToProps)(Customer)

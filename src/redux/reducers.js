@@ -81,20 +81,36 @@ export function common(state = [], action) {
         InstorageState: action.receivedJson.items
       }
     case actionsType.READ_DICT_OUTSTORAGESTATE:
-        return {
-          ...state,
-          OutstorageState: action.receivedJson.items
-        }
-      case actionsType.READ_DICT_AUTOGENERATESQLTYPE:
-        return {
-          ...state,
-          AutoGenerateSqlType: action.receivedJson.items
-        }
-        case actionsType.READ_DICT_GRIDSELECT:
-          return {
-            ...state,
-            Unit: action.receivedJson.items
-          }
+      return {
+        ...state,
+        OutstorageState: action.receivedJson.items
+      }
+    case actionsType.READ_DICT_AUTOGENERATESQLTYPE:
+      return {
+        ...state,
+        AutoGenerateSqlType: action.receivedJson.items
+      }
+    case actionsType.READ_DICT_GRIDCUSTTYPE:
+      return {
+        ...state,
+        GridCustType: action.receivedJson.items
+      }
+    case actionsType.READ_DICT_GRIDUNIT:
+      return {
+        ...state,
+        GridUnit: action.receivedJson.items
+      }
+    case actionsType.READ_DICT_UNIT:
+      return {
+        ...state,
+        Unit: action.receivedJson.items
+      }
+    case actionsType.READ_DICT_CUSTTYPE:
+      return {
+        ...state,
+        CustomerCategory: action.receivedJson.items
+      }
+
     case actionsType.USER_CLEAR:
       return {}
     default:
@@ -117,7 +133,7 @@ export function chart(state = [], action) {
 }
 
 
-export function persons(state = [], action) {
+export function person(state = [], action) {
   switch (action.type) {
     case actionsType.READ_PERSONS:
       return {
@@ -127,18 +143,12 @@ export function persons(state = [], action) {
     case actionsType.READ_PERSON:
       return {
         ...state,
-        personInfo: action.receivedJson.items.item0[0]
+        person: action.receivedJson.items
       }
     case actionsType.READ_PERSONFILE:
       return {
         ...state,
         personImgs: action.receivedJson.items
-      }
-    case actionsType.SAVE_PERSON:
-      return {
-        ...state,
-        saveResult: action.receivedJson.items,
-        personInfo: action.srcData
       }
     case actionsType.USER_CLEAR:
       return {}
@@ -159,22 +169,12 @@ export function goods(state = [], action) {
     case actionsType.READ_GOODS:
       return {
         ...state,
-        goods: action.receivedJson.items[0]
+        goods: action.receivedJson.items
       }
     case actionsType.READ_GOODS_FILE:
       return {
         ...state,
         goodsImgs: action.receivedJson.items
-      }
-    case actionsType.SAVE_GOODS:
-      return {
-        ...state,
-        saveGoodsResult: action.receivedJson.items[0]
-      }
-    case actionsType.RESULT_CLEAR:
-      return {
-        ...state,
-        saveGoodsResult: {}
       }
     default:
       return state
@@ -192,22 +192,12 @@ export function company(state = [], action) {
     case actionsType.READ_COMPANY:
       return {
         ...state,
-        company: action.receivedJson.items[0]
+        company: action.receivedJson.items
       }
     case actionsType.READ_COMPANY_FILE:
       return {
         ...state,
         compImgs: action.receivedJson.items
-      }
-    case actionsType.SAVE_COMPANY:
-      return {
-        ...state,
-        saveCompanyResult: action.receivedJson.items[0]
-      }
-    case actionsType.RESULT_CLEAR:
-      return {
-        ...state,
-        saveCompanyResult: {}
       }
     default:
       return state
@@ -224,22 +214,12 @@ export function customer(state = [], action) {
     case actionsType.READ_CUSTOMER:
       return {
         ...state,
-        customer: action.receivedJson.items[0]
+        customer: action.receivedJson.items
       }
     case actionsType.READ_CUSTOMER_FILE:
       return {
         ...state,
         customerImgs: action.receivedJson.items
-      }
-    case actionsType.SAVE_CUSTOMER:
-      return {
-        ...state,
-        saveCustomerResult: action.receivedJson.items[0]
-      }
-    case actionsType.RESULT_CLEAR:
-      return {
-        ...state,
-        saveCustomerResult: {}
       }
     default:
       return state
@@ -256,22 +236,12 @@ export function supplier(state = [], action) {
     case actionsType.READ_SUPPLIER:
       return {
         ...state,
-        supplier: action.receivedJson.items[0]
+        supplier: action.receivedJson.items
       }
     case actionsType.READ_SUPPLIER_FILE:
       return {
         ...state,
         supplierImgs: action.receivedJson.items
-      }
-    case actionsType.SAVE_SUPPLIER:
-      return {
-        ...state,
-        saveSupplierResult: action.receivedJson.items[0]
-      }
-    case actionsType.RESULT_CLEAR:
-      return {
-        ...state,
-        saveSupplierResult: {}
       }
     default:
       return state
@@ -288,17 +258,7 @@ export function warehouse(state = [], action) {
     case actionsType.READ_WAREHOUSE:
       return {
         ...state,
-        warehouse: action.receivedJson.items[0]
-      }
-    case actionsType.SAVE_WAREHOUSE:
-      return {
-        ...state,
-        saveWarehouseResult: action.receivedJson.items[0]
-      }
-    case actionsType.RESULT_CLEAR:
-      return {
-        ...state,
-        saveWarehouseResult: {}
+        warehouse: action.receivedJson.items
       }
     default:
       return state
@@ -335,21 +295,21 @@ export function inStorage(state = [], action) {
         inStorage: action.receivedJson.items
       }
     case actionsType.READ_INSTORAGE_IMG:
-        return {
-          ...state,
-          formImgs: action.receivedJson.items
-        }
+      return {
+        ...state,
+        formImgs: action.receivedJson.items
+      }
     case actionsType.READ_INSTORAGE_FILE:
-            return {
-              ...state,
-              formFiles: action.receivedJson.items
-            }
+      return {
+        ...state,
+        formFiles: action.receivedJson.items
+      }
 
     case actionsType.READ_GOODS_SELECT:
-        return {
-          ...state,
-          searchResult: action.receivedJson.items
-        }
+      return {
+        ...state,
+        searchResult: action.receivedJson.items
+      }
     default:
       return state
   }
@@ -368,21 +328,21 @@ export function outStorage(state = [], action) {
         outStorage: action.receivedJson.items
       }
     case actionsType.READ_OUTSTORAGE_IMG:
-        return {
-          ...state,
-          formImgs: action.receivedJson.items
-        }
+      return {
+        ...state,
+        formImgs: action.receivedJson.items
+      }
     case actionsType.READ_OUTSTORAGE_FILE:
-            return {
-              ...state,
-              formFiles: action.receivedJson.items
-            }
+      return {
+        ...state,
+        formFiles: action.receivedJson.items
+      }
 
     case actionsType.READ_GOODS_SELECT:
-        return {
-          ...state,
-          searchResult: action.receivedJson.items
-        }
+      return {
+        ...state,
+        searchResult: action.receivedJson.items
+      }
     default:
       return state
   }

@@ -1,8 +1,18 @@
 'use strict';
 import React from 'react';
+//import addonsupdate from 'react-addons-update';
 import {Link} from 'react-router';
+import {connect} from 'react-redux'
+import UploadImage from '../../common/UploadImage';
+import UploadFile from '../../common/UploadFile';
 import {APP_CONFIG} from '../../entry/config';
+var moment = require('moment');
+import {sample} from 'lodash';
 import {storeS, getRand, ifNull} from '../../common/dgn';
+import {getSelectOption, checkDate, getUploadControlImgData} from '../../common/dgnControlAssist';
+import {
+readWarehouse,saveWarehouse
+} from '../../redux/actions';
 
 import {
   Button,
@@ -14,12 +24,20 @@ import {
   Icon,
   Modal,
   message,
-  Select
+  Select,
+  DatePicker
 } from 'antd';
+
 var primaryKey;
+var imgGuid;
+var fileGuid;
+var mainData;
+var mainDataHasModify = false;
+var userInfo;
 const Option = Select.Option;
 const createForm = Form.create;
 const FormItem = Form.Item;
+
 const formItemLayout = {
   labelCol: {
     span: 6
@@ -40,28 +58,23 @@ class Warehouse extends React.Component {
     this.state = {
     }
   };
-  handleCancel = () => {
-    this.setState({priviewVisible: false});
-  }
+
   componentWillMount() {
-    primaryKey = getRand();
-    //this.props.onLoad();
     if (this.props.params.warehouseID != 0) {
-      this.props.onLoadDataItem();
+      this.props.dispatch(readWarehouse(this.props.params.warehouseID));
     }
-
   }
-
+  componentWillUnmount() {
+    mainDataHasModify = false;
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.warehouseID !== this.props.params.warehouseID) {
-      this.props.onLoadDataItem();
+      this.props.dispatch(readWarehouse(nextProps.params.warehouseID));
     }
-     if (!ifNull(nextProps.dataItem.saveWarehouseResult) && nextProps.dataItem.saveWarehouseResult.result == 'success') {
-      this.context.router.push('/warehouse/' + primaryKey);
-      this.props.onLoadDataItem();
-      this.props.clearResult()
-    }
+
+
   }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((errors, values) => {
@@ -71,98 +84,156 @@ class Warehouse extends React.Component {
       let form0 = {
         ...values
       };
-      form0.WarehouseID = primaryKey;
+      //form0.CompImages = imgGuid;
+      //form0.FormFiles = fileGuid;
+      let formArr = [];
       let form0Arr = [];
       form0Arr.push(form0);
-      this.props.saveDataItem(form0Arr);
+      formArr.push(form0Arr);
+       this.props.dispatch(saveWarehouse(formArr, function(data) {
+        if (data.returnCode == 0 && data.items[0].result == 'success') {
+          message.success(data.items[0].resultDescribe);
+          this.context.router.push('/warehouse/' + primaryKey);
+          this.props.dispatch(readWarehouse(primaryKey));
+          mainDataHasModify = false;
+        } else {
+          message.error(data.items[0].resultDescribe);
+        }
+      }.bind(this)));
     });
 
   };
 
-
   render() {
     const {getFieldProps} = this.props.form;
-    const nameProps = getFieldProps('WarehouseName', {
-      rules: [
-        {
-          required: true,
-          min: 1,
-          message: '仓库名称至少为 1 个字符'
-        }
-      ]
-    });
-
     return (
-      <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>
-        <Row type="flex" justify="end">
-          <Col >
-            <FormItem >
-              <Button type="primary" htmlType="submit">保存</Button>
-            </FormItem>
-          </Col>
-          <Col span="1">
-            <FormItem style={{
-              display: 'none'
-            }}>
-              <Input {...getFieldProps('ID')}/>
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="仓库代码">
-              <Input {...getFieldProps('WarehouseCode')}/>
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="仓库名称">
-              <Input {...nameProps}/>
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="仓库电话">
-              <Input {...getFieldProps('WarehouseTel')}/>
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="供应商描述">
-              <Input type="textarea" rows="4" {...getFieldProps('CompDescribe')}/>
-            </FormItem>
-          </Col>
-        </Row>
-       </Form>
-
+      <div>
+        <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>
+          <Row type="flex" justify="end">
+            <Col >
+              <FormItem >
+                <Button type="primary" htmlType="submit">保存</Button>
+              </FormItem>
+            </Col>
+            <Col span="1">
+              <FormItem style={{
+                display: 'none'
+              }}>
+                <Input {...getFieldProps('ID')}/>
+                <Input {...getFieldProps('CompID')}/>
+                <Input {...getFieldProps('WarehouseID')}/>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="仓库代码">
+                <Input {...getFieldProps('WarehouseCode')}/>
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="仓库名称">
+                <Input { ...getFieldProps('WarehouseName', { rules: [ { required: true, whitespace: true, message: '请输入仓库名称' }, ], })}/>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="仓库电话">
+                <Input {...getFieldProps('WarehouseTel')}/>
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="仓库地址">
+                <Input {...getFieldProps('WarehouseAddr')}/>
+              </FormItem>
+            </Col>
+           
+          </Row>
+          <Row>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="仓库描述">
+                <Input type="textarea" rows="4" {...getFieldProps('WarehouseDescribe')}/>
+              </FormItem>
+            </Col>
+          </Row>
+        </Form>
+      </div>
     );
   }
 };
 
 function mapPropsToFields(props) {
-  if (props.params.warehouseID == 0 || !props.dataItem.warehouse) {
-    return {};
-  } else {
-    primaryKey = props.dataItem.warehouse.WarehouseID;
-    return {
-      ID: {
-        value: props.dataItem.warehouse.ID
-      },
-      WarehouseCode: {
-        value: props.dataItem.warehouse.WarehouseCode
-      },
-      WarehouseName: {
-        value: props.dataItem.warehouse.WarehouseName
-      },
-      WarehouseTel: {
-        value: props.dataItem.warehouse.WarehouseTel
-      },
-      WarehouseDescribe: {
-        value: props.dataItem.warehouse.WarehouseDescribe
+  if (props.params.warehouseID == 0) {
+    if (!mainDataHasModify) {
+      primaryKey = getRand();
+      imgGuid = getRand();
+      fileGuid = getRand();
+      userInfo = storeS.getJson('userInfo');
+      mainData = {
+        WarehouseID: {
+          value: primaryKey
+        },
+        CompID: {
+          value: userInfo.CompID
+        }
       }
     }
+    return mainData;
+  } else if (props.warehouse.warehouse) {
+    if (!mainDataHasModify) {
+      primaryKey = props.warehouse.warehouse.item0[0].WarehouseID;
+      //imgGuid = props.warehouse.warehouse.item0[0].CompImages;
+      if (ifNull(imgGuid)) {
+        imgGuid = getRand();
+      }
+      userInfo = storeS.getJson('userInfo');
+      mainData = {
+        ID: {
+          value: props.warehouse.warehouse.item0[0].ID
+        },
+        CompID: {
+          value: props.warehouse.warehouse.item0[0].CompID
+        },
+        WarehouseID: {
+          value: props.warehouse.warehouse.item0[0].WarehouseID
+        },
+        WarehouseCode: {
+          value: props.warehouse.warehouse.item0[0].WarehouseCode
+        },
+        WarehouseName: {
+          value: props.warehouse.warehouse.item0[0].WarehouseName
+        },
+        WarehouseTel: {
+          value: props.warehouse.warehouse.item0[0].WarehouseTel
+        },
+        WarehouseAddr: {
+          value: props.warehouse.warehouse.item0[0].WarehouseAddr
+        },
+        WarehouseDescribe: {
+          value:  props.warehouse.warehouse.item0[0].WarehouseDescribe
+        }
+      }
+    }
+    return mainData
+  } else {
+    return {};
   }
-
 }
 
-Warehouse = Form.create({mapPropsToFields: mapPropsToFields})(Warehouse);
-export default Warehouse
+function onFieldsChange(props, fields) {
+  if (ifNull(fields)) {
+    return;
+  }
+  mainDataHasModify = true;
+  mainData[sample(fields).name] = {
+    value: sample(fields).value
+  };
+}
+
+function mapStateToProps(state) {
+  const {warehouse} = state
+  return {warehouse}
+}
+Warehouse = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Warehouse);
+export default connect(mapStateToProps)(Warehouse)

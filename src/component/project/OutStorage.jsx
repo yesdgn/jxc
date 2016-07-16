@@ -23,7 +23,7 @@ import {
   readDictGridSelect,
   readGoodsSelect
 } from '../../redux/actions';
-import {READ_DICT_OUTSTORAGESTATE, READ_DICT_GRIDSELECT} from '../../redux/actionsType';
+import {READ_DICT_OUTSTORAGESTATE, READ_DICT_GRIDUNIT} from '../../redux/actionsType';
 import {
   Button,
   Row,
@@ -92,7 +92,7 @@ class OutStorage extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(readDict(READ_DICT_OUTSTORAGESTATE, '146841280001118121'));
-    this.props.dispatch(readDictGridSelect(READ_DICT_GRIDSELECT, '6365673372633792600'));
+    this.props.dispatch(readDictGridSelect(READ_DICT_GRIDUNIT, '6365673372633792600'));
     this.props.dispatch(readCustomers(50, 0));
     this.props.dispatch(readWarehouses(50, 0));
     if (this.props.params.formID != 0) {
@@ -178,7 +178,6 @@ class OutStorage extends React.Component {
     this.props.dispatch(readGoodsSelect(searchStr));
   }
   onSelect = (data) => {
-    console.log(data);
     data.map(function(x) {
       let newRow = {
         ID: undefined,
@@ -210,7 +209,7 @@ class OutStorage extends React.Component {
       }, {
         key: 'Unit',
         name: '单位',
-        editor: <AutoCompleteEditor options={this.props.common.Unit}/>
+        editor: <AutoCompleteEditor options={this.props.common.GridUnit}/>
       }, {
         key: 'Price',
         name: '价格',

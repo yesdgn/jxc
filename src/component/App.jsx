@@ -106,23 +106,10 @@ class App extends React.Component {
         break;
       case 'personList':
         return {
-          dataSource: this.props.persons.personList
-            ? this.props.persons.personList
+          dataSource: this.props.person.personList
+            ? this.props.person.personList
             : [],
           onLoad: (pageSize, curPage) => this.props.dispatch(readPersons(pageSize, curPage))
-        }
-        break;
-      case '/person/:personID':
-        return {
-          dataItem: this.props.persons.personInfo
-            ? this.props.persons.personInfo
-            : {},
-          dataItemImgs: this.props.persons.personImgs
-            ? this.props.persons.personImgs
-            : [],
-          onLoad: () => this.props.dispatch(readPerson(this.props.params.personID)),
-          removeFile: (fileid) => this.props.dispatch(removeFile(fileid)),
-          saveDataItem: (data) => this.props.dispatch(savePerson(data))
         }
         break;
       case 'goodsList':
@@ -133,21 +120,7 @@ class App extends React.Component {
           onLoad: (pageSize, curPage) => this.props.dispatch(readGoodses(pageSize, curPage))
         }
         break;
-      case '/goods/:goodsID':
-        return {
-          dataItem: this.props.goods,
-          common: this.props.common,
-          onLoad: () => {
-            this.props.dispatch(readDict(actionsType.READ_DICT_GOODSCATEGORY, '6365673372633792522'))
-          },
-          onLoadDataItem: () => {
-            this.props.dispatch(readGoods(this.props.params.goodsID))
-          },
-          removeFile: (fileid) => this.props.dispatch(removeFile(fileid)),
-          saveDataItem: (data) => this.props.dispatch(saveGoods(data)),
-          clearResult: () => this.props.dispatch(clearResult())
-        }
-        break;
+
       case 'companyList':
         return {
           dataSource: this.props.company.companies
@@ -156,21 +129,7 @@ class App extends React.Component {
           onLoad: (pageSize, curPage) => this.props.dispatch(readCompanies(pageSize, curPage))
         }
         break;
-      case '/company/:companyID':
-        return {
-          dataItem: this.props.company,
-          common: this.props.common,
-          onLoad: () => {
-            this.props.dispatch(readDict(actionsType.READ_DICT_COMPTYPE, '6365673372633792525'))
-          },
-          onLoadDataItem: () => {
-            this.props.dispatch(readCompany(this.props.params.companyID))
-          },
-          removeFile: (fileid) => this.props.dispatch(removeFile(fileid)),
-          saveDataItem: (data) => this.props.dispatch(saveCompany(data)),
-          clearResult: () => this.props.dispatch(clearResult())
-        }
-        break;
+
       case 'customerList':
         return {
           dataSource: this.props.customer.customers
@@ -179,21 +138,7 @@ class App extends React.Component {
           onLoad: (pageSize, curPage) => this.props.dispatch(readCustomers(pageSize, curPage))
         }
         break;
-      case '/customer/:customerID':
-        return {
-          dataItem: this.props.customer,
-          common: this.props.common,
-          onLoad: () => {
-            this.props.dispatch(readDict(actionsType.READ_DICT_COMPTYPE, '6365673372633792525'))
-          },
-          onLoadDataItem: () => {
-            this.props.dispatch(readCustomer(this.props.params.customerID))
-          },
-          removeFile: (fileid) => this.props.dispatch(removeFile(fileid)),
-          saveDataItem: (data) => this.props.dispatch(saveCustomer(data)),
-          clearResult: () => this.props.dispatch(clearResult())
-        }
-        break;
+
       case 'supplierList':
         return {
           dataSource: this.props.supplier.suppliers
@@ -202,38 +147,13 @@ class App extends React.Component {
           onLoad: (pageSize, curPage) => this.props.dispatch(readSuppliers(pageSize, curPage))
         }
         break;
-      case '/supplier/:supplierID':
-        return {
-          dataItem: this.props.supplier,
-          common: this.props.common,
-          onLoad: () => {
-            this.props.dispatch(readDict(actionsType.READ_DICT_COMPTYPE, '6365673372633792525'))
-          },
-          onLoadDataItem: () => {
-            this.props.dispatch(readSupplier(this.props.params.supplierID))
-          },
-          removeFile: (fileid) => this.props.dispatch(removeFile(fileid)),
-          saveDataItem: (data) => this.props.dispatch(saveSupplier(data)),
-          clearResult: () => this.props.dispatch(clearResult())
-        }
-        break;
+
       case 'warehouseList':
         return {
           dataSource: this.props.warehouse.warehouses
             ? this.props.warehouse.warehouses
             : [],
           onLoad: (pageSize, curPage) => this.props.dispatch(readWarehouses(pageSize, curPage))
-        }
-        break;
-      case '/warehouse/:warehouseID':
-        return {
-          dataItem: this.props.warehouse,
-          common: this.props.common,
-          onLoadDataItem: () => {
-            this.props.dispatch(readWarehouse(this.props.params.warehouseID))
-          },
-          saveDataItem: (data) => this.props.dispatch(saveWarehouse(data)),
-          clearResult: () => this.props.dispatch(clearResult())
         }
         break;
         case 'routeApiList':
@@ -308,7 +228,7 @@ function mapStateToProps(state) {
     common,
     user,
     chart,
-    persons,
+    person,
     goods,
     company,
     customer,
@@ -321,7 +241,7 @@ function mapStateToProps(state) {
     common,
     user,
     chart,
-    persons,
+    person,
     goods,
     company,
     customer,

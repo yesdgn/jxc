@@ -5,9 +5,8 @@ import {fetchPost,fetchGet} from './actions_base';
 import {message} from 'antd';
 import * as actionsType from './actionsType';
 
+var userInfo=storeS.getJson('userInfo').UserID
 //基础数据
-
-
 export function readDict(actionType,dictTypeID) {
   return (dispatch, getState) => {
     let params={
@@ -213,13 +212,13 @@ export function readWarehouse(WarehouseID) {
       apiid:28,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      warehouseid:WarehouseID
+      jsonData:JSON.stringify([{WarehouseID:WarehouseID}])
     };
     return dispatch(fetchPost(actionsType.READ_WAREHOUSE, params ))
   }
 }
 
-export function saveWarehouse(jsonData) {
+export function saveWarehouse(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:27,
@@ -227,7 +226,7 @@ return (dispatch, getState) => {
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
-  return dispatch(fetchPost(actionsType.SAVE_WAREHOUSE, params,jsonData,{isShowResultMessage:true}))
+  return dispatch(fetchPost(actionsType.SAVE_WAREHOUSE, params,cb))
 }
 }
 //供应商
@@ -250,15 +249,15 @@ export function readSupplier(SupplierID) {
       apiid:22,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      compid:SupplierID
+      jsonData:JSON.stringify([{compid:SupplierID}])
     };
     return dispatch(fetchPost(actionsType.READ_SUPPLIER, params,cbReadSupplier))
   }
 }
 function cbReadSupplier (data,params,dispatch) {
-  dispatch(readUploadFile(actionsType.READ_SUPPLIER_FILE,data.items[0].CompImages,'img'));
+  dispatch(readUploadFile(actionsType.READ_SUPPLIER_FILE,data.items.item0[0].CompImages,'img'));
 }
-export function saveSupplier(jsonData) {
+export function saveSupplier(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:23,
@@ -266,7 +265,7 @@ return (dispatch, getState) => {
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
-  return dispatch(fetchPost(actionsType.SAVE_SUPPLIER, params,jsonData,{isShowResultMessage:true}))
+  return dispatch(fetchPost(actionsType.SAVE_SUPPLIER, params,cb))
 }
 }
 //客户customer
@@ -289,15 +288,15 @@ export function readCustomer(CustomerID) {
       apiid:22,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      compid:CustomerID
+      jsonData:JSON.stringify([{compid:CustomerID}])
     };
     return dispatch(fetchPost(actionsType.READ_CUSTOMER, params,cbReadCustomer))
   }
 }
 function cbReadCustomer (data,params,dispatch) {
-  dispatch(readUploadFile(actionsType.READ_CUSTOMER_FILE,data.items[0].CompImages,'img'));
+  dispatch(readUploadFile(actionsType.READ_CUSTOMER_FILE,data.items.item0[0].CompImages,'img'));
 }
-export function saveCustomer(jsonData) {
+export function saveCustomer(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:23,
@@ -305,7 +304,7 @@ return (dispatch, getState) => {
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
-  return dispatch(fetchPost(actionsType.SAVE_CUSTOMER, params,jsonData,{isShowResultMessage:true}))
+  return dispatch(fetchPost(actionsType.SAVE_CUSTOMER, params,cb))
 }
 }
 //公司
@@ -328,15 +327,15 @@ export function readCompany(companyID) {
       apiid:22,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      compid:companyID
+      jsonData:JSON.stringify([{compid:companyID}])
     };
     return dispatch(fetchPost(actionsType.READ_COMPANY, params,cbReadCompany ))
   }
 }
 function cbReadCompany (data,params,dispatch) {
-  dispatch(readUploadFile(actionsType.READ_COMPANY_FILE,data.items[0].CompImages,'img'));
+  dispatch(readUploadFile(actionsType.READ_COMPANY_FILE,data.items.item0[0].CompImages,'img'));
 }
-export function saveCompany(jsonData) {
+export function saveCompany(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:23,
@@ -344,7 +343,7 @@ return (dispatch, getState) => {
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
-  return dispatch(fetchPost(actionsType.SAVE_COMPANY, params,jsonData,{isShowResultMessage:true}))
+  return dispatch(fetchPost(actionsType.SAVE_COMPANY, params,cb ))
 }
 }
 //商品
@@ -366,15 +365,15 @@ export function readGoods(goodsID) {
       apiid:18,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      goodsid:goodsID
+      jsonData:JSON.stringify([{goodsID:goodsID},{goodsID:goodsID}])
     };
     return dispatch(fetchPost(actionsType.READ_GOODS, params,cbReadGoods))
   }
 }
 function cbReadGoods (data,params,dispatch) {
-  dispatch(readUploadFile(actionsType.READ_GOODS_FILE,data.items[0].GoodsImages,'img'));
+  dispatch(readUploadFile(actionsType.READ_GOODS_FILE,data.items.item0[0].GoodsImages,'img'));
 }
-export function saveGoods(jsonData) {
+export function saveGoods(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:19,
@@ -382,7 +381,7 @@ return (dispatch, getState) => {
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
   };
-  return dispatch(fetchPost(actionsType.SAVE_GOODS, params,jsonData,{isShowResultMessage:true}))
+  return dispatch(fetchPost(actionsType.SAVE_GOODS, params,cb))
 }
 }
 //人员
@@ -400,21 +399,15 @@ export function readPersons(pageSize,curPage) {
     return dispatch(fetchPost(actionsType.READ_PERSONS, params))
   }
 }
-export function savePerson(data) {
+export function savePerson(jsonData,cb) {
   return (dispatch, getState) => {
     let params={
       apiid:16,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      savetype:'update',
-      personid:data.UserID,
-      name:data.Name,
-      mobile:data.Mobile,
-      email:data.Email,
-      code:data.Code,
-      remark:data.Remark
+      jsonData:JSON.stringify(jsonData)
     };
-    return dispatch(fetchPost(actionsType.SAVE_PERSON, params,data,{isShowResultMessage:true}))
+    return dispatch(fetchPost(actionsType.SAVE_PERSON, params,cb))
   }
 }
 export function readPerson(personID) {
@@ -423,7 +416,7 @@ export function readPerson(personID) {
       apiid:14,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      personid:personID
+      jsonData:JSON.stringify([{userid:personID}])
     };
     return dispatch(fetchPost(actionsType.READ_PERSON, params,cbReadPerson))
   }

@@ -32,10 +32,6 @@ const columns = [
     dataIndex: 'CompTel',
     key: 'CompTel'
   }, {
-    title: '公司类型',
-    dataIndex: 'CompType',
-    key: 'CompType'
-  }, {
     title: '操作',
     key: 'operation',
     render(text, record) {
