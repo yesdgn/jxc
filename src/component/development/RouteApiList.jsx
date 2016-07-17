@@ -10,6 +10,8 @@ import {
   Button
 } from 'antd';
 import {Link} from 'react-router';
+import {connect} from 'react-redux'
+import {readRoutes} from '../../redux/actions';
 import {storeS} from '../../common/dgn';
 const confirm = Modal.confirm;
 
@@ -62,10 +64,10 @@ class RouteApis extends React.Component {
     let paginationPage = storeS.getItem("pagination");
     if (paginationPage && this.props.route.path == JSON.parse(paginationPage).path) {
       this.setState({currentPage: JSON.parse(paginationPage).currentPage})
-      this.props.onLoad(pageSize, JSON.parse(paginationPage).currentPage);
+      this.props.dispatch(readRoutes(pageSize, JSON.parse(paginationPage).currentPage));
     }
     else {
-      this.props.onLoad(pageSize, this.state.currentPage );
+      this.props.dispatch(readRoutes(pageSize, this.state.currentPage ));
     }
 
   }
@@ -74,13 +76,11 @@ class RouteApis extends React.Component {
   }
   handlePageChange = (current) => {
     this.setState({currentPage: current})
-    this.props.onLoad(pageSize, current);
+    this.props.dispatch(readRoutes(pageSize, current));
   }
   render() {
     const pagination = {
-      total: this.props.dataSource.length > 0
-        ? parseInt(this.props.dataSource[0].TotalSize)
-        : this.props.dataSource.length,
+      total: this.props.dataSource0? this.props.dataSource0.length:0 ,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -100,10 +100,14 @@ class RouteApis extends React.Component {
             <Button type="primary">导出</Button>
           </Col>
         </Row>
-        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource} pagination={pagination}/>
+        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource0} pagination={pagination}/>
       </div>
     );
   }
 };
-
-export default RouteApis
+function mapStateToProps(state) {
+  const {routeApi} = state;
+  let dataSource0=routeApi.routes;
+  return {dataSource0}
+}
+export default  connect(mapStateToProps)(RouteApis)

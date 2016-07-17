@@ -82,7 +82,7 @@ class OutStorageList extends React.Component {
   }
   render() {
     const pagination = {
-      total: this.props.outStorage.outStorageList?this.props.outStorage.outStorageList.length:0 ,
+      total: this.props.dataSource0?this.props.dataSource0.length:0 ,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -101,14 +101,15 @@ class OutStorageList extends React.Component {
             <Button type="primary">导出</Button>
           </Col>
         </Row>
-        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.outStorage.outStorageList} pagination={pagination}/>
+        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource0} pagination={pagination}/>
       </div>
     );
   }
 };
 
 function mapStateToProps(state) {
-  const {outStorage} = state
-  return {outStorage}
+  const {outStorage} = state;
+  let dataSource0=outStorage.outStorageList;
+  return {dataSource0}
 }
 export default connect(mapStateToProps)(OutStorageList)

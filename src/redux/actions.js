@@ -5,23 +5,11 @@ import {fetchPost,fetchGet} from './actions_base';
 import {message} from 'antd';
 import * as actionsType from './actionsType';
 
-var userInfo=storeS.getJson('userInfo').UserID
 //基础数据
 export function readDict(actionType,dictTypeID) {
   return (dispatch, getState) => {
     let params={
       apiid:20,
-      sessionkey:storeS.getItem('sessionKey'),
-      userid:storeS.getJson('userInfo').UserID,
-      dicttypeid:dictTypeID
-    };
-    return dispatch(fetchPost(actionType, params))
-  }
-}
-export function readDictGridSelect(actionType,dictTypeID) {
-  return (dispatch, getState) => {
-    let params={
-      apiid:36,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       dicttypeid:dictTypeID
@@ -438,7 +426,7 @@ export function readUploadFile(actionType,fileFormID,gettype) {
 }
 //用户
 
-export function userLogin(loginInfo) {
+export function userLogin(loginInfo,cb) {
   return (dispatch, getState) => {
     let params={
       apiid:3,
@@ -447,11 +435,11 @@ export function userLogin(loginInfo) {
       usertype:APP_CONFIG.USERTYPE,
       password:SHA1(loginInfo.password).toString()
     };
-    return dispatch(fetchPost(actionsType.USER_LOGIN, params))
+    return dispatch(fetchPost(actionsType.USER_LOGIN, params,cb))
   }
 }
 
-export function userReg(regInfo) {
+export function userReg(regInfo,cb) {
   return (dispatch, getState) => {
     let params={
       apiid:2,
@@ -462,7 +450,7 @@ export function userReg(regInfo) {
       checkcode:'nocheck',
       password:SHA1(regInfo.password).toString()
     };
-    return dispatch(fetchPost(actionsType.USER_REG, params))
+    return dispatch(fetchPost(actionsType.USER_REG, params,cb))
   }
 }
 export function clearUser() {

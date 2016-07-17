@@ -61,16 +61,16 @@ class Supplier extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(readDict(READ_DICT_COMPTYPE, '6365673372633792525'));
-    if (this.props.params.supplierID != 0) {
-      this.props.dispatch(readSupplier(this.props.params.supplierID));
+    if (this.props.params.dataID != 0) {
+      this.props.dispatch(readSupplier(this.props.params.dataID));
     }
   }
   componentWillUnmount() {
     mainDataHasModify = false;
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.supplierID !== this.props.params.supplierID) {
-      this.props.dispatch(readSupplier(nextProps.params.supplierID));
+    if (nextProps.params.dataID !== this.props.params.dataID) {
+      this.props.dispatch(readSupplier(nextProps.params.dataID));
     }
 
 
@@ -160,7 +160,7 @@ class Supplier extends React.Component {
             </Col>
             <Col span="12">
               <FormItem {...formItemLayout} label="供应商照片">
-                  <UploadImage images={this.props.supplier.supplierImgs} imgGuid={imgGuid}></UploadImage>
+                  <UploadImage images={this.props.imgDataSource} imgGuid={imgGuid}></UploadImage>
               </FormItem>
             </Col>
           </Row>
@@ -171,7 +171,7 @@ class Supplier extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.supplierID == 0) {
+  if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
       imgGuid = getRand();
@@ -187,35 +187,35 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.supplier.supplier) {
+  } else if (props.dataSource0) {
     if (!mainDataHasModify) {
-      primaryKey = props.supplier.supplier.item0[0].CompID;
-      imgGuid = props.supplier.supplier.item0[0].CompImages;
+      primaryKey = props.dataSource0.CompID;
+      imgGuid = props.dataSource0.CompImages;
       if (ifNull(imgGuid)) {
         imgGuid = getRand();
       }
       userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
-          value: props.supplier.supplier.item0[0].ID
+          value: props.dataSource0.ID
         },
         CompID: {
-          value: props.supplier.supplier.item0[0].CompID
+          value: props.dataSource0.CompID
         },
         CompName: {
-          value: props.supplier.supplier.item0[0].CompName
+          value: props.dataSource0.CompName
         },
         CompCode: {
-          value: props.supplier.supplier.item0[0].CompCode
+          value: props.dataSource0.CompCode
         },
         CompTel: {
-          value: props.supplier.supplier.item0[0].CompTel
+          value: props.dataSource0.CompTel
         },
         CompType: {
-          value: props.supplier.supplier.item0[0].CompType
+          value: props.dataSource0.CompType
         },
         CompDescribe: {
-          value:  props.supplier.supplier.item0[0].CompDescribe
+          value:  props.dataSource0.CompDescribe
         }
       }
     }
@@ -236,8 +236,10 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
-  const {common, supplier} = state
-  return {common,supplier}
+  const {common, supplier} = state;
+  let dataSource0=supplier.supplier;
+  let imgDataSource=supplier.supplierImgs;
+  return {common,dataSource0,imgDataSource}
 }
 Supplier = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Supplier);
 export default connect(mapStateToProps)(Supplier)

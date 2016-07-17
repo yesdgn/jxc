@@ -20,10 +20,9 @@ import {
   saveOutStorage,
   readOutStorage,
   readWarehouses,
-  readDictGridSelect,
   readGoodsSelect
 } from '../../redux/actions';
-import {READ_DICT_OUTSTORAGESTATE, READ_DICT_GRIDUNIT} from '../../redux/actionsType';
+import {READ_DICT_OUTSTORAGESTATE, READ_DICT_UNIT} from '../../redux/actionsType';
 import {
   Button,
   Row,
@@ -92,23 +91,23 @@ class OutStorage extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(readDict(READ_DICT_OUTSTORAGESTATE, '146841280001118121'));
-    this.props.dispatch(readDictGridSelect(READ_DICT_GRIDUNIT, '6365673372633792600'));
+    this.props.dispatch(readDict(READ_DICT_UNIT, '6365673372633792600'));
     this.props.dispatch(readCustomers(50, 0));
     this.props.dispatch(readWarehouses(50, 0));
-    if (this.props.params.formID != 0) {
-      this.props.dispatch(readOutStorage(this.props.params.formID));
+    if (this.props.params.dataID != 0) {
+      this.props.dispatch(readOutStorage(this.props.params.dataID));
     }
   }
   componentWillUnmount() {
     mainDataHasModify = false;
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.formID !== this.props.params.formID) {
-      this.props.dispatch(readOutStorage(nextProps.params.formID));
+    if (nextProps.params.dataID !== this.props.params.dataID) {
+      this.props.dispatch(readOutStorage(nextProps.params.dataID));
     }
     //下面为表体数据
-    if (nextProps.params.formID != 0 && ((nextProps.outStorage.outStorage && this.state.rows.length === 0) || (nextProps.outStorage.outStorage && this.props.outStorage.outStorage && nextProps.outStorage.outStorage.item1 !== this.props.outStorage.outStorage.item1))) {
-      this.setState({rows: nextProps.outStorage.outStorage.item1});
+    if (nextProps.params.dataID != 0 && ((nextProps.dataSource0 && this.state.rows.length === 0) || (nextProps.dataSource0 && this.props.dataSource0 && nextProps.dataSource1 !== this.props.dataSource1))) {
+      this.setState({rows: nextProps.dataSource1});
     }
 
   }
@@ -209,7 +208,7 @@ class OutStorage extends React.Component {
       }, {
         key: 'Unit',
         name: '单位',
-        editor: <AutoCompleteEditor options={this.props.common.GridUnit}/>
+        editor: <AutoCompleteEditor options={this.props.common.Unit} label="DictName"/>
       }, {
         key: 'Price',
         name: '价格',
@@ -292,7 +291,7 @@ class OutStorage extends React.Component {
             </Col>
             <Col span="12">
               <FormItem {...formItemLayout} label="单据相关照片">
-                <UploadImage images={this.props.outStorage.formImgs} imgGuid={imgGuid}></UploadImage>
+                <UploadImage images={this.props.imgDataSource} imgGuid={imgGuid}></UploadImage>
               </FormItem>
             </Col>
           </Row>
@@ -300,7 +299,7 @@ class OutStorage extends React.Component {
             <Col span="12"></Col>
             <Col span="12">
               <FormItem {...formItemLayout} label="单据相关附件">
-                <UploadFile files={this.props.outStorage.formFiles} fileGuid={fileGuid}></UploadFile>
+                <UploadFile files={this.props.fileDataSource} fileGuid={fileGuid}></UploadFile>
               </FormItem>
             </Col>
           </Row>
@@ -311,7 +310,7 @@ class OutStorage extends React.Component {
             <SearchInput placeholder="输入商品代码、条码、名称搜索" style={{
               width: 250,
               marginBottom: 5
-            }} onSearch={this.onSearch} dataSource={this.props.outStorage.searchResult} onSelect={this.onSelect} columns={searchPageColumns}></SearchInput>
+            }} onSearch={this.onSearch} dataSource={this.props.searchResult} onSelect={this.onSelect} columns={searchPageColumns}></SearchInput>
           </Col>
         </Row>
         <Row>
@@ -329,7 +328,7 @@ class OutStorage extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.formID == 0) {
+  if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
       imgGuid = getRand();
@@ -357,48 +356,48 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.outStorage.outStorage) {
+  } else if (props.dataSource0) {
     if (!mainDataHasModify) {
-      primaryKey = props.outStorage.outStorage.item0[0].FormID;
-      imgGuid = props.outStorage.outStorage.item0[0].FormImages;
+      primaryKey = props.dataSource0.FormID;
+      imgGuid = props.dataSource0.FormImages;
       if (ifNull(imgGuid)) {
         imgGuid = getRand();
       }
-      fileGuid = props.outStorage.outStorage.item0[0].FormFiles;
+      fileGuid = props.dataSource0.FormFiles;
       if (ifNull(fileGuid)) {
         fileGuid = getRand();
       }
       userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
-          value: props.outStorage.outStorage.item0[0].ID
+          value: props.dataSource0.ID
         },
         FormID: {
-          value: props.outStorage.outStorage.item0[0].FormID
+          value: props.dataSource0.FormID
         },
         WarehouseID: {
-          value: props.outStorage.outStorage.item0[0].WarehouseID
+          value: props.dataSource0.WarehouseID
         },
         CompID: {
-          value: props.outStorage.outStorage.item0[0].CompID
+          value: props.dataSource0.CompID
         },
         CustomerID: {
-          value: props.outStorage.outStorage.item0[0].CustomerID
+          value: props.dataSource0.CustomerID
         },
         OutDate: {
-          value: new Date(props.outStorage.outStorage.item0[0].OutDate)
+          value: new Date(props.dataSource0.OutDate)
         },
         FormState: {
-          value: props.outStorage.outStorage.item0[0].FormState
+          value: props.dataSource0.FormState
         },
         Operator: {
-          value: props.outStorage.outStorage.item0[0].Operator
+          value: props.dataSource0.Operator
         },
         OperationTime: {
-          value: new Date(props.outStorage.outStorage.item0[0].OperationTime)
+          value: new Date(props.dataSource0.OperationTime)
         },
         Remark: {
-          value: props.outStorage.outStorage.item0[0].Remark
+          value: props.dataSource0.Remark
         }
       }
     }
@@ -419,8 +418,13 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
-  const {common, customer, warehouse, outStorage} = state
-  return {common, customer, warehouse, outStorage}
+  const {common, customer, warehouse, outStorage} = state;
+  let dataSource0=outStorage.outStorage_M;
+  let dataSource1=outStorage.outStorage_S;
+  let imgDataSource=outStorage.formImgs;
+  let fileDataSource=outStorage.formFiles;
+  let searchResult=outStorage.searchResult;
+  return {common, customer, warehouse, dataSource0,dataSource1,imgDataSource,fileDataSource,searchResult}
 }
 OutStorage = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(OutStorage);
 export default connect(mapStateToProps)(OutStorage)

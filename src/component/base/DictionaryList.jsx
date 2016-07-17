@@ -66,7 +66,7 @@ class DictionaryList extends React.Component {
   }
   render() {
     const pagination = {
-      total:  this.props.dictionary.dictionaryList?this.props.dictionary.dictionaryList.length:0,
+      total:  this.props.dataSource0?this.props.dataSource0.length:0,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -86,13 +86,14 @@ class DictionaryList extends React.Component {
             <Button type="primary">导出</Button>
           </Col>
         </Row>
-        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dictionary.dictionaryList} pagination={pagination}/>
+        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource0} pagination={pagination}/>
       </div>
     );
   }
 };
 function mapStateToProps(state) {
-  const {dictionary} = state
-  return {dictionary}
+  const {dictionary} = state;
+  let dataSource0=dictionary.dictionaryList;
+  return {dataSource0}
 }
 export default  connect(mapStateToProps)(DictionaryList)

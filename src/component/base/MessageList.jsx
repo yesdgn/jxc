@@ -2,6 +2,8 @@
 import React from 'react';
 import {Table, Icon,Steps ,  Row, Col,Modal } from 'antd';
 import {Link} from 'react-router';
+import {connect} from 'react-redux'
+import {readMessage,messageFinished} from '../../redux/actions';
 const confirm = Modal.confirm;
 const  columns= [
     {
@@ -47,20 +49,20 @@ class Messages extends React.Component {
   constructor(props) {
     super(props);
   };
-  componentDidMount() {
-    this.props.onLoad();
+  componentWillMount() {
+    this.props.dispatch(readMessage());
   }
   msgDone=(msg,index,mouseEvent)=>{
-    const { props: { onMsgDone } } = this
+    const { props: { dispatch } } = this
     if (mouseEvent.target.innerText == '完成') {
       confirm({
         title: '提示',
         content: '您确认已完成吗?',
         onOk() {
-          onMsgDone(msg.ID)
+           dispatch(messageFinished(msg.ID));
         },
         onCancel() {}
-      } );
+      } ) ;
     }
   };
 
@@ -71,7 +73,7 @@ class Messages extends React.Component {
       <Row type="flex" justify="center" align="middle"  >
         <Col span="24" >
           <Table columns={columns} onRowClick={this.msgDone}  rowKey={record => 'K'+record.ID}
-             dataSource={this.props.dataSource}
+             dataSource={this.props.dataSource0}
              />
         </Col>
 
@@ -81,5 +83,9 @@ class Messages extends React.Component {
   );
   }
 };
-
-export default  Messages
+function mapStateToProps(state) {
+  const {user} = state;
+  let dataSource0=user.userMessage;
+  return {dataSource0}
+}
+export default   connect(mapStateToProps)(Messages)

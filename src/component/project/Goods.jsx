@@ -18,7 +18,7 @@ import {
   readDict,
  readGoods,saveGoods,readDictGridSelect
 } from '../../redux/actions';
-import {READ_DICT_GOODSCATEGORY, READ_DICT_GRIDCUSTTYPE,READ_DICT_UNIT } from '../../redux/actionsType';
+import {READ_DICT_GOODSCATEGORY, READ_DICT_CUSTTYPE,READ_DICT_UNIT } from '../../redux/actionsType';
 import {
   Button,
   Row,
@@ -72,23 +72,23 @@ class Goods extends React.Component {
   };
 
   componentWillMount() {
+    this.props.dispatch(readDict(READ_DICT_CUSTTYPE, '146864635828377773'));
     this.props.dispatch(readDict(READ_DICT_GOODSCATEGORY, '6365673372633792522'));
     this.props.dispatch(readDict(READ_DICT_UNIT, '6365673372633792600'));
-    this.props.dispatch(readDictGridSelect(READ_DICT_GRIDCUSTTYPE, '146864635828377773'));
-    if (this.props.params.goodsID != 0) {
-      this.props.dispatch(readGoods(this.props.params.goodsID));
+    if (this.props.params.dataID != 0) {
+      this.props.dispatch(readGoods(this.props.params.dataID));
     }
   }
   componentWillUnmount() {
     mainDataHasModify = false;
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.goodsID !== this.props.params.goodsID) {
-      this.props.dispatch(readGoods(nextProps.params.goodsID));
+    if (nextProps.params.dataID !== this.props.params.dataID) {
+      this.props.dispatch(readGoods(nextProps.params.dataID));
     }
     //下面为表体数据
-    if (nextProps.params.goodsID != 0 && ((nextProps.goods.goods && this.state.rows.length === 0) || (nextProps.goods.goods && this.props.goods.goods && nextProps.goods.goods.item1 !== this.props.goods.goods.item1))) {
-      this.setState({rows: nextProps.goods.goods.item1});
+    if (nextProps.params.dataID != 0 && ((nextProps.dataSource0 && this.state.rows.length === 0) || (nextProps.dataSource0 && this.props.dataSource0 && nextProps.dataSource1 !== this.props.dataSource1))) {
+      this.setState({rows: nextProps.dataSource1});
     }
 
   }
@@ -163,7 +163,7 @@ class Goods extends React.Component {
       } , {
         key: 'CustomerType',
         name: '客户类型',
-        editor: <AutoCompleteEditor options={this.props.common.GridCustType}/>
+        editor: <AutoCompleteEditor options={this.props.common.CustomerCategory} label="DictName" />
       }, {
         key: 'Price',
         name: '价格',
@@ -238,7 +238,7 @@ class Goods extends React.Component {
             </Col>
             <Col span="12">
               <FormItem {...formItemLayout} label="商品图像">
-                 <UploadImage images={this.props.goods.goodsImgs} imgGuid={imgGuid}></UploadImage>
+                 <UploadImage images={this.props.imgDataSource} imgGuid={imgGuid}></UploadImage>
               </FormItem>
             </Col>
           </Row>
@@ -249,7 +249,7 @@ class Goods extends React.Component {
           <Col span="22">
 
             <ReactDataGrid enableCellSelect={true} rowGetter={this.rowGetter}  toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
-              columns={columns} rowsCount={this.state.rows.length} minHeight={500} onRowUpdated={this.handleRowUpdated} cellNavigationMode="changeRow"/>
+              columns={columns} rowsCount={this.state.rows.length} minHeight={300} onRowUpdated={this.handleRowUpdated} cellNavigationMode="changeRow"/>
 
           </Col>
           <Col span="1"></Col>
@@ -260,7 +260,7 @@ class Goods extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.goodsID == 0) {
+   if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
       imgGuid = getRand();
@@ -273,10 +273,10 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.goods.goods) {
+  } else if (props.dataSource0) {
     if (!mainDataHasModify) {
-      primaryKey = props.goods.goods.item0[0].GoodsID;
-      imgGuid = props.goods.goods.item0[0].GoodsImages;
+      primaryKey = props.dataSource0.GoodsID;
+      imgGuid = props.dataSource0.GoodsImages;
       if (ifNull(imgGuid)) {
         imgGuid = getRand();
       }
@@ -284,34 +284,34 @@ function mapPropsToFields(props) {
       userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
-          value: props.goods.goods.item0[0].ID
+          value: props.dataSource0.ID
         },
         GoodsID: {
-          value: props.goods.goods.item0[0].GoodsID
+          value: props.dataSource0.GoodsID
         },
         GoodsCode: {
-          value: props.goods.goods.item0[0].GoodsCode
+          value: props.dataSource0.GoodsCode
         },
         GoodsName: {
-          value: props.goods.goods.item0[0].GoodsName
+          value: props.dataSource0.GoodsName
         },
         DefaultPrice: {
-          value: props.goods.goods.item0[0].DefaultPrice
+          value: props.dataSource0.DefaultPrice
         } ,
         GoodsCategory: {
-          value: props.goods.goods.item0[0].GoodsCategory
+          value: props.dataSource0.GoodsCategory
         },
         GoodsDescribe: {
-          value: props.goods.goods.item0[0].GoodsDescribe
+          value: props.dataSource0.GoodsDescribe
         } ,
         Remark: {
-          value: props.goods.goods.item0[0].Remark
+          value: props.dataSource0.Remark
         },
         BarCode: {
-          value: props.goods.goods.item0[0].BarCode
+          value: props.dataSource0.BarCode
         },
         Unit: {
-          value: props.goods.goods.item0[0].Unit
+          value: props.dataSource0.Unit
         }
       }
     }
@@ -332,8 +332,11 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
-  const {common, goods} = state
-  return {common, goods}
+  const {common, goods} = state;
+  let dataSource0=goods.goods_M;
+  let dataSource1=goods.goods_S;
+  let imgDataSource=goods.goodsImgs;
+  return {common, dataSource0,imgDataSource,dataSource1}
 }
 Goods = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Goods);
 export default connect(mapStateToProps)(Goods)

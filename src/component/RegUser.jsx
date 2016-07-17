@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import {userReg,clearUser} from '../redux/actions';
 import  {startsWith,trim}   from 'lodash';
- 
+
 
 const FormItem = Form.Item;
 
@@ -25,18 +25,7 @@ class RegUser extends React.Component {
         this.state={
         };
     };
-    componentWillReceiveProps(nextProps) {
-      if (nextProps.user.regInfo && nextProps.user.regInfo.items[0].result==='success')
-      {
-        hide = message.success(nextProps.user.regInfo.items[0].resultDescribe);
-        this.props.dispatch(clearUser());
-        this.context.router.push('/login');
-      }
-      else if (nextProps.user.regInfo && nextProps.user.regInfo.items[0].result==='fail') {
-        hide = message.error(nextProps.user.regInfo.items[0].resultDescribe);
-        this.props.dispatch(clearUser());
-      }
-    }
+
     noop() {
       return false;
     }
@@ -51,7 +40,14 @@ class RegUser extends React.Component {
         if (!!errors) {
           return;
         }
-        this.props.dispatch(userReg(values));
+        this.props.dispatch(userReg(values, function(data) {
+         if (data.returnCode == 0 && data.items[0].result == 'success') {
+           message.success(data.items[0].resultDescribe);
+           this.context.router.push('/login');
+         } else {
+           message.error(data.items[0].resultDescribe);
+         }
+       }.bind(this)));
       });
     };
     checkUserName(rule, value, callback) {

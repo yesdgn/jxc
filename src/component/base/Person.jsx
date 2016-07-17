@@ -60,16 +60,16 @@ class Person extends React.Component {
   };
 
   componentWillMount() {
-    if (this.props.params.personID != 0) {
-      this.props.dispatch(readPerson(this.props.params.personID));
+    if (this.props.params.dataID != 0) {
+      this.props.dispatch(readPerson(this.props.params.dataID));
     }
   }
   componentWillUnmount() {
     mainDataHasModify = false;
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.personID !== this.props.params.personID) {
-      this.props.dispatch(readPerson(nextProps.params.personID));
+    if (nextProps.params.dataID !== this.props.params.dataID) {
+      this.props.dispatch(readPerson(nextProps.params.dataID));
     }
 
 
@@ -156,7 +156,7 @@ class Person extends React.Component {
             </Col>
             <Col span="12">
               <FormItem {...formItemLayout} label="头像">
-                <UploadImage images={this.props.person.personImgs} imgGuid={imgGuid}></UploadImage>
+                <UploadImage images={this.props.imgDataSource} imgGuid={imgGuid}></UploadImage>
               </FormItem>
             </Col>
           </Row>
@@ -167,7 +167,7 @@ class Person extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.personID == 0) {
+  if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
       imgGuid = getRand();
@@ -180,35 +180,35 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.person.person) {
+  } else if (props.dataSource0) {
     if (!mainDataHasModify) {
-      primaryKey = props.person.person.item0[0].UserID;
-      imgGuid = props.person.person.item0[0].UserImages;
+      primaryKey = props.dataSource0.UserID;
+      imgGuid = props.dataSource0.UserImages;
       if (ifNull(imgGuid)) {
         imgGuid = getRand();
       }
       userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
-          value: props.person.person.item0[0].ID
+          value: props.dataSource0.ID
         },
         UserID: {
-          value: props.person.person.item0[0].UserID
+          value: props.dataSource0.UserID
         },
         Code: {
-          value: props.person.person.item0[0].Code
+          value: props.dataSource0.Code
         },
         Name: {
-          value: props.person.person.item0[0].Name
+          value: props.dataSource0.Name
         },
         Email: {
-          value: props.person.person.item0[0].Email
+          value: props.dataSource0.Email
         },
         Mobile: {
-          value: props.person.person.item0[0].Mobile
+          value: props.dataSource0.Mobile
         },
         Remark: {
-          value:  props.person.person.item0[0].Remark
+          value:  props.dataSource0.Remark
         }
       }
     }
@@ -229,8 +229,10 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
-  const {common, person} = state
-  return {common,person}
+  const {common, person} = state;
+  let dataSource0=person.person;
+  let imgDataSource=person.personImgs;
+  return {common,dataSource0,imgDataSource}
 }
 Person = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Person);
 export default connect(mapStateToProps)(Person)

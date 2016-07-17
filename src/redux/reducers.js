@@ -7,13 +7,11 @@ export function user(state = {}, action) {
     case actionsType.USER_LOGIN:
       return {
         ...state,
-        userLoginResult: action.receivedJson,
         userInfo: action.receivedJson.items.item0[0].result == 'success' ? action.receivedJson.items.item1[0] : {}
       }
     case actionsType.USER_REG:
       return {
         ...state,
-
         regInfo: action.receivedJson
       }
     case actionsType.USER_CLEAR:
@@ -28,15 +26,10 @@ export function user(state = {}, action) {
         ...state,
         favorites: action.receivedJson
       }
-    case actionsType.RESULT_CLEAR:
-      return {
-        ...state,
-        userLoginResult: {}
-      }
     case actionsType.READ_USER_MESSAGE:
       return {
         ...state,
-        userMessage: action.receivedJson
+        userMessage: action.receivedJson.items
       }
     case actionsType.MESSAGE_DONE:
       return {
@@ -90,16 +83,6 @@ export function common(state = [], action) {
         ...state,
         AutoGenerateSqlType: action.receivedJson.items
       }
-    case actionsType.READ_DICT_GRIDCUSTTYPE:
-      return {
-        ...state,
-        GridCustType: action.receivedJson.items
-      }
-    case actionsType.READ_DICT_GRIDUNIT:
-      return {
-        ...state,
-        GridUnit: action.receivedJson.items
-      }
     case actionsType.READ_DICT_UNIT:
       return {
         ...state,
@@ -143,7 +126,7 @@ export function person(state = [], action) {
     case actionsType.READ_PERSON:
       return {
         ...state,
-        person: action.receivedJson.items
+        person: action.receivedJson.items.item0[0]
       }
     case actionsType.READ_PERSONFILE:
       return {
@@ -169,7 +152,8 @@ export function goods(state = [], action) {
     case actionsType.READ_GOODS:
       return {
         ...state,
-        goods: action.receivedJson.items
+        goods_M: action.receivedJson.items.item0[0],
+        goods_S: action.receivedJson.items.item1
       }
     case actionsType.READ_GOODS_FILE:
       return {
@@ -192,7 +176,7 @@ export function company(state = [], action) {
     case actionsType.READ_COMPANY:
       return {
         ...state,
-        company: action.receivedJson.items
+        company: action.receivedJson.items.item0[0]
       }
     case actionsType.READ_COMPANY_FILE:
       return {
@@ -214,7 +198,7 @@ export function customer(state = [], action) {
     case actionsType.READ_CUSTOMER:
       return {
         ...state,
-        customer: action.receivedJson.items
+        customer: action.receivedJson.items.item0[0]
       }
     case actionsType.READ_CUSTOMER_FILE:
       return {
@@ -236,7 +220,7 @@ export function supplier(state = [], action) {
     case actionsType.READ_SUPPLIER:
       return {
         ...state,
-        supplier: action.receivedJson.items
+        supplier: action.receivedJson.items.item0[0]
       }
     case actionsType.READ_SUPPLIER_FILE:
       return {
@@ -258,7 +242,7 @@ export function warehouse(state = [], action) {
     case actionsType.READ_WAREHOUSE:
       return {
         ...state,
-        warehouse: action.receivedJson.items
+        warehouse: action.receivedJson.items.item0[0]
       }
     default:
       return state
@@ -275,7 +259,7 @@ export function routeApi(state = [], action) {
     case actionsType.READ_ROUTER:
       return {
         ...state,
-        route: action.receivedJson.items
+        route: action.receivedJson.items.item0[0]
       }
     default:
       return state
@@ -292,7 +276,8 @@ export function inStorage(state = [], action) {
     case actionsType.READ_INSTORAGE:
       return {
         ...state,
-        inStorage: action.receivedJson.items
+        inStorage_M: action.receivedJson.items.item0[0],
+        inStorage_S: action.receivedJson.items.item1
       }
     case actionsType.READ_INSTORAGE_IMG:
       return {
@@ -325,7 +310,8 @@ export function outStorage(state = [], action) {
     case actionsType.READ_OUTSTORAGE:
       return {
         ...state,
-        outStorage: action.receivedJson.items
+        outStorage_M: action.receivedJson.items.item0[0],
+        outStorage_S: action.receivedJson.items.item1
       }
     case actionsType.READ_OUTSTORAGE_IMG:
       return {
@@ -358,7 +344,8 @@ export function dictionary(state = [], action) {
     case actionsType.READ_DICTIONARY:
       return {
         ...state,
-        dictionary: action.receivedJson.items
+        dictionary_M: action.receivedJson.items.item0[0],
+        dictionary_S:action.receivedJson.items.item1
       }
     default:
       return state

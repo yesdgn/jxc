@@ -59,16 +59,16 @@ class RouteApi extends React.Component {
   componentWillMount() {
     this.props.dispatch(readDict(READ_DICT_ROUTERETURNTYPE, '6365673372633792594'));
     this.props.dispatch(readDict(READ_DICT_AUTOGENERATESQLTYPE, '6365687725642743810'));
-    if (this.props.params.routeID != 0) {
-      this.props.dispatch(readRoute(this.props.params.routeID));
+    if (this.props.params.dataID != 0) {
+      this.props.dispatch(readRoute(this.props.params.dataID));
     }
   }
   componentWillUnmount() {
     mainDataHasModify = false;
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.routeID !== this.props.params.routeID) {
-      this.props.dispatch(readRoute(nextProps.params.routeID));
+    if (nextProps.params.dataID !== this.props.params.dataID) {
+      this.props.dispatch(readRoute(nextProps.params.dataID));
     }
 
 
@@ -182,7 +182,7 @@ class RouteApi extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.routeID == 0) {
+  if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
       userInfo = storeS.getJson('userInfo');
@@ -202,40 +202,40 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.routeApi.route) {
+  } else if (props.dataSource0) {
     if (!mainDataHasModify) {
-      primaryKey = props.routeApi.route.item0[0].RouteID;
+      primaryKey = props.dataSource0.RouteID;
       userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
-          value: props.routeApi.route.item0[0].ID
+          value: props.dataSource0.ID
         },
         ApiID: {
-          value: props.routeApi.route.item0[0].ApiID.toString()
+          value: props.dataSource0.ApiID.toString()
         },
         RouteID: {
-          value:  props.routeApi.route.item0[0].RouteID
+          value:  props.dataSource0.RouteID
         },
         RouteName: {
-          value: props.routeApi.route.item0[0].RouteName
+          value: props.dataSource0.RouteName
         },
         ApiExecSql: {
-          value: props.routeApi.route.item0[0].ApiExecSql
+          value: props.dataSource0.ApiExecSql
         },
         IsCancel: {
-          value:props.routeApi.route.item0[0].IsCancel
+          value:props.dataSource0.IsCancel
         },
         IsOpen: {
-          value: props.routeApi.route.item0[0].IsOpen
+          value: props.dataSource0.IsOpen
         },
         TransformJsonType: {
-          value: props.routeApi.route.item0[0].TransformJsonType
+          value: props.dataSource0.TransformJsonType
         },
         AutoGenerateSqlType: {
-          value: props.routeApi.route.item0[0].AutoGenerateSqlType
+          value: props.dataSource0.AutoGenerateSqlType
         },
         AutoGenerateSqlTableName: {
-          value: props.routeApi.route.item0[0].AutoGenerateSqlTableName
+          value: props.dataSource0.AutoGenerateSqlTableName
         }
       }
     }
@@ -256,8 +256,9 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
-  const {common,routeApi} = state
-  return {common,routeApi}
+  const {common,routeApi} = state;
+  let dataSource0=routeApi.route;
+  return {common,dataSource0}
 }
 RouteApi = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(RouteApi);
 export default connect(mapStateToProps)(RouteApi)

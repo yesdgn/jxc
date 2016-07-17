@@ -62,16 +62,16 @@ class Customer extends React.Component {
   componentWillMount() {
     this.props.dispatch(readDict(READ_DICT_COMPTYPE, '6365673372633792525'));
     this.props.dispatch(readDict(READ_DICT_CUSTTYPE, '146864635828377773'));
-    if (this.props.params.customerID != 0) {
-      this.props.dispatch(readCustomer(this.props.params.customerID));
+    if (this.props.params.dataID != 0) {
+      this.props.dispatch(readCustomer(this.props.params.dataID));
     }
   }
   componentWillUnmount() {
     mainDataHasModify = false;
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.customerID !== this.props.params.customerID) {
-      this.props.dispatch(readCustomer(nextProps.params.customerID));
+    if (nextProps.params.dataID !== this.props.params.dataID) {
+      this.props.dispatch(readCustomer(nextProps.params.dataID));
     }
 
 
@@ -173,7 +173,7 @@ class Customer extends React.Component {
             </Col>
             <Col span="12">
               <FormItem {...formItemLayout} label="客户照片">
-                  <UploadImage images={this.props.customer.customerImgs} imgGuid={imgGuid}></UploadImage>
+                  <UploadImage images={this.props.imgDataSource} imgGuid={imgGuid}></UploadImage>
               </FormItem>
             </Col>
           </Row>
@@ -184,7 +184,7 @@ class Customer extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.customerID == 0) {
+  if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
       imgGuid = getRand();
@@ -200,38 +200,38 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.customer.customer) {
+  } else if (props.dataSource0) {
     if (!mainDataHasModify) {
-      primaryKey = props.customer.customer.item0[0].CompID;
-      imgGuid = props.customer.customer.item0[0].CompImages;
+      primaryKey = props.dataSource0.CompID;
+      imgGuid = props.dataSource0.CompImages;
       if (ifNull(imgGuid)) {
         imgGuid = getRand();
       }
       userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
-          value: props.customer.customer.item0[0].ID
+          value: props.dataSource0.ID
         },
         CompID: {
-          value: props.customer.customer.item0[0].CompID
+          value: props.dataSource0.CompID
         },
         CompName: {
-          value: props.customer.customer.item0[0].CompName
+          value: props.dataSource0.CompName
         },
         CompCode: {
-          value: props.customer.customer.item0[0].CompCode
+          value: props.dataSource0.CompCode
         },
         CompTel: {
-          value: props.customer.customer.item0[0].CompTel
+          value: props.dataSource0.CompTel
         },
         CompType: {
-          value: props.customer.customer.item0[0].CompType
+          value: props.dataSource0.CompType
         },
         CompDescribe: {
-          value:  props.customer.customer.item0[0].CompDescribe
+          value:  props.dataSource0.CompDescribe
         },
         CompCategory: {
-          value:  props.customer.customer.item0[0].CompCategory
+          value:  props.dataSource0.CompCategory
         }
       }
     }
@@ -252,8 +252,10 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
-  const {common, customer} = state
-  return {common,customer}
+  const {common, customer} = state;
+  let dataSource0=customer.customer;
+  let imgDataSource=customer.customerImgs;
+  return {common,dataSource0,imgDataSource}
 }
 Customer = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Customer);
 export default connect(mapStateToProps)(Customer)

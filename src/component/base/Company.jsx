@@ -61,16 +61,16 @@ class Company extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(readDict(READ_DICT_COMPTYPE, '6365673372633792525'));
-    if (this.props.params.companyID != 0) {
-      this.props.dispatch(readCompany(this.props.params.companyID));
+    if (this.props.params.dataID != 0) {
+      this.props.dispatch(readCompany(this.props.params.dataID));
     }
   }
   componentWillUnmount() {
     mainDataHasModify = false;
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.companyID !== this.props.params.companyID) {
-      this.props.dispatch(readCompany(nextProps.params.companyID));
+    if (nextProps.params.dataID !== this.props.params.dataID) {
+      this.props.dispatch(readCompany(nextProps.params.dataID));
     }
 
 
@@ -160,7 +160,7 @@ class Company extends React.Component {
             </Col>
             <Col span="12">
               <FormItem {...formItemLayout} label="公司照片">
-                  <UploadImage images={this.props.company.compImgs} imgGuid={imgGuid}></UploadImage>
+                  <UploadImage images={this.props.imgDataSource} imgGuid={imgGuid}></UploadImage>
               </FormItem>
             </Col>
           </Row>
@@ -171,7 +171,7 @@ class Company extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.companyID == 0) {
+  if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
       imgGuid = getRand();
@@ -187,35 +187,35 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.company.company) {
+  } else if (props.dataSource0) {
     if (!mainDataHasModify) {
-      primaryKey = props.company.company.item0[0].CompID;
-      imgGuid = props.company.company.item0[0].CompImages;
+      primaryKey = props.dataSource0.CompID;
+      imgGuid = props.dataSource0.CompImages;
       if (ifNull(imgGuid)) {
         imgGuid = getRand();
       }
       userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
-          value: props.company.company.item0[0].ID
+          value: props.dataSource0.ID
         },
         CompID: {
-          value: props.company.company.item0[0].CompID
+          value: props.dataSource0.CompID
         },
         CompName: {
-          value: props.company.company.item0[0].CompName
+          value: props.dataSource0.CompName
         },
         CompCode: {
-          value: props.company.company.item0[0].CompCode
+          value: props.dataSource0.CompCode
         },
         CompTel: {
-          value: props.company.company.item0[0].CompTel
+          value: props.dataSource0.CompTel
         },
         CompType: {
-          value: props.company.company.item0[0].CompType
+          value: props.dataSource0.CompType
         },
         CompDescribe: {
-          value:  props.company.company.item0[0].CompDescribe
+          value:  props.dataSource0.CompDescribe
         }
       }
     }
@@ -236,8 +236,10 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
-  const {common, company} = state
-  return {common,company}
+  const {common, company} = state;
+  let dataSource0=company.company;
+  let imgDataSource=company.compImgs;
+  return {common,dataSource0,imgDataSource}
 }
 Company = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Company);
 export default connect(mapStateToProps)(Company)

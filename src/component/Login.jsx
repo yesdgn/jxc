@@ -37,22 +37,7 @@ class Login extends React.Component {
       {
         storeL.removeItem("user");
       }
-      if(nextProps.user.userLoginResult && nextProps.user.userLoginResult.items &&  nextProps.user.userLoginResult.items.item0[0].result=='success')
-      {
-        if (fieldsValue.agreement===true)
-        {
-          storeL.setItem("user",fieldsValue.userName);
-        }
-        storeS.setItem("sessionKey",nextProps.user.userLoginResult.items.item0[0].accessToken);
-        storeS.setJson("userInfo", nextProps.user.userInfo );
-        this.props.dispatch(clearResult());
-        this.context.router.push('/main') ;
-      }
-      else if(nextProps.user.userLoginResult  && nextProps.user.userLoginResult.items &&  nextProps.user.userLoginResult.items.item0[0].result=='fail')
-      {
-        hide = message.error(nextProps.user.userLoginResult.items.item0[0].resultDescribe);
-        this.props.dispatch(clearUser());
-      }
+ 
     };
 
     handleReset=(e)=> {
@@ -65,8 +50,19 @@ class Login extends React.Component {
         if (!!errors) {
           return;
         }
-        this.props.dispatch(userLogin(values));
-        //console.log('收到表单值：', values);
+        this.props.dispatch(userLogin(values, function(data) {
+         if (data.returnCode == 0 && data.items.item0[0].result == 'success') {
+           //message.success(data.items.item0[0].resultDescribe);
+           if (values.agreement===true)
+           {storeL.setItem("user",values.userName);}
+           storeS.setItem("sessionKey",data.items.item0[0].accessToken);
+           storeS.setJson("userInfo", data.items.item1[0] );
+           this.context.router.push('/main') ;
+          } else {
+           message.error(data.items.item0[0].resultDescribe);
+         }
+       }.bind(this)));
+
       });
 
     };

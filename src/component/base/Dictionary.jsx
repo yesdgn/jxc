@@ -60,20 +60,20 @@ class Dictionary extends React.Component {
   };
 
   componentWillMount() {
-    if (this.props.params.dictionaryID != 0) {
-      this.props.dispatch(readDictionary(this.props.params.dictionaryID ));
+    if (this.props.params.dataID != 0) {
+      this.props.dispatch(readDictionary(this.props.params.dataID ));
     }
   }
   componentWillUnmount() {
     mainDataHasModify = false;
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.dictionaryID !== this.props.params.dictionaryID) {
-      this.props.dispatch(readDictionary(nextProps.params.dictionaryID));
+    if (nextProps.params.dataID !== this.props.params.dataID) {
+      this.props.dispatch(readDictionary(nextProps.params.dataID));
     }
     //下面为表体数据
-    if (nextProps.params.dictionaryID != 0 && ((nextProps.dictionary.dictionary && this.state.rows.length === 0) || (nextProps.dictionary.dictionary && this.props.dictionary.dictionary && nextProps.dictionary.dictionary.item1 !== this.props.dictionary.dictionary.item1))) {
-      this.setState({rows: nextProps.dictionary.dictionary.item1});
+    if (nextProps.params.dataID != 0 && ((nextProps.dataSource0 && this.state.rows.length === 0) || (nextProps.dataSource0 && this.props.dataSource0 && nextProps.dataSource1 !== this.props.dataSource1))) {
+      this.setState({rows: nextProps.dataSource1});
     }
 
   }
@@ -217,7 +217,7 @@ class Dictionary extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.dictionaryID == 0) {
+  if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
       userInfo = storeS.getJson('userInfo');
@@ -228,23 +228,23 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.dictionary.dictionary) {
+  } else if (props.dataSource0) {
     if (!mainDataHasModify) {
-      primaryKey = props.dictionary.dictionary.item0[0].DictTypeID;
+      primaryKey = props.dataSource0.DictTypeID;
 
       userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
-          value: props.dictionary.dictionary.item0[0].ID
+          value: props.dataSource0.ID
         },
         DictTypeID: {
-          value: props.dictionary.dictionary.item0[0].DictTypeID
+          value: props.dataSource0.DictTypeID
         },
         DictTypeName: {
-          value: props.dictionary.dictionary.item0[0].DictTypeName
+          value: props.dataSource0.DictTypeName
         },
         Remark: {
-          value: props.dictionary.dictionary.item0[0].Remark
+          value: props.dataSource0.Remark
         }
       }
     }
@@ -266,7 +266,9 @@ function onFieldsChange(props, fields) {
 
 function mapStateToProps(state) {
   const {dictionary} = state
-  return {dictionary}
+  let dataSource0=dictionary.dictionary_M;
+  let dataSource1=dictionary.dictionary_S;
+  return {dataSource0,dataSource1}
 }
 Dictionary = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Dictionary);
 export default connect(mapStateToProps)(Dictionary)

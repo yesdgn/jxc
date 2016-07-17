@@ -60,16 +60,16 @@ class Warehouse extends React.Component {
   };
 
   componentWillMount() {
-    if (this.props.params.warehouseID != 0) {
-      this.props.dispatch(readWarehouse(this.props.params.warehouseID));
+    if (this.props.params.dataID != 0) {
+      this.props.dispatch(readWarehouse(this.props.params.dataID));
     }
   }
   componentWillUnmount() {
     mainDataHasModify = false;
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.params.warehouseID !== this.props.params.warehouseID) {
-      this.props.dispatch(readWarehouse(nextProps.params.warehouseID));
+    if (nextProps.params.dataID !== this.props.params.dataID) {
+      this.props.dispatch(readWarehouse(nextProps.params.dataID));
     }
 
 
@@ -148,7 +148,7 @@ class Warehouse extends React.Component {
                 <Input {...getFieldProps('WarehouseAddr')}/>
               </FormItem>
             </Col>
-           
+
           </Row>
           <Row>
             <Col span="12">
@@ -164,7 +164,7 @@ class Warehouse extends React.Component {
 };
 
 function mapPropsToFields(props) {
-  if (props.params.warehouseID == 0) {
+  if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
       imgGuid = getRand();
@@ -180,9 +180,9 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.warehouse.warehouse) {
+  } else if (props.dataSource0) {
     if (!mainDataHasModify) {
-      primaryKey = props.warehouse.warehouse.item0[0].WarehouseID;
+      primaryKey = props.dataSource0.WarehouseID;
       //imgGuid = props.warehouse.warehouse.item0[0].CompImages;
       if (ifNull(imgGuid)) {
         imgGuid = getRand();
@@ -190,28 +190,28 @@ function mapPropsToFields(props) {
       userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
-          value: props.warehouse.warehouse.item0[0].ID
+          value: props.dataSource0.ID
         },
         CompID: {
-          value: props.warehouse.warehouse.item0[0].CompID
+          value: props.dataSource0.CompID
         },
         WarehouseID: {
-          value: props.warehouse.warehouse.item0[0].WarehouseID
+          value: props.dataSource0.WarehouseID
         },
         WarehouseCode: {
-          value: props.warehouse.warehouse.item0[0].WarehouseCode
+          value: props.dataSource0.WarehouseCode
         },
         WarehouseName: {
-          value: props.warehouse.warehouse.item0[0].WarehouseName
+          value: props.dataSource0.WarehouseName
         },
         WarehouseTel: {
-          value: props.warehouse.warehouse.item0[0].WarehouseTel
+          value: props.dataSource0.WarehouseTel
         },
         WarehouseAddr: {
-          value: props.warehouse.warehouse.item0[0].WarehouseAddr
+          value: props.dataSource0.WarehouseAddr
         },
         WarehouseDescribe: {
-          value:  props.warehouse.warehouse.item0[0].WarehouseDescribe
+          value:  props.dataSource0.WarehouseDescribe
         }
       }
     }
@@ -232,8 +232,9 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
-  const {warehouse} = state
-  return {warehouse}
+  const {warehouse} = state;
+  let dataSource0=warehouse.warehouse;
+  return {dataSource0}
 }
 Warehouse = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Warehouse);
 export default connect(mapStateToProps)(Warehouse)

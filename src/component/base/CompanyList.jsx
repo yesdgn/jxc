@@ -9,6 +9,8 @@ import {
   Modal,
   Button
 } from 'antd';
+import {connect} from 'react-redux'
+import {readCompanies} from '../../redux/actions';
 import {Link} from 'react-router';
 import {storeS} from '../../common/dgn';
 const confirm = Modal.confirm;
@@ -57,10 +59,10 @@ class Companies extends React.Component {
     let paginationPage = storeS.getItem("pagination");
     if (paginationPage && this.props.route.path == JSON.parse(paginationPage).path) {
       this.setState({currentPage: JSON.parse(paginationPage).currentPage})
-      this.props.onLoad(pageSize, JSON.parse(paginationPage).currentPage);
+      this.props.dispatch(readCompanies(pageSize, JSON.parse(paginationPage).currentPage));
     }
     else {
-      this.props.onLoad(pageSize, this.state.currentPage );
+      this.props.dispatch(readCompanies(pageSize, this.state.currentPage ));
     }
 
   }
@@ -69,13 +71,11 @@ class Companies extends React.Component {
   }
   handlePageChange = (current) => {
     this.setState({currentPage: current})
-    this.props.onLoad(pageSize, current);
+    this.props.dispatch(readCompanies(pageSize, current));
   }
   render() {
     const pagination = {
-      total: this.props.dataSource.length > 0
-        ? parseInt(this.props.dataSource[0].TotalSize)
-        : this.props.dataSource.length,
+      total: this.props.dataSource0?this.props.dataSource0.length:0 ,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -95,10 +95,14 @@ class Companies extends React.Component {
             <Button type="primary">导出</Button>
           </Col>
         </Row>
-        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource} pagination={pagination}/>
+        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource0} pagination={pagination}/>
       </div>
     );
   }
 };
-
-export default Companies
+function mapStateToProps(state) {
+  const {company} = state;
+  let dataSource0=company.companies;
+  return {dataSource0}
+}
+export default connect(mapStateToProps)(Companies)

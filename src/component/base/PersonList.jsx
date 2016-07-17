@@ -2,6 +2,8 @@
 import React from 'react';
 import {Table, Icon,Steps ,  Row, Col,Modal,Button } from 'antd';
 import {Link} from 'react-router';
+import {connect} from 'react-redux'
+import {readPersons} from '../../redux/actions';
 import {storeS } from '../../common/dgn';
 const confirm = Modal.confirm;
 
@@ -52,10 +54,10 @@ class Persons extends React.Component {
     let paginationPage= storeS.getItem("pagination");
     if (paginationPage && this.props.route.path == JSON.parse(paginationPage).path) {
       this.setState({currentPage: JSON.parse(paginationPage).currentPage})
-      this.props.onLoad(pageSize, JSON.parse(paginationPage).currentPage);
+      this.props.dispatch(readPersons(pageSize, JSON.parse(paginationPage).currentPage));
     }
     else {
-      this.props.onLoad(pageSize, this.state.currentPage );
+      this.props.dispatch(readPersons(pageSize, this.state.currentPage ));
     }
   }
 componentWillUnmount() {
@@ -65,11 +67,11 @@ componentWillUnmount() {
      this.setState({
        currentPage:current
      })
-     this.props.onLoad(pageSize,current);
+     this.props.dispatch(readPersons(pageSize,current));
   }
   render() {
     const pagination = {
-    total: this.props.dataSource.length>0?parseInt(this.props.dataSource[0].TotalSize):this.props.dataSource.length,
+    total: this.props.dataSource0?this.props.dataSource0:0,
     defaultCurrent:this.state.currentPage,
     onChange:this.handlePageChange
     };
@@ -90,10 +92,14 @@ componentWillUnmount() {
           </Col>
         </Row>
         <Table columns={columns} rowKey={record => 'K' + record.ID}
-          dataSource={this.props.dataSource} pagination={pagination}/>
+          dataSource={this.props.dataSource0} pagination={pagination}/>
       </div>
    );
   }
 };
-
-export default  Persons
+function mapStateToProps(state) {
+  const {person} = state;
+  let dataSource0=person.personList;
+  return {dataSource0}
+}
+export default   connect(mapStateToProps)(Persons)

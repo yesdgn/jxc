@@ -8,37 +8,12 @@ import {connect} from 'react-redux'
 import * as actionsType from '../redux/actionsType';
 import {
   clearUser,
-  messageFinished,
   readMessage,
   setFavorites,
-  readPersons,
   readMainMenu,
   readFavorites,
   readChartData,
-  readPerson,
-  removeFile,
-  clearResult,
-  savePerson,
-  readUploadFile,
-  readGoodses,
-  readGoods,
-  saveGoods,
-  readDict,
-  readCompanies,
-  readCompany,
-  saveCompany,
-  readCustomers,
-  readCustomer,
-  saveCustomer,
-  readSuppliers,
-  readSupplier,
-  saveSupplier,
-  readWarehouses,
-  readWarehouse,
-  saveWarehouse,
-  readRoutes,
-  readInStorageList,
-} from '../redux/actions'
+ } from '../redux/actions'
 import Head from './Head';
 import Left from './Left';
 import Bottom from './Bottom';
@@ -76,9 +51,7 @@ class App extends React.Component {
       return (<Left menuData={this.props.common.mainMenu} onLoad={() => this.props.dispatch(readMainMenu())}/>);
     }
   }
-  onMsgDone = (msgID) => {
-    this.props.dispatch(messageFinished(msgID));
-  };
+
   mainLoad = () => {
     this.props.dispatch(readChartData());
     this.props.dispatch(readMessage());
@@ -95,84 +68,6 @@ class App extends React.Component {
           onLoad: this.mainLoad
         }
         break;
-      case 'messageList':
-        return {
-          dataSource: this.props.user.userMessage
-            ? this.props.user.userMessage.items
-            : [],
-          onMsgDone: this.onMsgDone,
-          onLoad: () => this.props.dispatch(readMessage())
-        }
-        break;
-      case 'personList':
-        return {
-          dataSource: this.props.person.personList
-            ? this.props.person.personList
-            : [],
-          onLoad: (pageSize, curPage) => this.props.dispatch(readPersons(pageSize, curPage))
-        }
-        break;
-      case 'goodsList':
-        return {
-          dataSource: this.props.goods.goodses
-            ? this.props.goods.goodses
-            : [],
-          onLoad: (pageSize, curPage) => this.props.dispatch(readGoodses(pageSize, curPage))
-        }
-        break;
-
-      case 'companyList':
-        return {
-          dataSource: this.props.company.companies
-            ? this.props.company.companies
-            : [],
-          onLoad: (pageSize, curPage) => this.props.dispatch(readCompanies(pageSize, curPage))
-        }
-        break;
-
-      case 'customerList':
-        return {
-          dataSource: this.props.customer.customers
-            ? this.props.customer.customers
-            : [],
-          onLoad: (pageSize, curPage) => this.props.dispatch(readCustomers(pageSize, curPage))
-        }
-        break;
-
-      case 'supplierList':
-        return {
-          dataSource: this.props.supplier.suppliers
-            ? this.props.supplier.suppliers
-            : [],
-          onLoad: (pageSize, curPage) => this.props.dispatch(readSuppliers(pageSize, curPage))
-        }
-        break;
-
-      case 'warehouseList':
-        return {
-          dataSource: this.props.warehouse.warehouses
-            ? this.props.warehouse.warehouses
-            : [],
-          onLoad: (pageSize, curPage) => this.props.dispatch(readWarehouses(pageSize, curPage))
-        }
-        break;
-        case 'routeApiList':
-          return {
-            dataSource: this.props.routeApi.routes
-              ? this.props.routeApi.routes
-              : [],
-            onLoad: (pageSize, curPage) => this.props.dispatch(readRoutes(pageSize, curPage))
-          }
-          break;
-        case 'inStorageList':
-              return {
-                dataSource: this.props.inStorage.inStorageList
-                  ? this.props.inStorage.inStorageList
-                  : [],
-                  common: this.props.common,
-                onLoad: (pageSize, curPage) => this.props.dispatch(readInStorageList(pageSize, curPage))
-              }
-              break;
 
       default:
         return {dispatch:this.props.dispatch};
@@ -191,7 +86,7 @@ class App extends React.Component {
         <Head userInfo={user.userInfo} onLoad={() => dispatch(readFavorites())} favMenuData={user.favorites
           ? user.favorites.items
           : []} msgQty={user.userMessage
-          ? user.userMessage.items.length
+          ? user.userMessage.length
           : 0} addFavorites={() => dispatch(setFavorites())} logout={this.logout}/> {this.LeftComponent(url)}
         <div style={styles.contentDiv}>
           <div style={styles.breadcrumb}>
@@ -216,40 +111,17 @@ const styles = {
   }
 }
 
-//将state.user绑定到props的user
-// function mapStateToProps(state) {
-//   return {
-//     user: state.user
-//
-//   }
-// };
+
 function mapStateToProps(state) {
   const {
     common,
     user,
-    chart,
-    person,
-    goods,
-    company,
-    customer,
-    supplier,
-    warehouse,
-    routeApi,
-    inStorage
+    chart
   } = state
   return {
     common,
     user,
-    chart,
-    person,
-    goods,
-    company,
-    customer,
-    supplier,
-    warehouse,
-    routeApi,
-    inStorage
-  }
+    chart  }
 }
 
 export default connect(mapStateToProps)(App)
