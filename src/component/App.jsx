@@ -68,7 +68,6 @@ class App extends React.Component {
           onLoad: this.mainLoad
         }
         break;
-
       default:
         return {dispatch:this.props.dispatch};
     }

@@ -17,7 +17,6 @@ export function getSelectOption(datasource,id,name){
   if (ifNull(datasource) || id==undefined || name==undefined ) {
     return null
   }
-
  if (isArray(datasource))
  {
    return (datasource.map((x) => {

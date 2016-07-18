@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {browserHistory, Router, Route, IndexRoute} from 'react-router';
 import configureStore from '../redux/configureStore';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+//import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import App from '../component/App';
 import NoMatch from '../component/NoMatch';
 import Login from '../component/Login';
@@ -35,7 +35,7 @@ import DictionaryList from '../component/base/DictionaryList';
 import OutStorage from '../component/project/OutStorage';
 import OutStorageList from '../component/project/OutStorageList';
 const store = configureStore()
-const history = syncHistoryWithStore(browserHistory, store);
+//const history = syncHistoryWithStore(browserHistory, store);
 
 let rootElement = document.getElementById('react-body');
 
@@ -47,7 +47,7 @@ function requireAuthApp(curRoute,replace) {
 
 ReactDOM.render(
   <Provider store={store}>
-  <Router history={history}>
+  <Router history={browserHistory}>
     <Route path="/" breadcrumbName="首页"  component={App}>
       <IndexRoute component={Login}/>
       <Route path="login"  breadcrumbName="登录" component={Login}/>

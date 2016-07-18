@@ -180,7 +180,7 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.dataSource0) {
+  } else if (props.dataSource0  && props.dataSource0.UserID==props.params.dataID ) {
     if (!mainDataHasModify) {
       primaryKey = props.dataSource0.UserID;
       imgGuid = props.dataSource0.UserImages;

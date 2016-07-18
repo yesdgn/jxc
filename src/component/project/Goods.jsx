@@ -87,7 +87,7 @@ class Goods extends React.Component {
       this.props.dispatch(readGoods(nextProps.params.dataID));
     }
     //下面为表体数据
-    if (nextProps.params.dataID != 0 && ((nextProps.dataSource0 && this.state.rows.length === 0) || (nextProps.dataSource0 && this.props.dataSource0 && nextProps.dataSource1 !== this.props.dataSource1))) {
+    if (nextProps.params.dataID==primaryKey  &&  this.state.rows.length === 0  ) {
       this.setState({rows: nextProps.dataSource1});
     }
 
@@ -114,7 +114,7 @@ class Goods extends React.Component {
       this.props.dispatch(saveGoods(formArr, function(data) {
         if (data.returnCode == 0 && data.items[0].result == 'success') {
           message.success(data.items[0].resultDescribe);
-          this.context.router.push('/goods/' + primaryKey);
+          if (this.props.params.dataID==0) {this.context.router.push('/goods/' + primaryKey);}
           this.props.dispatch(readGoods(primaryKey));
           mainDataHasModify = false;
         } else {
@@ -273,7 +273,7 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.dataSource0) {
+  } else if (props.dataSource0 && props.dataSource0.GoodsID==props.params.dataID) {
     if (!mainDataHasModify) {
       primaryKey = props.dataSource0.GoodsID;
       imgGuid = props.dataSource0.GoodsImages;

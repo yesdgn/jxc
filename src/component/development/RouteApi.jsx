@@ -202,7 +202,7 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.dataSource0) {
+  } else if (props.dataSource0 && props.dataSource0.RouteID==props.params.dataID) {
     if (!mainDataHasModify) {
       primaryKey = props.dataSource0.RouteID;
       userInfo = storeS.getJson('userInfo');

@@ -6,12 +6,14 @@ import {
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import  * as   rootReducer from './reducers'
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+//import {  routerReducer } from 'react-router-redux'
+// const reducer  = combineReducers({
+//   ...rootReducer,
+//   routing: routerReducer
+// })
 const reducer  = combineReducers({
-  ...rootReducer,
-  routing: routerReducer
+  ...rootReducer
 })
-
 const loggerMiddleware = createLogger()
 
 
