@@ -60,6 +60,7 @@ class Customer extends React.Component {
   };
 
   componentWillMount() {
+    mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_COMPTYPE, '6365673372633792525'));
     this.props.dispatch(readDict(READ_DICT_CUSTTYPE, '146864635828377773'));
     if (this.props.params.dataID != 0) {
@@ -72,6 +73,7 @@ class Customer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.dataID !== this.props.params.dataID) {
       this.props.dispatch(readCustomer(nextProps.params.dataID));
+      mainDataHasModify = false;
     }
 
 

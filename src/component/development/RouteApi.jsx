@@ -57,6 +57,7 @@ class RouteApi extends React.Component {
   };
 
   componentWillMount() {
+    mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_ROUTERETURNTYPE, '6365673372633792594'));
     this.props.dispatch(readDict(READ_DICT_AUTOGENERATESQLTYPE, '6365687725642743810'));
     if (this.props.params.dataID != 0) {
@@ -69,6 +70,7 @@ class RouteApi extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.dataID !== this.props.params.dataID) {
       this.props.dispatch(readRoute(nextProps.params.dataID));
+      mainDataHasModify = false;
     }
 
 

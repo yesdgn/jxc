@@ -60,6 +60,7 @@ class Dictionary extends React.Component {
   };
 
   componentWillMount() {
+    mainDataHasModify = false;
     if (this.props.params.dataID != 0) {
       this.props.dispatch(readDictionary(this.props.params.dataID ));
     }
@@ -70,9 +71,10 @@ class Dictionary extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.dataID !== this.props.params.dataID) {
       this.props.dispatch(readDictionary(nextProps.params.dataID));
+      mainDataHasModify = false;
     }
     //下面为表体数据
-    if (nextProps.params.dataID==primaryKey  &&  this.state.rows.length === 0  ) {
+    if (nextProps.params.dataID==primaryKey  &&  (this.state.rows.length === 0 || nextProps.dataSource1!==this.props.dataSource1)  ) {
       this.setState({rows: nextProps.dataSource1});
     }
 

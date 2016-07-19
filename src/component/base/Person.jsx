@@ -60,6 +60,7 @@ class Person extends React.Component {
   };
 
   componentWillMount() {
+    mainDataHasModify = false;
     if (this.props.params.dataID != 0) {
       this.props.dispatch(readPerson(this.props.params.dataID));
     }
@@ -70,6 +71,7 @@ class Person extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.dataID !== this.props.params.dataID) {
       this.props.dispatch(readPerson(nextProps.params.dataID));
+      mainDataHasModify = false;
     }
 
 

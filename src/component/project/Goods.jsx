@@ -72,6 +72,7 @@ class Goods extends React.Component {
   };
 
   componentWillMount() {
+    mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_CUSTTYPE, '146864635828377773'));
     this.props.dispatch(readDict(READ_DICT_GOODSCATEGORY, '6365673372633792522'));
     this.props.dispatch(readDict(READ_DICT_UNIT, '6365673372633792600'));
@@ -85,9 +86,10 @@ class Goods extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.dataID !== this.props.params.dataID) {
       this.props.dispatch(readGoods(nextProps.params.dataID));
+      mainDataHasModify = false;
     }
     //下面为表体数据
-    if (nextProps.params.dataID==primaryKey  &&  this.state.rows.length === 0  ) {
+    if (nextProps.params.dataID==primaryKey  &&  (this.state.rows.length === 0 || nextProps.dataSource1!==this.props.dataSource1)  ) {
       this.setState({rows: nextProps.dataSource1});
     }
 

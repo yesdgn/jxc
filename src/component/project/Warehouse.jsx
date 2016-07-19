@@ -60,6 +60,7 @@ class Warehouse extends React.Component {
   };
 
   componentWillMount() {
+    mainDataHasModify = false;
     if (this.props.params.dataID != 0) {
       this.props.dispatch(readWarehouse(this.props.params.dataID));
     }
@@ -70,6 +71,7 @@ class Warehouse extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.dataID !== this.props.params.dataID) {
       this.props.dispatch(readWarehouse(nextProps.params.dataID));
+      mainDataHasModify = false;
     }
 
 

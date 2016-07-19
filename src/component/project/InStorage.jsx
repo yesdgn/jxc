@@ -90,6 +90,7 @@ class InStorage extends React.Component {
   };
 
   componentWillMount() {
+    mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_INSTORAGESTATE, '6365673372633792599'));
     this.props.dispatch(readDict(READ_DICT_UNIT, '6365673372633792600'));
     this.props.dispatch(readSuppliers(50, 0));
@@ -104,9 +105,10 @@ class InStorage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.dataID !== this.props.params.dataID) {
       this.props.dispatch(readInStorage(nextProps.params.dataID));
+      mainDataHasModify = false;
     }
     //下面为表体数据
-    if (nextProps.params.dataID==primaryKey  &&  this.state.rows.length === 0  ) {
+    if (nextProps.params.dataID==primaryKey  &&  (this.state.rows.length === 0 || nextProps.dataSource1!==this.props.dataSource1)  ) {
       this.setState({rows: nextProps.dataSource1});
     }
 

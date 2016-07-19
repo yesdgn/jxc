@@ -60,6 +60,7 @@ class Company extends React.Component {
   };
 
   componentWillMount() {
+    mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_COMPTYPE, '6365673372633792525'));
     if (this.props.params.dataID != 0) {
       this.props.dispatch(readCompany(this.props.params.dataID));
@@ -71,6 +72,7 @@ class Company extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.dataID !== this.props.params.dataID) {
       this.props.dispatch(readCompany(nextProps.params.dataID));
+      mainDataHasModify = false;
     }
 
 
