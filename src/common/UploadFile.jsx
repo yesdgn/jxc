@@ -39,12 +39,12 @@ class UploadFile extends React.Component {
       message.success(`${info.file.name} 上传成功。`);
       info.file.uid = info.file.response.items[0].FileID;
       info.file.url = APP_CONFIG.FILEURL + info.file.response.items[0].FileUrl;
-      this.setState({fileList: info.fileList})
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} 上传失败。`);
     } else if (info.file.status === 'removed') {
       this.context.store.dispatch(removeFile(info.file.uid));
     }
+    this.setState({fileList: info.fileList})
   }
 
   render() {

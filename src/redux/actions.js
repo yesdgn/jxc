@@ -28,6 +28,18 @@ export function readGoodsSelect(searchStr) {
     return dispatch(fetchPost(actionsType.READ_GOODS_SELECT, params))
   }
 }
+export function readOutstorageGoods(customerID,searchStr) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:44,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      customerid:customerID,
+      searchStr: '%'+searchStr+'%'
+    };
+    return dispatch(fetchPost(actionsType.READ_OUTSTORAGE_GOODS, params))
+  }
+}
 //数据字典
 export function readDictionaryList(pageSize,curPage) {
   return (dispatch, getState) => {

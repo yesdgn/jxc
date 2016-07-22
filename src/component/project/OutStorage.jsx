@@ -20,7 +20,7 @@ import {
   saveOutStorage,
   readOutStorage,
   readWarehouses,
-  readGoodsSelect
+  readOutstorageGoods
 } from '../../redux/actions';
 import {READ_DICT_OUTSTORAGESTATE, READ_DICT_UNIT} from '../../redux/actionsType';
 import {
@@ -73,6 +73,10 @@ const searchPageColumns = [
     title: '价格',
     dataIndex: 'Price',
     key: 'Price'
+  }, {
+    title: '单位',
+    dataIndex: 'Unit',
+    key: 'Unit'
   }
 ];
 
@@ -92,7 +96,6 @@ class OutStorage extends React.Component {
   componentWillMount() {
     mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_OUTSTORAGESTATE, '146841280001118121'));
-    this.props.dispatch(readDict(READ_DICT_UNIT, '6365673372633792600'));
     this.props.dispatch(readCustomers(50, 0));
     this.props.dispatch(readWarehouses(50, 0));
     if (this.props.params.dataID != 0) {
@@ -176,7 +179,10 @@ class OutStorage extends React.Component {
     this.setState({rows: rows});
   }
   onSearch = (searchStr) => {
-    this.props.dispatch(readGoodsSelect(searchStr));
+    let fieldValue=this.props.form.getFieldValue('CustomerID');
+    if (!fieldValue)
+    {message.error('请先选择客户');return;}
+    this.props.dispatch(readOutstorageGoods(fieldValue,searchStr));
   }
   onSelect = (data) => {
     data.map(function(x) {
@@ -210,7 +216,7 @@ class OutStorage extends React.Component {
       }, {
         key: 'Unit',
         name: '单位',
-        editor: <AutoCompleteEditor options={this.props.common.Unit} label="DictName"/>
+        editor: <AutoCompleteEditor options={this.props.common.Unit} label="DictCode"/>
       }, {
         key: 'Price',
         name: '价格',

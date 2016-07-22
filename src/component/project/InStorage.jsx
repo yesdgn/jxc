@@ -73,6 +73,10 @@ const searchPageColumns = [
     title: '价格',
     dataIndex: 'Price',
     key: 'Price'
+  }, {
+    title: '单位',
+    dataIndex: 'Unit',
+    key: 'Unit'
   }
 ];
 
@@ -92,7 +96,6 @@ class InStorage extends React.Component {
   componentWillMount() {
     mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_INSTORAGESTATE, '6365673372633792599'));
-    this.props.dispatch(readDict(READ_DICT_UNIT, '6365673372633792600'));
     this.props.dispatch(readSuppliers(50, 0));
     this.props.dispatch(readWarehouses(50, 0));
     if (this.props.params.dataID != 0) {
@@ -210,7 +213,7 @@ class InStorage extends React.Component {
       }, {
         key: 'Unit',
         name: '单位',
-        editor: <AutoCompleteEditor options={this.props.common.Unit} label="DictName"/>
+        editor: <AutoCompleteEditor options={this.props.common.Unit} label="DictCode"/>
       }, {
         key: 'Price',
         name: '价格',

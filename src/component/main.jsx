@@ -27,21 +27,21 @@ class Main extends React.Component {
      height: 300 // 指定图表高度
    });
    chart.source(data?data:[], {
-     ProductCategory: {
-       alias: '商品类型' // 列定义，定义该属性显示的别名
+     yearmonth: {
+       alias: '月份' // 列定义，定义该属性显示的别名
      },
-     qty: {
-       alias: '数量'
+     amt: {
+       alias: '金额'
      }
    });
-   chart.interval().position('GoodsCategory*qty').color('GoodsCategory')
+   chart.interval().position('yearmonth*amt').color('yearmonth')
    chart.render();
  }
  showChart1(data) {
    var Stat = Stat;
 
    var frame = new Frame(data);
-   frame = Frame.sort(frame, 'qty'); // 将数据按照population 进行排序，由大到小
+   frame = Frame.sort(frame, 'amt'); // 将数据按照population 进行排序，由大到小
    var chart = new Chart({
      id : 'c2',
      width : 500,
@@ -51,11 +51,11 @@ class Main extends React.Component {
      }
    });
    chart.source(frame);
-   chart.axis('District',{
+   chart.axis('yearmonth',{
      title: null
    });
    chart.coord('rect').transpose();
-   chart.interval().position('District*qty');
+   chart.interval().position('yearmonth*amt');
    chart.render();
 }
  showChart2(data)
@@ -66,14 +66,14 @@ class Main extends React.Component {
      height: 300 // 指定图表高度
    });
    chart.source(data?data:[], {
-     GoodsCategory: {
-       alias: '商品类型' // 列定义，定义该属性显示的别名
+     yearmonth: {
+       alias: '月份' // 列定义，定义该属性显示的别名
      },
-     qty: {
-       alias: '数量'
+     amt: {
+       alias: '金额'
      }
    });
-   chart.interval().position('GoodsCategory*qty').color('GoodsCategory')
+   chart.interval().position('yearmonth*amt').color('yearmonth')
    chart.render();
 
  }
@@ -93,10 +93,12 @@ class Main extends React.Component {
       <div>
         <Row type="flex" justify="center" align="middle">
           <Col span="12">
+            <h3 className="textmiddle">月采购金额</h3>
             <div id="c1"></div>
           </Col>
 
           <Col span="12">
+            <h3 className="textmiddle">月销售金额</h3>
             <div id="c2"></div>
           </Col>
         </Row>

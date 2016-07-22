@@ -227,7 +227,7 @@ class Goods extends React.Component {
             <Col span="12">
               <FormItem {...formItemLayout} label="单位">
                 <Select id="select" size="large" defaultValue="lucy" {...getFieldProps('Unit')}>
-                   {getSelectOption(this.props.common.Unit, 'DictID', 'DictName')}
+                   {getSelectOption(this.props.common.Unit, 'DictCode', 'DictName')}
                 </Select>
               </FormItem>
             </Col>

@@ -139,7 +139,7 @@ class RouteApi extends React.Component {
           <Col span="12">
             <FormItem {...formItemLayout} label="返回类型" required>
                 <Select id="select" size="large" defaultValue="VIEW" {...getFieldProps('TransformJsonType', { rules: [ { required: true, whitespace: true, message: '请选择返回类型' }, ], })}>
-                  {getSelectOption(this.props.common.RouteReturnType, 'DictName', 'DictName')}
+                  {getSelectOption(this.props.common.RouteReturnType, 'DictCode', 'DictName')}
                 </Select>
             </FormItem>
           </Col>

@@ -125,6 +125,7 @@ class Dictionary extends React.Component {
         ID: undefined,
         DictTypeID: primaryKey,
         DictID: getRand(),
+        DictCode:'',
         DictName: '',
         Param1: '',
         Param2: '',
@@ -144,13 +145,19 @@ class Dictionary extends React.Component {
     var columns = [
       {
         key: 'ID',
-        name: 'ID'
+        name: 'ID',
+        width:50
       }, {
         key: 'DictTypeID',
         name: '数据字典编号'
       }, {
         key: 'DictID',
-        name: '数据编号'
+        name: '数据编号',
+        width:170
+      }, {
+        key: 'DictCode',
+        name: '数据代码',
+        editable: true
       }, {
         key: 'DictName',
         name: '数据名称',

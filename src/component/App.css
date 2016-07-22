@@ -29,3 +29,6 @@ display: inline-block;
 width: 200px;
 margin-right: 8px;
 }
+.textmiddle{
+  text-align: center;
+}

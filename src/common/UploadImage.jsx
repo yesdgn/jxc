@@ -47,12 +47,12 @@ class UploadImages extends React.Component {
       info.file.url = APP_CONFIG.FILEURL + info.file.response.items[0].FileUrl;
       info.file.thumbUrl = APP_CONFIG.FILEURL + info.file.response.items[0].thumbUrl;
       info.file.width = info.file.response.items[0].width;
-      this.setState({fileList: info.fileList})
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} 上传失败。`);
     } else if (info.file.status === 'removed') {
       this.context.store.dispatch(removeFile(info.file.uid));
     }
+    this.setState({fileList: info.fileList})
   }
 
   render() {

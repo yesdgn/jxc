@@ -324,7 +324,7 @@ export function outStorage(state = [], action) {
         formFiles: action.receivedJson.items
       }
 
-    case actionsType.READ_GOODS_SELECT:
+    case actionsType.READ_OUTSTORAGE_GOODS:
       return {
         ...state,
         searchResult: action.receivedJson.items
