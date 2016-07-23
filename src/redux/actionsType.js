@@ -71,6 +71,7 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const USER_CLEAR = 'USER_CLEAR';
 export const USER_REG = 'USER_REG';
 export const RESULT_CLEAR = 'RESULT_CLEAR';
+export const READ_USER_MESSAGES = 'READ_USER_MESSAGES';
 export const READ_USER_MESSAGE = 'READ_USER_MESSAGE';
 export const MESSAGE_DONE = 'MESSAGE_DONE';
 export const USER_LOGOUT = 'USER_LOGOUT';

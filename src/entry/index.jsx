@@ -56,7 +56,7 @@ ReactDOM.render(
       <Route path="/person/:dataID" breadcrumbName="人员"  onEnter={requireAuthApp}   component={Person}/>
       <Route path="newPass" breadcrumbName="忘记密码"  component={NewPass}/>
       <Route path="messages" breadcrumbName="消息列表"  onEnter={requireAuthApp}   component={MessageList} />
-      <Route path="/message/:id" breadcrumbName="消息"   onEnter={requireAuthApp}  component={Message}/>
+      <Route path="/message/:dataID" breadcrumbName="消息"   onEnter={requireAuthApp}  component={Message}/>
       <Route path="companyList" breadcrumbName="公司列表"  onEnter={requireAuthApp}   component={CompanyList} />
       <Route path="/company/:dataID" breadcrumbName="公司"   onEnter={requireAuthApp}  component={Company}/>
       <Route path="goodsList" breadcrumbName="商品列表"  onEnter={requireAuthApp}   component={GoodsList} />

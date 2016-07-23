@@ -3,7 +3,7 @@ import React from 'react';
 import {Table, Icon,Steps ,  Row, Col,Modal } from 'antd';
 import {Link} from 'react-router';
 import {connect} from 'react-redux'
-import {readMessage,messageFinished} from '../../redux/actions';
+import {readMessages,messageFinished} from '../../redux/actions';
 const confirm = Modal.confirm;
 const  columns= [
     {
@@ -11,12 +11,8 @@ const  columns= [
       dataIndex: 'Title',
       key: 'Title',
       render(text,record,index) {
-        return <Link to={`/messages/`+record.ID}>{text}</Link>;
+        return <Link to={`/message/`+record.MsgID}>{text}</Link>;
       }
-    }, {
-      title: '内容',
-      dataIndex: 'Body',
-      key: 'Body'
     }, {
       title: '发出人',
       dataIndex: 'Name',
@@ -50,7 +46,7 @@ class Messages extends React.Component {
     super(props);
   };
   componentWillMount() {
-    this.props.dispatch(readMessage());
+    this.props.dispatch(readMessages());
   }
   msgDone=(msg,index,mouseEvent)=>{
     const { props: { dispatch } } = this

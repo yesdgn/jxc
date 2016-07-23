@@ -159,7 +159,7 @@ class RouteApi extends React.Component {
           <Col span="12">
             <FormItem {...formItemLayout} label="自动生成SQL语句类型" required>
               <Select id="select" size="large"   {...getFieldProps('AutoGenerateSqlType', { rules: [ { required: true, whitespace: true, message: '请选择自动生成语句类型' }, ], })}>
-                  {getSelectOption(this.props.common.AutoGenerateSqlType, 'DictID', 'DictName')}
+                  {getSelectOption(this.props.common.AutoGenerateSqlType, 'DictCode', 'DictName')}
               </Select>
           </FormItem>
           </Col>
@@ -194,6 +194,9 @@ function mapPropsToFields(props) {
         },
         RouteID: {
           value:  primaryKey
+        },
+        AutoGenerateSqlType:{
+          value:'NON'
         },
         IsCancel: {
           value: 0

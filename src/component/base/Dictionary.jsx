@@ -176,7 +176,6 @@ class Dictionary extends React.Component {
         editable: true
       }
     ];
-
     return (
       <div>
         <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>

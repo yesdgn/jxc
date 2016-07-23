@@ -386,7 +386,7 @@ return (dispatch, getState) => {
 }
 //人员
 
-export function readPersons(pageSize,curPage) {
+export function readPersons(pageSize,curPage,filter) {
   return (dispatch, getState) => {
     let params={
       apiid:13,
@@ -394,7 +394,7 @@ export function readPersons(pageSize,curPage) {
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
       curPage:curPage,
-      filter:''
+      filter:filter
     };
     return dispatch(fetchPost(actionsType.READ_PERSONS, params))
   }
@@ -480,14 +480,26 @@ export function clearResult() {
     type: actionsType.RESULT_CLEAR
   }
 }
-export function readMessage() {
+export function readMessage(msgID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:45,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      jsonData:JSON.stringify([{msgID:msgID}])
+    };
+    return dispatch(fetchPost(actionsType.READ_USER_MESSAGE, params))
+  }
+}
+
+export function readMessages() {
   return (dispatch, getState) => {
     let params={
       apiid:10,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID
     };
-    return dispatch(fetchPost(actionsType.READ_USER_MESSAGE, params))
+    return dispatch(fetchPost(actionsType.READ_USER_MESSAGES, params))
   }
 }
 export function messageFinished (msgID) {

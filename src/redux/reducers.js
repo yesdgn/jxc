@@ -26,10 +26,15 @@ export function user(state = {}, action) {
         ...state,
         favorites: action.receivedJson
       }
-    case actionsType.READ_USER_MESSAGE:
+    case actionsType.READ_USER_MESSAGES:
       return {
         ...state,
         userMessage: action.receivedJson.items
+      }
+    case actionsType.READ_USER_MESSAGE:
+      return {
+        ...state,
+        message: action.receivedJson.items.item0[0]
       }
     case actionsType.MESSAGE_DONE:
       return {
@@ -345,7 +350,7 @@ export function dictionary(state = [], action) {
       return {
         ...state,
         dictionary_M: action.receivedJson.items.item0[0],
-        dictionary_S:action.receivedJson.items.item1
+        dictionary_S: action.receivedJson.items.item1
       }
     default:
       return state

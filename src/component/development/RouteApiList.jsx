@@ -28,7 +28,8 @@ const columns = [
   }, {
     title: '执行SQL',
     dataIndex: 'ApiExecSql',
-    key: 'ApiExecSql'
+    key: 'ApiExecSql',
+    width:500
   }, {
     title: '是否开放API',
     dataIndex: 'IsOpen',

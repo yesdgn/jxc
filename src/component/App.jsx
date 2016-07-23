@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 import * as actionsType from '../redux/actionsType';
 import {
   clearUser,
-  readMessage,
+  readMessages,
   setFavorites,
   readMainMenu,
   readFavorites,
@@ -55,7 +55,7 @@ class App extends React.Component {
 
   mainLoad = () => {
     this.props.dispatch(readChartData());
-    this.props.dispatch(readMessage());
+    this.props.dispatch(readMessages());
     this.props.dispatch(readDict(actionsType.READ_DICT_UNIT, '6365673372633792600'));
   }
   getCustomProps(pathname)

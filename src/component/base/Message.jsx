@@ -11,7 +11,7 @@ import {sample} from 'lodash';
 import {storeS, getRand, ifNull} from '../../common/dgn';
 import {getSelectOption, checkDate, getUploadControlImgData} from '../../common/dgnControlAssist';
 import {
-readDict,readCompany,saveCompany
+readDict,readMessage
 } from '../../redux/actions';
 import {READ_DICT_COMPTYPE} from '../../redux/actionsType';
 import {
@@ -46,6 +46,14 @@ const formItemLayout = {
     span: 16
   }
 };
+const singFormItemLayout = {
+  labelCol: {
+    span: 3
+  },
+  wrapperCol: {
+    span: 20
+  }
+};
 
 class Message extends React.Component {
   static defaultProps = {};
@@ -61,9 +69,9 @@ class Message extends React.Component {
 
   componentWillMount() {
     mainDataHasModify = false;
-    this.props.dispatch(readDict(READ_DICT_COMPTYPE, '6365673372633792525'));
+
     if (this.props.params.dataID != 0) {
-      this.props.dispatch(readCompany(this.props.params.dataID));
+      this.props.dispatch(readMessage(this.props.params.dataID));
     }
   }
   componentWillUnmount() {
@@ -71,98 +79,63 @@ class Message extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.dataID !== this.props.params.dataID) {
-      this.props.dispatch(readCompany(nextProps.params.dataID));
+      this.props.dispatch(readMessage(nextProps.params.dataID));
       mainDataHasModify = false;
     }
 
 
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((errors, values) => {
-      if (!!errors) {
-        return;
-      }
-      let form0 = {
-        ...values
-      };
-      form0.CompImages = imgGuid;
-      //form0.FormFiles = fileGuid;
-      let formArr = [];
-      let form0Arr = [];
-      form0Arr.push(form0);
-      formArr.push(form0Arr);
-       this.props.dispatch(saveCompany(formArr, function(data) {
-        if (data.returnCode == 0 && data.items[0].result == 'success') {
-          message.success(data.items[0].resultDescribe);
-          this.context.router.push('/company/' + primaryKey);
-          this.props.dispatch(readCompany(primaryKey));
-          mainDataHasModify = false;
-        } else {
-          message.error(data.items[0].resultDescribe);
-        }
-      }.bind(this)));
-    });
-
-  };
-
   render() {
     const {getFieldProps} = this.props.form;
     return (
       <div>
-        <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>
+        <Form horizontal form={this.props.form} >
           <Row type="flex" justify="end">
             <Col >
-              <FormItem >
-                <Button type="primary" htmlType="submit">保存</Button>
-              </FormItem>
+
             </Col>
             <Col span="1">
               <FormItem style={{
                 display: 'none'
               }}>
                 <Input {...getFieldProps('ID')}/>
-                <Input {...getFieldProps('CompID')}/>
+                <Input {...getFieldProps('MsgID')}/>
               </FormItem>
             </Col>
           </Row>
           <Row>
             <Col span="12">
-              <FormItem {...formItemLayout} label="公司代码">
-                <Input {...getFieldProps('CompCode')}/>
+              <FormItem {...formItemLayout} label="标题">
+                <Input   { ...getFieldProps('Title', { rules: [ { required: true, whitespace: true, message: '请输入客户名称' }, ], })}/>
               </FormItem>
             </Col>
             <Col span="12">
-              <FormItem {...formItemLayout} label="公司名称">
-                <Input { ...getFieldProps('CompName', { rules: [ { required: true, whitespace: true, message: '请输入客户名称' }, ], })}/>
+              <FormItem {...formItemLayout} label="模块">
+                <Input {...getFieldProps('MsgModule')}  />
               </FormItem>
             </Col>
           </Row>
           <Row>
+
             <Col span="12">
-              <FormItem {...formItemLayout} label="公司电话">
-                <Input {...getFieldProps('CompTel')}/>
-              </FormItem>
-            </Col>
-            <Col span="12">
-              <FormItem {...formItemLayout} label="公司类型"    >
-                <Select id="select" size="large"  disabled {...getFieldProps('CompType')}>
-                  {getSelectOption(this.props.common.CompType, 'DictID', 'DictName')}
+              <FormItem {...formItemLayout} label="发出人"    >
+                <Select id="select" size="large"    {...getFieldProps('SendUserID')}>
+                  {getSelectOption(this.props.dataSource0, 'SendUserID', 'SendUserName')}
                 </Select>
 
               </FormItem>
             </Col>
-          </Row>
-          <Row>
             <Col span="12">
-              <FormItem {...formItemLayout} label="公司描述">
-                <Input type="textarea" rows="4" {...getFieldProps('CompDescribe')}/>
+              <FormItem {...formItemLayout} label="时间">
+                <Input {...getFieldProps('CreateTime')}  />
               </FormItem>
             </Col>
-            <Col span="12">
-              <FormItem {...formItemLayout} label="公司照片">
-                  <UploadImage images={this.props.imgDataSource} imgGuid={imgGuid}></UploadImage>
+          </Row>
+          <Row>
+            <Col span="24">
+              <FormItem {...singFormItemLayout} label="信息内容">
+                <Input type="textarea" autosize {...getFieldProps('Body')}  />
               </FormItem>
             </Col>
           </Row>
@@ -180,19 +153,16 @@ function mapPropsToFields(props) {
       fileGuid = getRand();
       userInfo = storeS.getJson('userInfo');
       mainData = {
-        CompID: {
+        MsgID: {
           value: primaryKey
-        },
-        CompType: {
-          value: "6365673372633792526"
         }
       }
     }
     return mainData;
-  } else if (props.dataSource0 && props.dataSource0.CompID==props.params.dataID) {
+  } else if (props.dataSource0 && props.dataSource0.MsgID==props.params.dataID) {
     if (!mainDataHasModify) {
-      primaryKey = props.dataSource0.CompID;
-      imgGuid = props.dataSource0.CompImages;
+      primaryKey = props.dataSource0.MsgID;
+    //  imgGuid = props.dataSource0.CompImages;
       if (ifNull(imgGuid)) {
         imgGuid = getRand();
       }
@@ -201,23 +171,23 @@ function mapPropsToFields(props) {
         ID: {
           value: props.dataSource0.ID
         },
-        CompID: {
-          value: props.dataSource0.CompID
+        MsgID: {
+          value: props.dataSource0.MsgID
         },
-        CompName: {
-          value: props.dataSource0.CompName
+        Title: {
+          value: props.dataSource0.Title
         },
-        CompCode: {
-          value: props.dataSource0.CompCode
+        Body: {
+          value: props.dataSource0.Body
         },
-        CompTel: {
-          value: props.dataSource0.CompTel
+        CreateTime: {
+          value: props.dataSource0.CreateTime
         },
-        CompType: {
-          value: props.dataSource0.CompType
+        MsgModule: {
+          value: props.dataSource0.MsgModule
         },
-        CompDescribe: {
-          value:  props.dataSource0.CompDescribe
+        SendUserID: {
+          value:  props.dataSource0.SendUserID
         }
       }
     }
@@ -238,10 +208,10 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
-  const {common, company} = state;
-  let dataSource0=company.company;
-  let imgDataSource=company.compImgs;
-  return {common,dataSource0,imgDataSource}
+  const {common, user} = state;
+  let dataSource0=user.message;
+  //let imgDataSource=company.compImgs;
+  return {common,dataSource0}
 }
 Message = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Message);
 export default connect(mapStateToProps)(Message)

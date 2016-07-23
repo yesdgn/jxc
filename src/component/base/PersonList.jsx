@@ -71,7 +71,7 @@ componentWillUnmount() {
   }
   render() {
     const pagination = {
-    total: this.props.dataSource0?this.props.dataSource0:0,
+    total: this.props.dataSource0?this.props.dataSource0.length:0,
     defaultCurrent:this.state.currentPage,
     onChange:this.handlePageChange
     };
@@ -92,7 +92,7 @@ componentWillUnmount() {
           </Col>
         </Row>
         <Table columns={columns} rowKey={record => 'K' + record.ID}
-          dataSource={this.props.dataSource0} pagination={pagination}/>
+          dataSource={this.props.dataSource0} pagination={pagination} />
       </div>
    );
   }
