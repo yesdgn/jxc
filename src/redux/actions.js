@@ -48,7 +48,7 @@ export function readDictionaryList(pageSize,curPage) {
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
-      curPage:curPage-1
+      curPage:curPage
     };
     return dispatch(fetchPost(actionsType.READ_DICTIONARY_LIST, params))
   }
@@ -83,7 +83,7 @@ export function readInStorageList(pageSize,curPage) {
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
-      curPage:curPage-1
+      curPage:curPage
     };
     return dispatch(fetchPost(actionsType.READ_INSTORAGE_LIST, params))
   }
@@ -122,7 +122,7 @@ export function readOutStorageList(pageSize,curPage) {
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
-      curPage:curPage-1
+      curPage:curPage
     };
     return dispatch(fetchPost(actionsType.READ_OUTSTORAGE_LIST, params))
   }
@@ -385,16 +385,14 @@ return (dispatch, getState) => {
 }
 }
 //人员
-
-export function readPersons(pageSize,curPage,filter) {
+export function readPersons(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:13,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
-      curPage:curPage,
-      filter:filter
+      curPage:curPage
     };
     return dispatch(fetchPost(actionsType.READ_PERSONS, params))
   }

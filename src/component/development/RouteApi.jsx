@@ -9,12 +9,8 @@ import {sample} from 'lodash';
 import {storeS, getRand, ifNull} from '../../common/dgn';
 import {getSelectOption, checkDate} from '../../common/dgnControlAssist';
 
-import {
-  readDict,
- readRoute,
- saveRoute
-} from '../../redux/actions';
-import {READ_DICT_ROUTERETURNTYPE, READ_DICT_AUTOGENERATESQLTYPE} from '../../redux/actionsType';
+import {readDict, readRoute, saveRoute} from '../../redux/actions';
+import {READ_DICT_ROUTERETURNTYPE} from '../../redux/actionsType';
 import {
   Button,
   Row,
@@ -23,7 +19,8 @@ import {
   Form,
   Icon,
   message,
-  Select,Checkbox
+  Select,
+  Checkbox
 } from 'antd';
 
 var primaryKey;
@@ -42,8 +39,14 @@ const formItemLayout = {
     span: 16
   }
 };
-
-
+const singFormItemLayout = {
+  labelCol: {
+    span: 3
+  },
+  wrapperCol: {
+    span: 20
+  }
+};
 class RouteApi extends React.Component {
   static defaultProps = {};
   static propTypes = {};
@@ -52,14 +55,12 @@ class RouteApi extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.state = {
-    }
+    this.state = {}
   };
 
   componentWillMount() {
     mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_ROUTERETURNTYPE, '6365673372633792594'));
-    this.props.dispatch(readDict(READ_DICT_AUTOGENERATESQLTYPE, '6365687725642743810'));
     if (this.props.params.dataID != 0) {
       this.props.dispatch(readRoute(this.props.params.dataID));
     }
@@ -72,7 +73,6 @@ class RouteApi extends React.Component {
       this.props.dispatch(readRoute(nextProps.params.dataID));
       mainDataHasModify = false;
     }
-
 
   }
 
@@ -126,7 +126,7 @@ class RouteApi extends React.Component {
         <Row>
           <Col span="12">
             <FormItem {...formItemLayout} label="Api编号" required>
-              <Input {...getFieldProps('ApiID', { rules: [ { required: true,  message: '请填写ApiID' }, ], })}/>
+              <Input {...getFieldProps('ApiID', { rules: [ { required: true, message: '请填写ApiID' }, ], })}/>
             </FormItem>
           </Col>
           <Col span="12">
@@ -137,31 +137,16 @@ class RouteApi extends React.Component {
         </Row>
         <Row>
           <Col span="12">
-            <FormItem {...formItemLayout} label="返回类型" required>
-                <Select id="select" size="large" defaultValue="VIEW" {...getFieldProps('TransformJsonType', { rules: [ { required: true, whitespace: true, message: '请选择返回类型' }, ], })}>
-                  {getSelectOption(this.props.common.RouteReturnType, 'DictCode', 'DictName')}
-                </Select>
+            <FormItem {...formItemLayout} label="API类型" required>
+              <Select id="select" size="large"  {...getFieldProps('TransformJsonType', { rules: [ { required: true, whitespace: true, message: '请选择返回类型' }, ], })}>
+                {getSelectOption(this.props.common.RouteReturnType, 'DictCode', 'DictName')}
+              </Select>
             </FormItem>
           </Col>
           <Col span="12">
             <FormItem {...formItemLayout} label="是否禁用">
-              <Checkbox  {...getFieldProps('IsCancel', { valuePropName: 'checked' })} />
+              <Checkbox {...getFieldProps('IsCancel', { valuePropName: 'checked' })}/>
             </FormItem>
-          </Col>
-
-        </Row>
-        <Row>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="是否开放型API">
-              <Checkbox  {...getFieldProps('IsOpen', { valuePropName: 'checked' })} />
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem {...formItemLayout} label="自动生成SQL语句类型" required>
-              <Select id="select" size="large"   {...getFieldProps('AutoGenerateSqlType', { rules: [ { required: true, whitespace: true, message: '请选择自动生成语句类型' }, ], })}>
-                  {getSelectOption(this.props.common.AutoGenerateSqlType, 'DictCode', 'DictName')}
-              </Select>
-          </FormItem>
           </Col>
 
         </Row>
@@ -172,12 +157,20 @@ class RouteApi extends React.Component {
             </FormItem>
           </Col>
           <Col span="12">
-            <FormItem {...formItemLayout} label="执行SQL" required>
+            <FormItem {...formItemLayout} label="是否开放型API">
+              <Checkbox {...getFieldProps('IsOpen', { valuePropName: 'checked' })}/>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row>
+
+          <Col span="24">
+            <FormItem {...singFormItemLayout} label="执行SQL" required>
               <Input type="textarea" rows="4" {...getFieldProps('ApiExecSql', { rules: [ { required: true, whitespace: true, message: '请填写执行SQL' }, ], })}/>
             </FormItem>
           </Col>
         </Row>
-       </Form>
+      </Form>
 
     );
   }
@@ -193,10 +186,10 @@ function mapPropsToFields(props) {
           value: undefined
         },
         RouteID: {
-          value:  primaryKey
+          value: primaryKey
         },
-        AutoGenerateSqlType:{
-          value:'NON'
+        AutoGenerateSqlType: {
+          value: 'NON'
         },
         IsCancel: {
           value: 0
@@ -207,7 +200,7 @@ function mapPropsToFields(props) {
       }
     }
     return mainData;
-  } else if (props.dataSource0 && props.dataSource0.RouteID==props.params.dataID) {
+  } else if (props.dataSource0 && props.dataSource0.RouteID == props.params.dataID) {
     if (!mainDataHasModify) {
       primaryKey = props.dataSource0.RouteID;
       userInfo = storeS.getJson('userInfo');
@@ -219,7 +212,7 @@ function mapPropsToFields(props) {
           value: props.dataSource0.ApiID.toString()
         },
         RouteID: {
-          value:  props.dataSource0.RouteID
+          value: props.dataSource0.RouteID
         },
         RouteName: {
           value: props.dataSource0.RouteName
@@ -228,7 +221,7 @@ function mapPropsToFields(props) {
           value: props.dataSource0.ApiExecSql
         },
         IsCancel: {
-          value:props.dataSource0.IsCancel
+          value: props.dataSource0.IsCancel
         },
         IsOpen: {
           value: props.dataSource0.IsOpen
@@ -261,9 +254,9 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
-  const {common,routeApi} = state;
-  let dataSource0=routeApi.route;
-  return {common,dataSource0}
+  const {common, routeApi} = state;
+  let dataSource0 = routeApi.route;
+  return {common, dataSource0}
 }
 RouteApi = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(RouteApi);
 export default connect(mapStateToProps)(RouteApi)

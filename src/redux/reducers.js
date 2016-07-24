@@ -83,11 +83,6 @@ export function common(state = [], action) {
         ...state,
         OutstorageState: action.receivedJson.items
       }
-    case actionsType.READ_DICT_AUTOGENERATESQLTYPE:
-      return {
-        ...state,
-        AutoGenerateSqlType: action.receivedJson.items
-      }
     case actionsType.READ_DICT_UNIT:
       return {
         ...state,

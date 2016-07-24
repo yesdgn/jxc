@@ -82,7 +82,7 @@ class OutStorageList extends React.Component {
   }
   render() {
     const pagination = {
-      total: this.props.dataSource0?this.props.dataSource0.length:0 ,
+      total: this.props.totalCount0 ,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -109,7 +109,8 @@ class OutStorageList extends React.Component {
 
 function mapStateToProps(state) {
   const {outStorage} = state;
-  let dataSource0=outStorage.outStorageList;
-  return {dataSource0}
+  let totalCount0=outStorage.outStorageList?outStorage.outStorageList.item0[0].TotalCount:0;
+  let dataSource0=outStorage.outStorageList?outStorage.outStorageList.item1:[];
+  return {totalCount0,dataSource0}
 }
 export default connect(mapStateToProps)(OutStorageList)

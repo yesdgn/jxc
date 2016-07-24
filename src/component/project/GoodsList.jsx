@@ -84,7 +84,7 @@ class Goodses extends React.Component {
   }
   render() {
     const pagination = {
-      total: this.props.dataSource0?  this.props.dataSource0.length:0,
+      total: this.props.totalCount0,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -111,7 +111,8 @@ class Goodses extends React.Component {
 };
 function mapStateToProps(state) {
   const {goods} = state;
-  let dataSource0=goods.goodses;
-  return {dataSource0}
+  let totalCount0=goods.goodses?goods.goodses.item0[0].TotalCount:0;
+  let dataSource0=goods.goodses?goods.goodses.item1:[];
+  return {totalCount0,dataSource0}
 }
 export default   connect(mapStateToProps)(Goodses)

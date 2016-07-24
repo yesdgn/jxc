@@ -96,8 +96,8 @@ class InStorage extends React.Component {
   componentWillMount() {
     mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_INSTORAGESTATE, '6365673372633792599'));
-    this.props.dispatch(readSuppliers(50, 0));
-    this.props.dispatch(readWarehouses(50, 0));
+    this.props.dispatch(readSuppliers(50, 1));
+    this.props.dispatch(readWarehouses(50, 1));
     if (this.props.params.dataID != 0) {
       this.props.dispatch(readInStorage(this.props.params.dataID));
     }
@@ -248,14 +248,14 @@ class InStorage extends React.Component {
             <Col span="12">
               <FormItem {...formItemLayout} label="仓库" required>
                 <Select id="select" size="large" { ...getFieldProps('WarehouseID', { rules: [ { required: true, whitespace: true, message: '请选择仓库' }, ], })}>
-                  {getSelectOption(this.props.warehouse.warehouses, 'WarehouseID', 'WarehouseName')}
+                  {getSelectOption(this.props.warehouse0, 'WarehouseID', 'WarehouseName')}
                 </Select>
               </FormItem>
             </Col>
             <Col span="12">
               <FormItem {...formItemLayout} label="供应商" required>
                 <Select id="select" size="large" { ...getFieldProps('SupplierID', { rules: [ { required: true, whitespace: true, message: '请选择供应商' }, ], })} showSearch={true} optionFilterProp="children">
-                  {getSelectOption(this.props.supplier.suppliers, 'CompID', 'CompName')}
+                  {getSelectOption(this.props.supplier0, 'CompID', 'CompName')}
                 </Select>
               </FormItem>
             </Col>
@@ -429,7 +429,9 @@ function mapStateToProps(state) {
   let imgDataSource=inStorage.formImgs;
   let fileDataSource=inStorage.formFiles;
   let searchResult=inStorage.searchResult;
-  return {common, supplier, warehouse, dataSource0,dataSource1,fileDataSource,imgDataSource,searchResult}
+  let supplier0=supplier.suppliers?supplier.suppliers.item1:[];
+  let warehouse0=warehouse.warehouses?warehouse.warehouses.item1:[];
+  return {common, supplier0, warehouse0, dataSource0,dataSource1,fileDataSource,imgDataSource,searchResult}
 }
 InStorage = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(InStorage);
 export default connect(mapStateToProps)(InStorage)

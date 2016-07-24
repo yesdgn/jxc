@@ -75,7 +75,7 @@ class Warehouses extends React.Component {
   }
   render() {
     const pagination = {
-      total: this.props.dataSource0? this.props.dataSource0.length:0,
+      total: this.props.totalCount0,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -102,7 +102,8 @@ class Warehouses extends React.Component {
 };
 function mapStateToProps(state) {
   const {warehouse} = state;
-  let dataSource0=warehouse.warehouses;
-  return {dataSource0}
+  let totalCount0=warehouse.warehouses?warehouse.warehouses.item0[0].TotalCount:0;
+  let dataSource0=warehouse.warehouses?warehouse.warehouses.item1:[];
+  return {totalCount0,dataSource0}
 }
 export default  connect(mapStateToProps)(Warehouses)

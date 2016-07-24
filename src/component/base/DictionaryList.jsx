@@ -66,7 +66,7 @@ class DictionaryList extends React.Component {
   }
   render() {
     const pagination = {
-      total:  this.props.dataSource0?this.props.dataSource0.length:0,
+      total:  this.props.totalCount0,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -93,7 +93,8 @@ class DictionaryList extends React.Component {
 };
 function mapStateToProps(state) {
   const {dictionary} = state;
-  let dataSource0=dictionary.dictionaryList;
-  return {dataSource0}
+  let totalCount0=dictionary.dictionaryList?dictionary.dictionaryList.item0[0].TotalCount:0;
+  let dataSource0=dictionary.dictionaryList?dictionary.dictionaryList.item1:[];
+  return {totalCount0,dataSource0}
 }
 export default  connect(mapStateToProps)(DictionaryList)

@@ -81,7 +81,7 @@ class RouteApis extends React.Component {
   }
   render() {
     const pagination = {
-      total: this.props.dataSource0? this.props.dataSource0.length:0 ,
+      total: this.props.totalCount0 ,
       defaultCurrent: this.state.currentPage,
       onChange: this.handlePageChange
     };
@@ -108,7 +108,8 @@ class RouteApis extends React.Component {
 };
 function mapStateToProps(state) {
   const {routeApi} = state;
-  let dataSource0=routeApi.routes;
-  return {dataSource0}
+  let totalCount0=routeApi.routes?routeApi.routes.item0[0].TotalCount:0;
+  let dataSource0=routeApi.routes?routeApi.routes.item1:[];
+  return {totalCount0,dataSource0}
 }
 export default  connect(mapStateToProps)(RouteApis)

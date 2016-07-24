@@ -96,8 +96,8 @@ class OutStorage extends React.Component {
   componentWillMount() {
     mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_OUTSTORAGESTATE, '146841280001118121'));
-    this.props.dispatch(readCustomers(50, 0));
-    this.props.dispatch(readWarehouses(50, 0));
+    this.props.dispatch(readCustomers(50, 1));
+    this.props.dispatch(readWarehouses(50, 1));
     if (this.props.params.dataID != 0) {
       this.props.dispatch(readOutStorage(this.props.params.dataID));
     }
@@ -251,14 +251,14 @@ class OutStorage extends React.Component {
             <Col span="12">
               <FormItem {...formItemLayout} label="仓库" required>
                 <Select id="select" size="large" { ...getFieldProps('WarehouseID', { rules: [ { required: true, whitespace: true, message: '请选择仓库' }, ], })}>
-                  {getSelectOption(this.props.warehouse.warehouses, 'WarehouseID', 'WarehouseName')}
+                  {getSelectOption(this.props.warehouse0, 'WarehouseID', 'WarehouseName')}
                 </Select>
               </FormItem>
             </Col>
             <Col span="12">
               <FormItem {...formItemLayout} label="客户" required>
                 <Select id="select" size="large" { ...getFieldProps('CustomerID', { rules: [ { required: true, whitespace: true, message: '请选择供应商' }, ], })} showSearch={true} optionFilterProp="children">
-                  {getSelectOption(this.props.customer.customers, 'CompID', 'CompName')}
+                  {getSelectOption(this.props.customer0, 'CompID', 'CompName')}
                 </Select>
               </FormItem>
             </Col>
@@ -432,7 +432,9 @@ function mapStateToProps(state) {
   let imgDataSource=outStorage.formImgs;
   let fileDataSource=outStorage.formFiles;
   let searchResult=outStorage.searchResult;
-  return {common, customer, warehouse, dataSource0,dataSource1,imgDataSource,fileDataSource,searchResult}
+  let customer0=customer.customers?customer.customers.item1:[];
+  let warehouse0=warehouse.warehouses?warehouse.warehouses.item1:[];
+  return {common, customer0, warehouse0, dataSource0,dataSource1,imgDataSource,fileDataSource,searchResult}
 }
 OutStorage = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(OutStorage);
 export default connect(mapStateToProps)(OutStorage)

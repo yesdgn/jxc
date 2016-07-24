@@ -87,7 +87,7 @@ class App extends React.Component {
         <Head userInfo={user.userInfo} onLoad={() => dispatch(readFavorites())} favMenuData={user.favorites
           ? user.favorites.items
           : []} msgQty={user.userMessage
-          ? user.userMessage.length
+          ? user.userMessage.item0[0].TotalCount
           : 0} addFavorites={() => dispatch(setFavorites())} logout={this.logout}/> {this.LeftComponent(url)}
         <div style={styles.contentDiv}>
           <div style={styles.breadcrumb}>
