@@ -3,6 +3,7 @@ import '../common/lib';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
+import {storeS} from '../common/dgn';
 import {browserHistory, Router, Route, IndexRoute} from 'react-router';
 import configureStore from '../redux/configureStore';
 //import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
@@ -40,16 +41,24 @@ const store = configureStore()
 let rootElement = document.getElementById('react-body');
 
 function requireAuthApp(curRoute,replace) {
-  let states=store.getState();
-  if (!states.user.userInfo || !states.user.userInfo.UserID)
+  let userInfo = storeS.getJson('userInfo');
+  if (!userInfo || !userInfo.UserID)
   {replace('/login'); }
 }
-
+function refreshApp(curRoute,replace) {
+  let userInfo = storeS.getJson('userInfo');
+  if (!userInfo || !userInfo.UserID)
+  {replace('/login'); }
+  else {
+    //console.log(curRoute.location.pathname);
+    replace('/main');
+  }
+}
 ReactDOM.render(
   <Provider store={store}>
   <Router history={browserHistory}>
     <Route path="/" breadcrumbName="首页"  component={App}>
-      <IndexRoute component={Login}/>
+      <IndexRoute  onEnter={refreshApp} />
       <Route path="login"  breadcrumbName="登录" component={Login}/>
       <Route path="main" breadcrumbName="主页"  onEnter={requireAuthApp}  component={Main} />
       <Route path="personList" breadcrumbName="人员列表"  onEnter={requireAuthApp}   component={PersonList} />
@@ -75,9 +84,8 @@ ReactDOM.render(
       <Route path="/dictionary/:dataID" breadcrumbName="数据字典"   onEnter={requireAuthApp}  component={Dictionary}/>
       <Route path="outStorageList" breadcrumbName="销售出库单列表"  onEnter={requireAuthApp}   component={OutStorageList} />
       <Route path="/outStorage/:dataID" breadcrumbName="销售出库单"   onEnter={requireAuthApp}  component={OutStorage}/>
-
       <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
-      <Route path="*" breadcrumbName="未找到页面" component={NoMatch}/>
+      <Route path="*" breadcrumbName="未找到页面"  onEnter={refreshApp}  component={NoMatch}/>
     </Route>
   </Router>
 </Provider>, rootElement)

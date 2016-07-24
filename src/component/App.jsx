@@ -24,7 +24,7 @@ import {storeS} from '../common/dgn';
 const singleComponent = ['/', '/reguser', '/newPass', '/login']
 //不包含左边页
 const cancelLeftComponent = []
-
+var userInfo;
 class App extends React.Component {
   static defaultProps = {};
   static propTypes = {};
@@ -58,6 +58,10 @@ class App extends React.Component {
     this.props.dispatch(readMessages());
     this.props.dispatch(readDict(actionsType.READ_DICT_UNIT, '6365673372633792600'));
   }
+  headLoad=()=>{
+    this.props.dispatch(readFavorites());
+  //  this.props.dispatch(readMessages(10,1));
+  }
   getCustomProps(pathname)
   {
     //console.log(pathname);
@@ -84,11 +88,12 @@ class App extends React.Component {
 
     return (
       <div>
-        <Head userInfo={user.userInfo} onLoad={() => dispatch(readFavorites())} favMenuData={user.favorites
+        <Head userInfo={userInfo} onLoad={this.headLoad} favMenuData={user.favorites
           ? user.favorites.items
           : []} msgQty={user.userMessage
           ? user.userMessage.item0[0].TotalCount
-          : 0} addFavorites={() => dispatch(setFavorites())} logout={this.logout}/> {this.LeftComponent(url)}
+          : 0} addFavorites={() => dispatch(setFavorites())} logout={this.logout}/>
+         {this.LeftComponent(url)}
         <div style={styles.contentDiv}>
           <div style={styles.breadcrumb}>
             <Breadcrumb {...this.props}/>
@@ -114,6 +119,7 @@ const styles = {
 
 
 function mapStateToProps(state) {
+  userInfo = storeS.getJson('userInfo');
   const {
     common,
     user,
