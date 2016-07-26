@@ -8,29 +8,14 @@ class NoMatch extends React.Component {
     super(props);
     this.state = {};
   };
-  componentWillMount() {};
 
   render() {
     return (
-      <div>
-        <div >
-          错误，无法使用此功能。
-        </div>
+      <div className="contentDiv">
+          <h3>目前还不支持该功能，请耐心等待，敬请谅解。</h3>
       </div>
     );
   }
 };
-
-const styles = {
-  parentdiv: {
-    position: "relative"
-  },
-  childdiv: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%,-50%)"
-  }
-}
 
 export default NoMatch

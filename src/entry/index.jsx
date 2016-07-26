@@ -50,8 +50,8 @@ function refreshApp(curRoute,replace) {
   if (!userInfo || !userInfo.UserID)
   {replace('/login'); }
   else {
-    //console.log(curRoute.location.pathname);
-    replace('/main');
+    if (curRoute.location.pathname=='/')
+    {    replace('/main');}
   }
 }
 ReactDOM.render(

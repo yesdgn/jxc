@@ -5,6 +5,10 @@
   height:100%;
 
 }
+.leftmenu{
+  width: 240px;
+  float: left;
+}
 .headrow {
   height: 80px;
   background-color: #0d0e0e;

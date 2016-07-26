@@ -59,18 +59,13 @@ componentDidMount() {
         */
     }
     return (
-      <Menu onClick={this.handleClick } style={styles.leftmenu} openKeys={this.state.openKeys} onOpen={this.onToggle} onClose={this.onToggle} selectedKeys={[this.state.current]} mode="inline">
+      <Menu onClick={this.handleClick }  className="leftmenu" openKeys={this.state.openKeys} onOpen={this.onToggle} onClose={this.onToggle} selectedKeys={[this.state.current]} mode="inline">
         {this.initMenu(this.props.menuData)}
       </Menu>
     );
   }
 };
 
-const styles = {
-  leftmenu: {
-    width: 240,
-    float: "left"
-  }
-}
+
 
 export default Left
