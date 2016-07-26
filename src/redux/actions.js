@@ -17,25 +17,29 @@ export function readDict(actionType,dictTypeID) {
     return dispatch(fetchPost(actionType, params))
   }
 }
-export function readGoodsSelect(searchStr) {
+export function readGoodsSelect(searchStr,pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:37,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      searchStr: '%'+searchStr+'%'
+      searchStr: '%'+searchStr+'%',
+      pageSize:pageSize,
+      curPage:curPage
     };
     return dispatch(fetchPost(actionsType.READ_GOODS_SELECT, params))
   }
 }
-export function readOutstorageGoods(customerID,searchStr) {
+export function readOutstorageGoods(customerID,searchStr,pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:44,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       customerid:customerID,
-      searchStr: '%'+searchStr+'%'
+      searchStr: '%'+searchStr+'%',
+      pageSize:pageSize,
+      curPage:curPage
     };
     return dispatch(fetchPost(actionsType.READ_OUTSTORAGE_GOODS, params))
   }

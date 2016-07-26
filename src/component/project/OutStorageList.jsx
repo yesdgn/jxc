@@ -71,7 +71,6 @@ class OutStorageList extends React.Component {
     } else {
       this.props.dispatch(readOutStorageList(pageSize, this.state.currentPage));
     }
-
   }
   componentWillUnmount() {
     storeS.setItem("pagination", JSON.stringify({currentPage: this.state.currentPage, path: this.props.route.path}));

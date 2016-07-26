@@ -178,8 +178,8 @@ class InStorage extends React.Component {
     rows.push(newRow);
     this.setState({rows: rows});
   }
-  onSearch = (searchStr) => {
-    this.props.dispatch(readGoodsSelect(searchStr));
+  onSearch = (searchStr,pageSize,curPage) => {
+    this.props.dispatch(readGoodsSelect(searchStr,pageSize,curPage));
   }
   onSelect = (data) => {
     data.map(function(x) {

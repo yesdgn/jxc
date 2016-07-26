@@ -3,7 +3,7 @@ import React from 'react';
 import {Input, Select, Button, Icon,Table,Popover } from 'antd';
 import {APP_CONFIG} from '../entry/config';
 import {indexOf}  from 'lodash';
-
+const pageSize = 10;
 class SearchInput extends React.Component {
   static defaultProps = {};
   static propTypes = {};
@@ -14,7 +14,7 @@ class SearchInput extends React.Component {
       value: '',
       hasChange: true,
       selectedRowKeys:[],
-      curPage:1
+      currentPage:1
     }
   };
 componentWillReceiveProps(nextProps) {
@@ -26,6 +26,8 @@ componentWillReceiveProps(nextProps) {
   }
 
 }
+
+
   handleInputChange=(e)=> {
       this.setState({
         value: e.target.value,
@@ -36,12 +38,12 @@ componentWillReceiveProps(nextProps) {
 
   handleSearch = () => {
     if (this.props.onSearch) {
-      this.props.onSearch(this.state.value);
+      this.props.onSearch(this.state.value,pageSize,this.state.currentPage);
     }
   }
   handleSelect = (searchStr,e ) => {
     let rowKeys=this.state.selectedRowKeys
-    let rowsData=this.props.dataSource.filter(function (x) {
+    let rowsData=this.props.dataSource.item1.filter(function (x) {
       if (indexOf(rowKeys,'K'+x.ID)==-1)
       {return false;}
       else {return true;}
@@ -58,13 +60,14 @@ componentWillReceiveProps(nextProps) {
       visible:false,
       selectedRowKeys:[],
       value:"",
-      curPage:1
+      currentPage:1
     });
   }
   handlePageChange=(current)=>{
     this.setState({
-      curPage:current
-    })
+      currentPage:current
+    });
+    this.props.onSearch(this.state.value,pageSize,current);
   }
  tableData=()=> {
    const {selectedRowKeys} = this.state;
@@ -73,8 +76,9 @@ componentWillReceiveProps(nextProps) {
      onChange: this.onSelectChange,
    };
    const pagination = {
-     current: this.state.curPage,
-    onChange: this.handlePageChange
+    current: this.state.currentPage,
+    onChange: this.handlePageChange,
+    total: this.props.dataSource?this.props.dataSource.item0[0].TotalCount:0
    };
      const hasSelected = selectedRowKeys.length > 0;
      return (
@@ -85,22 +89,22 @@ componentWillReceiveProps(nextProps) {
 )
   }
   getSearchResult=()=>{
-    if (this.props.dataSource && this.props.dataSource.length>1 && !this.state.visible  && !this.state.hasChange )
+    if (this.props.dataSource && this.props.dataSource.item0[0].TotalCount>1 && !this.state.visible  && !this.state.hasChange )
     {this.setState({visible:true})
-    return this.props.dataSource
+    return this.props.dataSource.item1
   }
-    else if (this.props.dataSource && this.props.dataSource.length<=1  && !this.state.hasChange ) {
+    else if (this.props.dataSource && this.props.dataSource.item0[0].TotalCount<=1  && !this.state.hasChange ) {
       if (this.state.visible)
       {this.setState({visible:false})}
-      if (this.props.dataSource.length==1 )
+      if (this.props.dataSource.item0[0].TotalCount==1 )
       {
-          this.props.onSelect(this.props.dataSource);
+          this.props.onSelect(this.props.dataSource.item1);
           this.handleClose();
           return null;
       }
     }
   else {
-    return this.props.dataSource
+    return this.props.dataSource?this.props.dataSource.item1:undefined
   }
   }
   render() {

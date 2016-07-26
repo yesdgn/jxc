@@ -178,11 +178,11 @@ class OutStorage extends React.Component {
     rows.push(newRow);
     this.setState({rows: rows});
   }
-  onSearch = (searchStr) => {
+  onSearch = (searchStr,pageSize,curPage) => {
     let fieldValue=this.props.form.getFieldValue('CustomerID');
     if (!fieldValue)
     {message.error('请先选择客户');return;}
-    this.props.dispatch(readOutstorageGoods(fieldValue,searchStr));
+    this.props.dispatch(readOutstorageGoods(fieldValue,searchStr,pageSize,curPage));
   }
   onSelect = (data) => {
     data.map(function(x) {
