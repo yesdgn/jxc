@@ -94,8 +94,8 @@ class App extends React.Component {
           ? user.userMessage.item0[0].TotalCount
           : 0} addFavorites={() => dispatch(setFavorites())} logout={this.logout}/>
          {this.LeftComponent(url)}
-        <div style={styles.contentDiv}>
-          <div style={styles.breadcrumb}>
+        <div className="contentDiv">
+          <div className="breadcrumb">
             <Breadcrumb {...this.props}/>
           </div>
           {React.cloneElement(this.props.children, this.getCustomProps(this.props.children.props.route.path))}
@@ -105,19 +105,7 @@ class App extends React.Component {
     );
   }
 };
-
-const styles = {
-  contentDiv: {
-    margin: "10px 0px 0px 10px",
-    minHeight: "500px",
-    overflow: "hidden"
-  },
-  breadcrumb: {
-    margin: "0px 0px 10px  10px"
-  }
-}
-
-
+ 
 function mapStateToProps(state) {
   userInfo = storeS.getJson('userInfo');
   const {

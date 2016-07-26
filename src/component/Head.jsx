@@ -68,29 +68,15 @@ class Head extends React.Component {
             <img src="logo.png"/>
           </Col>
           <Col span="4" className="colLeftPa20">
-            <Row type="flex">
-              <Col span="24">
-                <h1 style={{margin:0}}>{APP_CONFIG.APPNAME}</h1>
-              </Col>
-            </Row>
-            <Row type="flex">
-              <Col span="24">
+                <h2>{APP_CONFIG.APPNAME}</h2>
                 <h3>{APP_CONFIG.APPURL}</h3>
-              </Col>
-            </Row>
           </Col>
-          <Col span="15" className="headcol">
-            <Row type="flex"  justify="start" align="bottom" className="favRow" >
-              <Col span="24">
-                <Menu onClick={this.handleClick} mode="horizontal"  theme="dark" className="favMenu">
+          <Col span="14" >
+                <Menu onClick={this.handleClick} mode="horizontal"   theme="dark" className="favMenu">
                   {this.addMenuItem(this.props.favMenuData)}
                 </Menu>
-              </Col>
-            </Row>
           </Col>
-          <Col span="4" className="headcol">
-            <Row type="flex" justify="end" align="middle" className="headcol">
-              <Col span="24"  >
+          <Col span="5"  className="headRightCol" >
                 <Link to={`/messages`} className="colRightPa20" >
                   <Tooltip title="消息" >
                     <Badge count={this.props.msgQty} overflowCount={99} >
@@ -98,19 +84,16 @@ class Head extends React.Component {
                     </Badge>
                   </Tooltip>
                 </Link>
-
                 <a   onClick={this.addFavorites} className="colRightPa20">
                   <Tooltip title="收藏本页"><Icon type="star-o"/></Tooltip>
                 </a>
                 <span className="colRightPa20">
                 <Dropdown overlay={menu}  >
-                  <Link to={`/person/` + userid} className="ant-dropdown-link">
+                  <Link to={`/person/` + userid} >
                     {username}<Icon type="down"/>
                   </Link>
                 </Dropdown>
               </span>
-              </Col>
-            </Row>
           </Col>
         </Row>
       </div>

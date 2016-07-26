@@ -1,16 +1,23 @@
+#react-body{
+  height: 100%;
+}
+.loginRow{
+  height:100%;
+
+}
 .headrow {
   height: 80px;
   background-color: #0d0e0e;
 }
-.headcol{
-  height: 100%;
-  text-align: right;
+.headRightCol{
+   text-align: right;
 }
 .favRow{
     height: 100%;
 }
 .favMenu {
   background-color: #0d0e0e;
+  border-bottom:0  ;
 }
 .message{
   width: 42px;
@@ -24,6 +31,19 @@
 .colRightPa20{
   padding-right: 25px;
 }
+.marLeft50{
+  margin-left: 50px;
+}
+
+.contentDiv {
+  margin: 10px 0px 0px 10px ;
+  min-height:  500px ;
+  overflow:  hidden;
+}
+.breadcrumb{
+  margin:  0px 0px 10px  10px;
+}
+
 .upload-list-inline .ant-upload-list-item {
 display: inline-block;
 width: 200px;
