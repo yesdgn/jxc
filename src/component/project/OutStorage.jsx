@@ -402,7 +402,7 @@ function mapPropsToFields(props) {
           value: props.dataSource0.Operator
         },
         OperationTime: {
-          value: new Date(props.dataSource0.OperationTime)
+          value: new Date(moment(props.dataSource0.OperationTime).format('YYYY/MM/DD HH:mm:ss'))
         },
         Remark: {
           value: props.dataSource0.Remark

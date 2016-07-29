@@ -569,7 +569,22 @@ export function readFavorites() {
     return dispatch(fetchPost(actionsType.READ_FAVORITES, params))
   }
 }
-
+export function saveLog(module,pathname,operation,describe) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:46,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      appid:APP_CONFIG.APPID,
+      loginid:storeS.getJson('userInfo').LoginID,
+      module:module,
+      pathname:pathname,
+      operation:operation,
+      describe:describe
+    };
+    return dispatch(fetchPost(actionsType.SAVE_LOG, params,null,{isNeedDispatch:false}))
+  }
+}
 //图形
 
 export function readChartData() {

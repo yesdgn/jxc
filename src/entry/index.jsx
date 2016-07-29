@@ -2,6 +2,7 @@ import 'babel-polyfill';
 import '../common/lib';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {message,Modal} from 'antd';
 import {Provider} from 'react-redux';
 import {storeS} from '../common/dgn';
 import {browserHistory, Router, Route, IndexRoute} from 'react-router';
@@ -35,10 +36,29 @@ import Dictionary from '../component/base/Dictionary';
 import DictionaryList from '../component/base/DictionaryList';
 import OutStorage from '../component/project/OutStorage';
 import OutStorageList from '../component/project/OutStorageList';
+import {saveLog} from '../redux/actions'
 const store = configureStore()
 //const history = syncHistoryWithStore(browserHistory, store);
 
 let rootElement = document.getElementById('react-body');
+
+//错误上传日志
+window.addEventListener('error', function (e) {
+    let stack = e.error.stack;
+    let errmessage = e.error.toString();
+    let pathname=location.pathname;
+    //message.error('发生未知错误,将重置页面,错误信息:'+errmessage);
+    store.dispatch(saveLog('Error',pathname,'发生错误', stack || errmessage  ));
+    //setTimeout(function(){location.href='/'},2000);  //需要刷新才能保证恢复正常正常使用。
+    Modal.confirm({
+      title: '提示',
+      content: '发生错误,刷新页面将恢复应用,错误信息:'+errmessage,
+      onOk() {
+         location.href='/';
+      },
+      onCancel() {}
+    } ) ;
+});
 
 function requireAuthApp(curRoute,replace) {
   let userInfo = storeS.getJson('userInfo');

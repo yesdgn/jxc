@@ -25,6 +25,9 @@ const singleComponent = ['/', '/reguser', '/newPass', '/login']
 //不包含左边页
 const cancelLeftComponent = []
 var userInfo;
+
+
+
 class App extends React.Component {
   static defaultProps = {};
   static propTypes = {};
@@ -34,6 +37,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
   };
+
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.user.userLogout && nextProps.user.userLogout == true) {
       this.logout();
@@ -105,7 +110,7 @@ class App extends React.Component {
     );
   }
 };
- 
+
 function mapStateToProps(state) {
   userInfo = storeS.getJson('userInfo');
   const {
