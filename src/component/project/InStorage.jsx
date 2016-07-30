@@ -10,7 +10,7 @@ import UploadImage from '../../common/UploadImage';
 import UploadFile from '../../common/UploadFile';
 import {APP_CONFIG} from '../../entry/config';
 var moment = require('moment');
-import {sample} from 'lodash';
+import {forEach} from 'lodash';
 import {storeS, getRand, ifNull} from '../../common/dgn';
 import {getSelectOption, checkDate, getUploadControlImgData} from '../../common/dgnControlAssist';
 
@@ -89,7 +89,8 @@ class InStorage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      rows: []
+      rows: [],
+      saveLoading:false
     }
   };
 
@@ -123,6 +124,7 @@ class InStorage extends React.Component {
       if (!!errors) {
         return;
       }
+      this.setState({saveLoading:true});
       let form0 = {
         ...values
       };
@@ -135,6 +137,7 @@ class InStorage extends React.Component {
       formArr.push(form0);
       formArr.push(form1Arr);
       this.props.dispatch(saveInStorage(formArr, function(data) {
+        this.setState({saveLoading:false});
         if (data.returnCode == 0 && data.items[0].result == 'success') {
           message.success(data.items[0].resultDescribe);
           if (this.props.params.dataID==0) {this.context.router.push('/inStorage/' + primaryKey);}
@@ -229,7 +232,7 @@ class InStorage extends React.Component {
           <Row type="flex" justify="end">
             <Col >
               <FormItem >
-                <Button type="primary" htmlType="submit">保存</Button>
+                <Button type="primary" htmlType="submit" loading={this.state.saveLoading} >保存</Button>
               </FormItem>
             </Col>
             <Col span="1">
@@ -404,7 +407,6 @@ function mapPropsToFields(props) {
         }
       }
     }
-
     return mainData
   } else {
     return {};
@@ -412,13 +414,12 @@ function mapPropsToFields(props) {
 }
 
 function onFieldsChange(props, fields) {
-  if (ifNull(fields)) {
-    return;
-  }
-  mainDataHasModify = true;
-  mainData[sample(fields).name] = {
-    value: sample(fields).value
-  };
+  if (!props.dataSource0 || props.dataSource0.FormID!=props.params.dataID || ifNull(fields) )
+   { return;}
+   mainDataHasModify = true;
+   forEach(fields, function(value, key) {
+     mainData[key]=value ;
+   });
 }
 
 function mapStateToProps(state) {

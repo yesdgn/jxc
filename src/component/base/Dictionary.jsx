@@ -8,7 +8,7 @@ import * as ReactDataGridPlugins from 'react-data-grid/addons';
 import SearchInput from '../../common/SearchInput';
 import {APP_CONFIG} from '../../entry/config';
 var moment = require('moment');
-import {sample} from 'lodash';
+import {forEach} from 'lodash';
 import {storeS, getRand, ifNull} from '../../common/dgn';
 import {getSelectOption,getUploadControlImgData} from '../../common/dgnControlAssist';
 
@@ -262,13 +262,12 @@ function mapPropsToFields(props) {
 }
 
 function onFieldsChange(props, fields) {
-  if (ifNull(fields)) {
-    return;
-  }
-  mainDataHasModify = true;
-  mainData[sample(fields).name] = {
-    value: sample(fields).value
-  };
+  if (!props.dataSource0 || props.dataSource0.FormID!=props.params.dataID || ifNull(fields) )
+   { return;}
+   mainDataHasModify = true;
+   forEach(fields, function(value, key) {
+     mainData[key]=value ;
+   });
 }
 
 function mapStateToProps(state) {
