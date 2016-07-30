@@ -262,7 +262,7 @@ function mapPropsToFields(props) {
 }
 
 function onFieldsChange(props, fields) {
-  if (!props.dataSource0 || props.dataSource0.FormID!=props.params.dataID || ifNull(fields) )
+  if ( ifNull(fields) )
    { return;}
    mainDataHasModify = true;
    forEach(fields, function(value, key) {

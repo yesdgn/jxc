@@ -60,6 +60,9 @@ const disabledDate = function(current) {
 };
 
 var AutoCompleteEditor = ReactDataGridPlugins.Editors.AutoComplete;
+var ContextMenu = ReactDataGridPlugins.Menu.ContextMenu;
+var MenuItem = ReactDataGridPlugins.Menu.MenuItem;
+var SubMenu = ReactDataGridPlugins.Menu.SubMenu;
 const searchPageColumns = [
   {
     title: '商品编号',
@@ -178,6 +181,10 @@ class InStorage extends React.Component {
     let rows = this.state.rows;
     rows.push(newRow);
     this.setState({rows: rows});
+  }
+  deleteRow=(e, data)=> {
+    this.state.rows.splice(data.rowIdx, 1);
+    this.setState({rows: this.state.rows});
   }
   onSearch = (searchStr,pageSize,curPage) => {
     this.props.dispatch(readGoodsSelect(searchStr,pageSize,curPage));
@@ -323,7 +330,11 @@ class InStorage extends React.Component {
           <Col span="1"></Col>
           <Col span="22">
 
-            <ReactDataGrid enableCellSelect={true} rowGetter={this.rowGetter} columns={columns} rowsCount={this.state.rows.length} minHeight={500} onRowUpdated={this.handleRowUpdated} cellNavigationMode="changeRow"/>
+            <ReactDataGrid enableCellSelect={true} rowGetter={this.rowGetter}
+               columns={columns} rowsCount={this.state.rows.length} minHeight={500}
+               onRowUpdated={this.handleRowUpdated} cellNavigationMode="changeRow"
+               contextMenu={<MyContextMenu onRowDelete={this.deleteRow}  />}
+               />
 
           </Col>
           <Col span="1"></Col>
@@ -332,6 +343,24 @@ class InStorage extends React.Component {
     );
   }
 };
+
+// Create the context menu.
+// Use this.props.rowIdx and this.props.idx to get the row/column where the menu is shown.
+var MyContextMenu = React.createClass({
+  onRowDelete: function(e, data) {
+    if (typeof(this.props.onRowDelete) === 'function') {
+      this.props.onRowDelete(e, data);
+    }
+  },
+  render: function() {
+    return (
+      <ContextMenu>
+        <MenuItem data={{rowIdx: this.props.rowIdx, idx: this.props.idx}}
+          onClick={this.onRowDelete}>删除</MenuItem>
+      </ContextMenu>
+    );
+  }
+});
 
 function mapPropsToFields(props) {
   if (props.params.dataID == 0) {
@@ -414,7 +443,7 @@ function mapPropsToFields(props) {
 }
 
 function onFieldsChange(props, fields) {
-  if (!props.dataSource0 || props.dataSource0.FormID!=props.params.dataID || ifNull(fields) )
+  if (ifNull(fields) )
    { return;}
    mainDataHasModify = true;
    forEach(fields, function(value, key) {
