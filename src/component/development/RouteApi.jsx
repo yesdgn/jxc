@@ -87,9 +87,7 @@ class RouteApi extends React.Component {
       };
 
       let formArr = [];
-      let form0Arr = [];
-      form0Arr.push(form0);
-      formArr.push(form0Arr);
+      formArr.push(form0);
       this.props.dispatch(saveRoute(formArr, function(data) {
         if (data.returnCode == 0 && data.items[0].result == 'success') {
           message.success(data.items[0].resultDescribe);

@@ -131,10 +131,8 @@ class OutStorage extends React.Component {
       form0.OutDate = moment(form0.OutDate).format('YYYY-MM-DD');
       form0.OperationTime = moment(form0.OperationTime).format('YYYY-MM-DD HH:mm:ss');
       let formArr = [];
-      let form0Arr = [];
       let form1Arr = this.state.rows;
-      form0Arr.push(form0);
-      formArr.push(form0Arr);
+      formArr.push(form0);
       formArr.push(form1Arr);
       this.props.dispatch(saveOutStorage(formArr, function(data) {
         if (data.returnCode == 0 && data.items[0].result == 'success') {
