@@ -24,7 +24,10 @@ const columns = [
   }, {
     title: '公司名称',
     dataIndex: 'CompName',
-    key: 'CompName'
+    key: 'CompName',
+    render(text,record,index) {
+      return <Link to={`/company/`+record.CompID}>{text}</Link>;
+    }
   }, {
     title: '公司地址',
     dataIndex: 'CompAddr',

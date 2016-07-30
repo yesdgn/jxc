@@ -24,7 +24,10 @@ const columns = [
   }, {
     title: '仓库名称',
     dataIndex: 'WarehouseName',
-    key: 'WarehouseName'
+    key: 'WarehouseName',
+    render(text,record,index) {
+      return <Link to={`/warehouse/`+record.WarehouseID}>{text}</Link>;
+    }
   }, {
     title: '仓库地址',
     dataIndex: 'WarehouseAddr',

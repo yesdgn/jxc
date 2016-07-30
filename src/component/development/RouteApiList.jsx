@@ -20,7 +20,10 @@ const columns = [
   {
     title: 'ApiID',
     dataIndex: 'ApiID',
-    key: 'ApiID'
+    key: 'ApiID',
+    render(text,record,index) {
+      return <Link to={`/routeapi/`+record.RouteID}>{text}</Link>;
+    }
   },{
     title: 'RouteName',
     dataIndex: 'RouteName',

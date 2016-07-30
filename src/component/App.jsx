@@ -113,6 +113,7 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   userInfo = storeS.getJson('userInfo');
+  if (!userInfo){userInfo={};}
   const {
     common,
     user,

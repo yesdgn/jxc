@@ -16,7 +16,10 @@ const  columns= [
     }, {
       title: '姓名',
       dataIndex: 'Name',
-      key: 'Name'
+      key: 'Name',
+      render(text,record,index) {
+        return <Link to={`/person/`+record.UserID}>{text}</Link>;
+      }
     }, {
       title: '电子邮箱',
       dataIndex: 'Email',

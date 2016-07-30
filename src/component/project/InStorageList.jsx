@@ -21,7 +21,10 @@ const columns = [
   {
     title: '单据编号',
     dataIndex: 'FormID',
-    key: 'FormID'
+    key: 'FormID',
+    render(text,record,index) {
+      return <Link to={`/inStorage/`+record.FormID}>{text}</Link>;
+    }
   }, {
     title: '仓库',
     dataIndex: 'WarehouseName',

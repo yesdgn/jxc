@@ -28,19 +28,22 @@ const columns = [
   }, {
     title: '商品名称',
     dataIndex: 'GoodsName',
-    key: 'GoodsName'
+    key: 'GoodsName',
+    render(text,record,index) {
+      return <Link to={`/goods/`+record.GoodsID}>{text}</Link>;
+    }
   }, {
-    title: '商品价格',
-    dataIndex: 'Price',
-    key: 'Price'
+    title: '商品默认价格',
+    dataIndex: 'DefaultPrice',
+    key: 'DefaultPrice'
   }, {
     title: '商品分类',
-    dataIndex: 'GoodsCategory',
-    key: 'GoodsCategory'
+    dataIndex: 'GoodsCategoryName',
+    key: 'GoodsCategoryName'
   }, {
-    title: '标签',
-    dataIndex: 'GoodsLabel',
-    key: 'GoodsLabel'
+    title: '规格',
+    dataIndex: 'Specifications',
+    key: 'Specifications'
   }, {
     title: '操作',
     key: 'operation',

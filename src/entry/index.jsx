@@ -50,14 +50,14 @@ window.addEventListener('error', function (e) {
     //message.error('发生未知错误,将重置页面,错误信息:'+errmessage);
     store.dispatch(saveLog('Error',pathname,'发生错误', stack || errmessage  ));
     //setTimeout(function(){location.href='/'},2000);  //需要刷新才能保证恢复正常正常使用。
-    Modal.confirm({
-      title: '提示',
-      content: '发生错误,刷新页面将恢复应用,错误信息:'+errmessage,
-      onOk() {
-         location.href='/';
-      },
-      onCancel() {}
-    } ) ;
+    // Modal.confirm({
+    //   title: '提示',
+    //   content: '发生错误,刷新页面将恢复应用,错误信息:'+errmessage,
+    //   onOk() {
+    //      location.href='/';
+    //   },
+    //   onCancel() {}
+    // }) ;
 });
 
 function requireAuthApp(curRoute,replace) {

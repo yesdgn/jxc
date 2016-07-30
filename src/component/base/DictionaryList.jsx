@@ -23,7 +23,10 @@ const columns = [
   }, {
     title: '数据字典名称',
     dataIndex: 'DictTypeName',
-    key: 'DictTypeName'
+    key: 'DictTypeName',
+    render(text,record,index) {
+      return <Link to={`/dictionary/`+record.DictTypeID}>{text}</Link>;
+    }
   }, {
     title: '操作',
     key: 'operation',

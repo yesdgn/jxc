@@ -232,6 +232,16 @@ class Goods extends React.Component {
           </Row>
           <Row>
             <Col span="12">
+
+            </Col>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="规格">
+                <Input {...getFieldProps('Specifications')}/>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
               <FormItem {...formItemLayout} label="商品描述">
                 <Input type="textarea" rows="4" {...getFieldProps('GoodsDescribe')}/>
               </FormItem>
@@ -312,6 +322,9 @@ function mapPropsToFields(props) {
         },
         Unit: {
           value: props.dataSource0.Unit
+        },
+        Specifications: {
+          value: props.dataSource0.Specifications
         }
       }
     }

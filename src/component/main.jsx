@@ -18,6 +18,7 @@ class Main extends React.Component {
   };
 
   showChart(data) {
+    if (data.length==0){return;}
    var chart = new Chart({
      id: 'c1', // 指定图表容器 ID
      width: 500, // 指定图表宽度
@@ -32,7 +33,6 @@ class Main extends React.Component {
       return t;
       }) ;
    }
-   console.log(data);
    chart.source(data?data:[], {
      yearmonth: {
        type: 'cat',
@@ -47,7 +47,7 @@ class Main extends React.Component {
  }
 
  showChart2(data)
- {
+ {  if (data.length==0){return;}
    var chart = new Chart({
      id: 'c2', // 指定图表容器 ID
      width: 500, // 指定图表宽度
@@ -87,22 +87,21 @@ class Main extends React.Component {
     return (
       <div>
         <Row type="flex" justify="center" align="middle">
-          <Col span="12">
+          <Col span="11">
             <h3 className="textmiddle">月采购金额</h3>
             <div id="c1"></div>
           </Col>
-
-          <Col span="12">
+          <Col span="11">
             <h3 className="textmiddle">月销售金额</h3>
             <div id="c2"></div>
           </Col>
         </Row>
         <Row type="flex" justify="center" align="middle">
-          <Col span="12">
+          <Col span="11">
             <div id="c3"></div>
           </Col>
 
-          <Col span="12">
+          <Col span="11">
             <div id="c4"></div>
           </Col>
         </Row>

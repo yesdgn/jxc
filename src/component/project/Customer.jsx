@@ -147,7 +147,7 @@ class Customer extends React.Component {
             <Col span="12">
               <FormItem {...formItemLayout} label="公司类型"    >
                 <Select id="select" size="large"  disabled {...getFieldProps('CompType')}>
-                  {getSelectOption(this.props.common.CompType, 'DictID', 'DictName')}
+                  {getSelectOption(this.props.common.CompType, 'DictCode', 'DictName')}
                 </Select>
 
               </FormItem>
@@ -195,7 +195,7 @@ function mapPropsToFields(props) {
           value: primaryKey
         },
         CompType: {
-          value: "6365673372633792535"
+          value: "CUSTOMER"
         }
       }
     }
