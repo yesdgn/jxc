@@ -9,13 +9,10 @@ import {
 } from 'antd';
 import {Link} from 'react-router';
 import  {Chart,Stat,Frame} from 'g2';
-
+import {map} from 'lodash';
 class Main extends React.Component {
   static defaultProps = {};
   static propTypes = {};
-  static contextTypes = {
-  //  store: React.PropTypes.object.isRequired
-  };
   constructor(props) {
     super(props);
   };
@@ -24,40 +21,31 @@ class Main extends React.Component {
    var chart = new Chart({
      id: 'c1', // 指定图表容器 ID
      width: 500, // 指定图表宽度
-     height: 300 // 指定图表高度
+     height: 300, // 指定图表高度
+
    });
+   if (data)
+   {
+    data=map(data, function(x) {
+      let t={...x};
+      t.amt=parseFloat(t.amt);
+      return t;
+      }) ;
+   }
+   console.log(data);
    chart.source(data?data:[], {
      yearmonth: {
+       type: 'cat',
        alias: '月份' // 列定义，定义该属性显示的别名
      },
      amt: {
-       alias: '金额'
-     }
+       alias: '金额' ,
+        }
    });
    chart.interval().position('yearmonth*amt').color('yearmonth')
    chart.render();
  }
- showChart1(data) {
-   var Stat = Stat;
 
-   var frame = new Frame(data);
-   frame = Frame.sort(frame, 'amt'); // 将数据按照population 进行排序，由大到小
-   var chart = new Chart({
-     id : 'c2',
-     width : 500,
-     height : 300,
-     plotCfg: {
-       margin: [0, 0, 0, 0]
-     }
-   });
-   chart.source(frame);
-   chart.axis('yearmonth',{
-     title: null
-   });
-   chart.coord('rect').transpose();
-   chart.interval().position('yearmonth*amt');
-   chart.render();
-}
  showChart2(data)
  {
    var chart = new Chart({
@@ -65,12 +53,21 @@ class Main extends React.Component {
      width: 500, // 指定图表宽度
      height: 300 // 指定图表高度
    });
+   if (data)
+   {
+    data=map(data, function(x) {
+      let t={...x};
+      t.amt=parseFloat(t.amt);
+      return t;
+      }) ;
+   }
    chart.source(data?data:[], {
      yearmonth: {
-       alias: '月份' // 列定义，定义该属性显示的别名
-     },
+       alias: '月份',
+       type: 'cat'
+       },
      amt: {
-       alias: '金额'
+       alias: '金额',
      }
    });
    chart.interval().position('yearmonth*amt').color('yearmonth')
@@ -78,8 +75,6 @@ class Main extends React.Component {
 
  }
   componentDidMount() {
-  //  this.context.store.dispatch(readMessage());
-  //  this.context.store.dispatch(readChartData());
   this.props.onLoad();
   }
  componentWillReceiveProps(nextProps) {
