@@ -21,17 +21,17 @@ const confirm = Modal.confirm;
 
 const pageSize = 10;
 const columns = [
-  {
-    title: '商品代码',
-    dataIndex: 'GoodsCode',
-    key: 'GoodsCode'
-  }, {
+   {
     title: '商品名称',
     dataIndex: 'GoodsName',
     key: 'GoodsName',
     render(text,record,index) {
       return <Link to={`/goods/`+record.GoodsID}>{text}</Link>;
     }
+  },{
+    title: '商品代码',
+    dataIndex: 'GoodsCode',
+    key: 'GoodsCode'
   }, {
     title: '商品默认价格',
     dataIndex: 'DefaultPrice',

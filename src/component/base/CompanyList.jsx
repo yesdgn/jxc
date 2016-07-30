@@ -17,11 +17,7 @@ const confirm = Modal.confirm;
 
 const pageSize = 10;
 const columns = [
-  {
-    title: '公司代码',
-    dataIndex: 'CompCode',
-    key: 'CompCode'
-  }, {
+ {
     title: '公司名称',
     dataIndex: 'CompName',
     key: 'CompName',
@@ -29,6 +25,10 @@ const columns = [
       return <Link to={`/company/`+record.CompID}>{text}</Link>;
     }
   }, {
+      title: '公司代码',
+      dataIndex: 'CompCode',
+      key: 'CompCode'
+    },  {
     title: '公司地址',
     dataIndex: 'CompAddr',
     key: 'CompAddr'

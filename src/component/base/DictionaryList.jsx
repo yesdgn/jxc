@@ -16,18 +16,18 @@ const confirm = Modal.confirm;
 
 const pageSize = 10;
 const columns = [
-  {
-    title: '数据字典编号',
-    dataIndex: 'DictTypeID',
-    key: 'DictTypeID'
-  }, {
+ {
     title: '数据字典名称',
     dataIndex: 'DictTypeName',
     key: 'DictTypeName',
     render(text,record,index) {
       return <Link to={`/dictionary/`+record.DictTypeID}>{text}</Link>;
     }
-  }, {
+  },  {
+      title: '数据字典编号',
+      dataIndex: 'DictTypeID',
+      key: 'DictTypeID'
+    }, {
     title: '操作',
     key: 'operation',
     render(text, record) {

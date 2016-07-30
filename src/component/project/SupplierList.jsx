@@ -17,18 +17,18 @@ const confirm = Modal.confirm;
 
 const pageSize = 10;
 const columns = [
-  {
-    title: '供应商代码',
-    dataIndex: 'CompCode',
-    key: 'CompCode'
-  }, {
+ {
     title: '供应商名称',
     dataIndex: 'CompName',
     key: 'CompName',
     render(text,record,index) {
       return <Link to={`/supplier/`+record.CompID}>{text}</Link>;
     }
-  }, {
+  },  {
+      title: '供应商代码',
+      dataIndex: 'CompCode',
+      key: 'CompCode'
+    }, {
     title: '供应商地址',
     dataIndex: 'CompAddr',
     key: 'CompAddr'

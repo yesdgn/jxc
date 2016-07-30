@@ -18,16 +18,16 @@ const confirm = Modal.confirm;
 const pageSize = 10;
 const columns = [
   {
-    title: '客户代码',
-    dataIndex: 'CompCode',
-    key: 'CompCode'
-  }, {
     title: '客户名称',
     dataIndex: 'CompName',
     key: 'CompName',
     render(text,record,index) {
       return <Link to={`/customer/`+record.CompID}>{text}</Link>;
     }
+  }, {
+    title: '客户代码',
+    dataIndex: 'CompCode',
+    key: 'CompCode'
   }, {
     title: '客户地址',
     dataIndex: 'CompAddr',

@@ -9,17 +9,17 @@ const confirm = Modal.confirm;
 
 const pageSize=10;
 const  columns= [
-    {
-      title: '人员代码',
-      dataIndex: 'Code',
-      key: 'Code'
-    }, {
+     {
       title: '姓名',
       dataIndex: 'Name',
       key: 'Name',
       render(text,record,index) {
         return <Link to={`/person/`+record.UserID}>{text}</Link>;
       }
+    },{
+      title: '人员代码',
+      dataIndex: 'Code',
+      key: 'Code'
     }, {
       title: '电子邮箱',
       dataIndex: 'Email',
