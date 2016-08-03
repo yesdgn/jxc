@@ -11,7 +11,7 @@ import {forEach} from 'lodash';
 import {storeS, getRand, ifNull} from '../../common/dgn';
 import {getSelectOption, checkDate, getUploadControlImgData} from '../../common/dgnControlAssist';
 import {
-readPerson,savePerson
+readPerson,savePerson,readCompanies
 } from '../../redux/actions';
 
 import {
@@ -61,6 +61,7 @@ class Person extends React.Component {
 
   componentWillMount() {
     mainDataHasModify = false;
+    this.props.dispatch(readCompanies(50, 1));
     if (this.props.params.dataID != 0) {
       this.props.dispatch(readPerson(this.props.params.dataID));
     }
@@ -150,6 +151,18 @@ class Person extends React.Component {
           </Row>
           <Row>
             <Col span="12">
+
+            </Col>
+            <Col span="12">
+              <FormItem {...formItemLayout} label="公司" required>
+                <Select id="select" size="large" { ...getFieldProps('CompID', { rules: [ { required: true, whitespace: true, message: '请选择公司' }, ], })} showSearch={true} optionFilterProp="children">
+                  {getSelectOption(this.props.company0, 'CompID', 'CompName')}
+                </Select>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
               <FormItem {...formItemLayout} label="备注">
                 <Input type="textarea" rows="4" {...getFieldProps('Remark')}/>
               </FormItem>
@@ -176,7 +189,10 @@ function mapPropsToFields(props) {
       mainData = {
         UserID: {
           value: primaryKey
-        }
+        },
+        CompID: {
+            value: userInfo.CompID
+          }
       }
     }
     return mainData;
@@ -194,6 +210,9 @@ function mapPropsToFields(props) {
         },
         UserID: {
           value: props.dataSource0.UserID
+        },
+        CompID: {
+          value: props.dataSource0.CompID
         },
         Code: {
           value: props.dataSource0.Code
@@ -228,10 +247,11 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
-  const {common, person} = state;
+  const {common, person,company} = state;
   let dataSource0=person.person;
   let imgDataSource=person.personImgs;
-  return {common,dataSource0,imgDataSource}
+  let company0=company.companies?company.companies.item1:[];
+  return {common,dataSource0,imgDataSource,company0}
 }
 Person = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Person);
 export default connect(mapStateToProps)(Person)
