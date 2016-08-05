@@ -1,15 +1,14 @@
 'use strict';
 import React from 'react';
-//import addonsupdate from 'react-addons-update';
-import {Link} from 'react-router';
-import {connect} from 'react-redux'
+// import addonsupdate from 'react-addons-update';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 import * as ReactDataGridPlugins from 'react-data-grid/addons';
 import SearchInput from '../../common/SearchInput';
 import UploadImage from '../../common/UploadImage';
 import UploadFile from '../../common/UploadFile';
-import {APP_CONFIG} from '../../entry/config';
-var moment = require('moment');
+const moment = require('moment');
 import {forEach} from 'lodash';
 import {storeS, getRand, ifNull} from '../../common/dgn';
 import {getSelectOption, checkDate, getUploadControlImgData} from '../../common/dgnControlAssist';
@@ -20,21 +19,18 @@ import {
   saveInStorage,
   readInStorage,
   readWarehouses,
-  readGoodsSelect
+  readGoodsSelect,
 } from '../../redux/actions';
-import {READ_DICT_INSTORAGESTATE, READ_DICT_UNIT} from '../../redux/actionsType';
+import { READ_DICT_INSTORAGESTATE } from '../../redux/actionsType';
 import {
   Button,
   Row,
   Col,
   Input,
   Form,
-  Upload,
-  Icon,
-  Modal,
   message,
   Select,
-  DatePicker
+  DatePicker,
 } from 'antd';
 
 var primaryKey;
@@ -43,8 +39,7 @@ var fileGuid;
 var mainData;
 var mainDataHasModify = false;
 var userInfo;
-const Option = Select.Option;
-const createForm = Form.create;
+var deleteID=[];
 const FormItem = Form.Item;
 
 const formItemLayout = {
@@ -62,7 +57,7 @@ const disabledDate = function(current) {
 var AutoCompleteEditor = ReactDataGridPlugins.Editors.AutoComplete;
 var ContextMenu = ReactDataGridPlugins.Menu.ContextMenu;
 var MenuItem = ReactDataGridPlugins.Menu.MenuItem;
-var SubMenu = ReactDataGridPlugins.Menu.SubMenu;
+
 const searchPageColumns = [
   {
     title: '商品编号',
@@ -98,6 +93,7 @@ class InStorage extends React.Component {
   };
 
   componentWillMount() {
+    deleteID=[];
     mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_INSTORAGESTATE, '6365673372633792599'));
     this.props.dispatch(readSuppliers(50, 1));
@@ -108,11 +104,13 @@ class InStorage extends React.Component {
   }
   componentWillUnmount() {
     mainDataHasModify = false;
+    deleteID=[];
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.dataID !== this.props.params.dataID) {
       this.props.dispatch(readInStorage(nextProps.params.dataID));
       mainDataHasModify = false;
+      deleteID=[];
     }
     //下面为表体数据
     if (nextProps.params.dataID==primaryKey  &&  (this.state.rows.length === 0 || nextProps.dataSource1!==this.props.dataSource1)  ) {
@@ -135,10 +133,15 @@ class InStorage extends React.Component {
       form0.FormFiles = fileGuid;
       form0.InDate = moment(form0.InDate).format('YYYY-MM-DD');
       form0.OperationTime = moment(form0.OperationTime).format('YYYY-MM-DD HH:mm:ss');
+      if (mainDataHasModify)
+      {form0.DgnOperatorType =this.props.params.dataID == 0?'ADD':'UPDATE';}
       let formArr = [];
       let form1Arr = this.state.rows;
       formArr.push(form0);
       formArr.push(form1Arr);
+      deleteID.map(function(x) {
+        form1Arr.push({ID:x,DgnOperatorType:'DELETE'})
+      })
       this.props.dispatch(saveInStorage(formArr, function(data) {
         this.setState({saveLoading:false});
         if (data.returnCode == 0 && data.items[0].result == 'success') {
@@ -146,6 +149,7 @@ class InStorage extends React.Component {
           if (this.props.params.dataID==0) {this.context.router.push('/inStorage/' + primaryKey);}
           this.props.dispatch(readInStorage(primaryKey));
           mainDataHasModify = false;
+          deleteID=[];
         } else {
           message.error(data.items[0].resultDescribe);
         }
@@ -159,6 +163,8 @@ class InStorage extends React.Component {
   }
   handleRowUpdated = (e) => {
     let rows = this.state.rows;
+    if (!rows[e.rowIdx].DgnOperatorType)
+    {rows[e.rowIdx].DgnOperatorType='UPDATE';}
     Object.assign(rows[e.rowIdx], e.updated);
     this.setState({rows: rows});
   }
@@ -166,6 +172,7 @@ class InStorage extends React.Component {
     let newRow;
     if (rowObj === undefined) {
       newRow = {
+        DgnOperatorType:'ADD',
         ID: undefined,
         FormID: primaryKey,
         GoodsID: 0,
@@ -183,6 +190,8 @@ class InStorage extends React.Component {
     this.setState({rows: rows});
   }
   deleteRow=(e, data)=> {
+    if (this.state.rows[data.rowIdx].ID)
+    {deleteID.push(this.state.rows[data.rowIdx].ID);}
     this.state.rows.splice(data.rowIdx, 1);
     this.setState({rows: this.state.rows});
   }
@@ -192,6 +201,7 @@ class InStorage extends React.Component {
   onSelect = (data) => {
     data.map(function(x) {
       let newRow = {
+        DgnOperatorType:'ADD',
         ID: undefined,
         FormID: primaryKey,
         GoodsID: x.GoodsID,
