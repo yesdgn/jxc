@@ -250,6 +250,7 @@ class InStorage extends React.Component {
             <Col >
               <FormItem >
                 <Button type="primary" htmlType="submit" loading={this.state.saveLoading} >保存</Button>
+                <Button type="default" >删除</Button>
               </FormItem>
             </Col>
             <Col span="1">
@@ -339,7 +340,6 @@ class InStorage extends React.Component {
         <Row>
           <Col span="1"></Col>
           <Col span="22">
-
             <ReactDataGrid enableCellSelect={true} rowGetter={this.rowGetter}
                columns={columns} rowsCount={this.state.rows.length} minHeight={500}
                onRowUpdated={this.handleRowUpdated} cellNavigationMode="changeRow"

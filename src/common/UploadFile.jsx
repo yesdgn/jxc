@@ -46,7 +46,20 @@ class UploadFile extends React.Component {
     }
     this.setState({fileList: info.fileList})
   }
-
+  handleDelete=(file)=>{
+    let that=this;
+    Modal.confirm({
+      title: '提示',
+      content: '您确认要删除吗?',
+      onOk() {that.context.store.dispatch(removeFile(file.uid));
+          let filelist=that.state.fileList.filter(function (x) {
+            return  x.uid!==file.uid
+        })
+        that.setState({fileList: filelist})
+      },
+      onCancel() {}
+    })
+   }
   render() {
     let props = {
       name: 'file',
@@ -57,6 +70,7 @@ class UploadFile extends React.Component {
         fileguid: this.props.fileGuid
       },
       onChange: this.handleChange,
+      onRemove: this.handleDelete,
       fileList: this.state.fileList,
       onPreview: (file) => {
         console.log(file);
