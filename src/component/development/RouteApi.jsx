@@ -85,7 +85,8 @@ class RouteApi extends React.Component {
       let form0 = {
         ...values
       };
-
+      if (mainDataHasModify)
+      {form0.DgnOperatorType =this.props.params.dataID == 0?'ADD':'UPDATE';}
       let formArr = [];
       formArr.push(form0);
       this.props.dispatch(saveRoute(formArr, function(data) {

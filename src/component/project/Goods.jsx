@@ -39,6 +39,7 @@ var fileGuid;
 var mainData;
 var mainDataHasModify = false;
 var userInfo;
+var deleteID=[];
 const Option = Select.Option;
 const createForm = Form.create;
 const FormItem = Form.Item;
@@ -56,7 +57,8 @@ const disabledDate = function(current) {
 };
 
 var AutoCompleteEditor = ReactDataGridPlugins.Editors.AutoComplete;
-
+var ContextMenu = ReactDataGridPlugins.Menu.ContextMenu;
+var MenuItem = ReactDataGridPlugins.Menu.MenuItem;
 
 class Goods extends React.Component {
   static defaultProps = {};
@@ -73,6 +75,7 @@ class Goods extends React.Component {
 
   componentWillMount() {
     mainDataHasModify = false;
+    deleteID=[];
     this.props.dispatch(readDict(READ_DICT_CUSTTYPE, '146864635828377773'));
     this.props.dispatch(readDict(READ_DICT_GOODSCATEGORY, '6365673372633792522'));
     this.props.dispatch(readDict(READ_DICT_UNIT, '6365673372633792600'));
@@ -82,11 +85,13 @@ class Goods extends React.Component {
   }
   componentWillUnmount() {
     mainDataHasModify = false;
+    deleteID=[];
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.dataID !== this.props.params.dataID) {
       this.props.dispatch(readGoods(nextProps.params.dataID));
       mainDataHasModify = false;
+      deleteID=[];
     }
     //下面为表体数据
     if (nextProps.params.dataID==primaryKey  &&  (this.state.rows.length === 0 || nextProps.dataSource1!==this.props.dataSource1)  ) {
@@ -106,9 +111,13 @@ class Goods extends React.Component {
       };
       form0.GoodsImages = imgGuid;
   //    form0.FormFiles = fileGuid;
-
+      if (mainDataHasModify)
+      {form0.DgnOperatorType =this.props.params.dataID == 0?'ADD':'UPDATE';}
       let formArr = [];
       let form1Arr = this.state.rows;
+      deleteID.map(function(x) {
+        form1Arr.push({ID:x,DgnOperatorType:'DELETE'})
+      })
       formArr.push(form0);
       formArr.push(form1Arr);
       this.props.dispatch(saveGoods(formArr, function(data) {
@@ -117,6 +126,7 @@ class Goods extends React.Component {
           if (this.props.params.dataID==0) {this.context.router.push('/goods/' + primaryKey);}
           this.props.dispatch(readGoods(primaryKey));
           mainDataHasModify = false;
+          deleteID=[];
         } else {
           message.error(data.items[0].resultDescribe);
         }
@@ -130,6 +140,8 @@ class Goods extends React.Component {
   }
   handleRowUpdated = (e) => {
     let rows = this.state.rows;
+    if (!rows[e.rowIdx].DgnOperatorType)
+    {rows[e.rowIdx].DgnOperatorType='UPDATE';}
     Object.assign(rows[e.rowIdx], e.updated);
     this.setState({rows: rows});
   }
@@ -137,6 +149,7 @@ class Goods extends React.Component {
     let newRow;
     if (rowObj === undefined) {
       newRow = {
+        DgnOperatorType:'ADD',
         ID: undefined,
         GoodsID:primaryKey,
         CustomerType: 0,
@@ -150,7 +163,12 @@ class Goods extends React.Component {
     rows.push(newRow);
     this.setState({rows: rows});
   }
-
+  deleteRow=(e, data)=> {
+    if (this.state.rows[data.rowIdx].ID)
+    {deleteID.push(this.state.rows[data.rowIdx].ID);}
+    this.state.rows.splice(data.rowIdx, 1);
+    this.setState({rows: this.state.rows});
+  }
   render() {
     const {getFieldProps} = this.props.form;
     var columns = [
@@ -259,7 +277,9 @@ class Goods extends React.Component {
           <Col span="22">
 
             <ReactDataGrid enableCellSelect={true} rowGetter={this.rowGetter}  toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
-              columns={columns} rowsCount={this.state.rows.length} minHeight={300} onRowUpdated={this.handleRowUpdated} cellNavigationMode="changeRow"/>
+              columns={columns} rowsCount={this.state.rows.length} minHeight={300} onRowUpdated={this.handleRowUpdated} cellNavigationMode="changeRow"
+              contextMenu={<MyContextMenu onRowDelete={this.deleteRow}  />}
+              />
 
           </Col>
           <Col span="1"></Col>
@@ -268,7 +288,23 @@ class Goods extends React.Component {
     );
   }
 };
-
+// Create the context menu.
+// Use this.props.rowIdx and this.props.idx to get the row/column where the menu is shown.
+var MyContextMenu = React.createClass({
+  onRowDelete: function(e, data) {
+    if (typeof(this.props.onRowDelete) === 'function') {
+      this.props.onRowDelete(e, data);
+    }
+  },
+  render: function() {
+    return (
+      <ContextMenu>
+        <MenuItem data={{rowIdx: this.props.rowIdx, idx: this.props.idx}}
+          onClick={this.onRowDelete}>删除</MenuItem>
+      </ContextMenu>
+    );
+  }
+});
 function mapPropsToFields(props) {
    if (props.params.dataID == 0) {
     if (!mainDataHasModify) {

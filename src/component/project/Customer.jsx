@@ -90,6 +90,8 @@ class Customer extends React.Component {
       };
       form0.CompImages = imgGuid;
       //form0.FormFiles = fileGuid;
+      if (mainDataHasModify)
+      {form0.DgnOperatorType =this.props.params.dataID == 0?'ADD':'UPDATE';}
       let formArr = [];
       formArr.push(form0);
        this.props.dispatch(saveCustomer(formArr, function(data) {

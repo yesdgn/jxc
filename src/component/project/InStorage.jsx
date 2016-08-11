@@ -20,6 +20,7 @@ import {
   readInStorage,
   readWarehouses,
   readGoodsSelect,
+  deleteInStorage,
 } from '../../redux/actions';
 import { READ_DICT_INSTORAGESTATE } from '../../redux/actionsType';
 import {
@@ -31,6 +32,7 @@ import {
   message,
   Select,
   DatePicker,
+  Modal,
 } from 'antd';
 
 var primaryKey;
@@ -137,11 +139,11 @@ class InStorage extends React.Component {
       {form0.DgnOperatorType =this.props.params.dataID == 0?'ADD':'UPDATE';}
       let formArr = [];
       let form1Arr = this.state.rows;
-      formArr.push(form0);
-      formArr.push(form1Arr);
       deleteID.map(function(x) {
         form1Arr.push({ID:x,DgnOperatorType:'DELETE'})
       })
+      formArr.push(form0);
+      formArr.push(form1Arr);
       this.props.dispatch(saveInStorage(formArr, function(data) {
         this.setState({saveLoading:false});
         if (data.returnCode == 0 && data.items[0].result == 'success') {
@@ -157,7 +159,24 @@ class InStorage extends React.Component {
     });
 
   };
-
+handleDelete=(e)=>{
+  let that=this;
+  Modal.confirm({
+    title: '提示',
+    content: '您确认要删除吗?',
+    onOk:function() {  that.props.dispatch(deleteInStorage(primaryKey, function(data) {
+      if (data.returnCode == 0 && data.items[0].result == 'success') {
+        message.success(data.items[0].resultDescribe);
+        mainDataHasModify = false;
+        deleteID=[];
+        that.context.router.push('/inStorageList');
+      } else {
+        message.error(data.items[0].resultDescribe);
+      }
+    }));   },
+    onCancel() {}
+  })
+}
   rowGetter = (rowIdx) => {
     return this.state.rows[rowIdx];
   }
@@ -213,6 +232,7 @@ class InStorage extends React.Component {
       this.handleAddRow(null, newRow);
     }.bind(this));
   }
+
   render() {
     const {getFieldProps} = this.props.form;
     var columns = [
@@ -250,7 +270,7 @@ class InStorage extends React.Component {
             <Col >
               <FormItem >
                 <Button type="primary" htmlType="submit" loading={this.state.saveLoading} >保存</Button>
-                <Button type="default" >删除</Button>
+                <Button type="default" onClick={this.handleDelete} >删除</Button>
               </FormItem>
             </Col>
             <Col span="1">
