@@ -12,6 +12,7 @@ import {
 import {Link} from 'react-router';
 import {connect} from 'react-redux'
 import {storeS} from '../../common/dgn';
+import ImportExcel from '../../common/ImportExcel';
 import {
   readDict,readGoodses
 } from '../../redux/actions';
@@ -63,7 +64,8 @@ class Goodses extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: 1
+      currentPage: 1,
+      importExcelVisible:false
     }
   };
   componentWillMount() {
@@ -85,6 +87,10 @@ class Goodses extends React.Component {
     this.setState({currentPage: current})
     this.props.dispatch(readGoodses(pageSize, current));
   }
+
+  btnImportExcel=()=>{
+    this.setState({importExcelVisible:true});
+  }
   render() {
     const pagination = {
       total: this.props.totalCount0,
@@ -93,6 +99,9 @@ class Goodses extends React.Component {
     };
     return (
       <div>
+        <ImportExcel visible={this.state.importExcelVisible}
+          hide={()=>this.setState({importExcelVisible:false})} >
+        </ImportExcel>
         <Row type="flex" justify="center" align="end" style={{
           margin: 10
         }}>
@@ -104,7 +113,10 @@ class Goodses extends React.Component {
 
           </Col>
           <Col span="2">
-            <Button type="primary">导出</Button>
+            <Button type="default" onClick={this.btnImportExcel}>导入</Button>
+          </Col>
+          <Col span="2">
+            <Button type="default">导出</Button>
           </Col>
         </Row>
         <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource0} pagination={pagination}/>
