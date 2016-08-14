@@ -162,10 +162,16 @@ class RouteApi extends React.Component {
           </Col>
         </Row>
         <Row>
-
           <Col span="24">
             <FormItem {...singFormItemLayout} label="执行SQL" required>
               <Input type="textarea" rows="4" {...getFieldProps('ApiExecSql', { rules: [ { required: true, whitespace: true, message: '请填写执行SQL' }, ], })}/>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row>
+          <Col span="24">
+            <FormItem {...singFormItemLayout} label="FORMLIST导出excelSQL"  >
+              <Input type="textarea" rows="4" {...getFieldProps('ApiExportSql')}/>
             </FormItem>
           </Col>
         </Row>
@@ -218,6 +224,9 @@ function mapPropsToFields(props) {
         },
         ApiExecSql: {
           value: props.dataSource0.ApiExecSql
+        },
+        ApiExportSql: {
+          value: props.dataSource0.ApiExportSql
         },
         IsCancel: {
           value: props.dataSource0.IsCancel

@@ -14,10 +14,10 @@ import {connect} from 'react-redux'
 import {storeS} from '../../common/dgn';
 import ImportExcel from '../../common/ImportExcel';
 import {
-  readDict,readGoodses
+  readDict,readGoodses,exportExcel
 } from '../../redux/actions';
 import { READ_DICT_CUSTTYPE  } from '../../redux/actionsType';
-
+import {APP_CONFIG} from '../../entry/config';
 const confirm = Modal.confirm;
 
 const pageSize = 10;
@@ -65,7 +65,8 @@ class Goodses extends React.Component {
     super(props);
     this.state = {
       currentPage: 1,
-      importExcelVisible:false
+      importExcelVisible:false,
+      exportLoading:false
     }
   };
   componentWillMount() {
@@ -90,6 +91,13 @@ class Goodses extends React.Component {
 
   btnImportExcel=()=>{
     this.setState({importExcelVisible:true});
+  }
+  btnExportExcel=()=>{
+     this.setState({exportLoading:true});
+     this.props.dispatch(exportExcel(5,"商品资料,第二个sheet名称",function (data){
+       window.location = APP_CONFIG.WEBSERVERURL+data.url;
+       this.setState({exportLoading:false});
+     }.bind(this)));
   }
   render() {
     const pagination = {
@@ -116,7 +124,7 @@ class Goodses extends React.Component {
             <Button type="default" onClick={this.btnImportExcel}>导入</Button>
           </Col>
           <Col span="2">
-            <Button type="default">导出</Button>
+            <Button type="default" onClick={this.btnExportExcel} loading={this.state.exportLoading} >导出</Button>
           </Col>
         </Row>
         <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource0} pagination={pagination}/>
