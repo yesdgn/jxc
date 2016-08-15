@@ -658,3 +658,41 @@ export function exportExcel(apiid,sheetNames,cb) {
     return dispatch(fetchPost(null, params,cb,{isNeedDispatch:false}))
   }
 }
+//导入配置
+export function readImportExcelConfList(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:16,
+      apiAction:'READ',
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      pageSize:pageSize,
+      curPage:curPage
+    };
+    return dispatch(fetchPost(actionsType.READ_IMPORTEXCELCONF_LIST, params))
+  }
+}
+export function readImportExcelConf(formID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:19,
+      apiAction:'READ',
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      jsonData:JSON.stringify([{formID:formID},{formID:formID}])
+    };
+    return dispatch(fetchPost(actionsType.READ_IMPORTEXCELCONF, params ))
+  }
+}
+export function saveImportExcelConf(jsonData,cb) {
+return (dispatch, getState) => {
+  let params={
+    apiid:19,
+    apiAction:'SAVE',
+    sessionkey:storeS.getItem('sessionKey'),
+    userid:storeS.getJson('userInfo').UserID,
+    jsonData:JSON.stringify(jsonData)
+  };
+  return dispatch(fetchPost(null, params,cb))
+}
+}

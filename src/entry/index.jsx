@@ -37,6 +37,8 @@ import DictionaryList from '../component/base/DictionaryList';
 import OutStorage from '../component/project/OutStorage';
 import OutStorageList from '../component/project/OutStorageList';
 import {saveLog} from '../redux/actions'
+import ImportExcelConf from '../component/development/ImportExcelConf';
+import ImportExcelConfList from '../component/development/ImportExcelConfList';
 const store = configureStore()
 //const history = syncHistoryWithStore(browserHistory, store);
 
@@ -104,6 +106,8 @@ ReactDOM.render(
       <Route path="/dictionary/:dataID" breadcrumbName="数据字典"   onEnter={requireAuthApp}  component={Dictionary}/>
       <Route path="outStorageList" breadcrumbName="销售出库单列表"  onEnter={requireAuthApp}   component={OutStorageList} />
       <Route path="/outStorage/:dataID" breadcrumbName="销售出库单"   onEnter={requireAuthApp}  component={OutStorage}/>
+      <Route path="importconf" breadcrumbName="导入配置列表"  onEnter={requireAuthApp}   component={ImportExcelConfList} />
+      <Route path="/importconf/:dataID" breadcrumbName="导入配置"   onEnter={requireAuthApp}  component={ImportExcelConf}/>
       <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
       <Route path="*" breadcrumbName="未找到页面"  onEnter={refreshApp}  component={NoMatch}/>
     </Route>

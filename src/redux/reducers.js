@@ -351,3 +351,21 @@ export function dictionary(state = [], action) {
       return state
   }
 }
+//导入配置
+export function importConf(state = [], action) {
+  switch (action.type) {
+    case actionsType.READ_IMPORTEXCELCONF_LIST:
+      return {
+        ...state,
+        importConfList: action.receivedJson.items
+      }
+    case actionsType.READ_IMPORTEXCELCONF:
+      return {
+        ...state,
+        importConf_M: action.receivedJson.items.item0[0],
+        importConf_S: action.receivedJson.items.item1
+      }
+    default:
+      return state
+  }
+}
