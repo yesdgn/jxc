@@ -12,6 +12,7 @@ import App from '../component/App';
 import NoMatch from '../component/NoMatch';
 import Login from '../component/Login';
 import Main from '../component/Main';
+import Favorites from '../component/base/Favorites';
 import PersonList from '../component/base/PersonList';
 import Person from '../component/base/Person';
 import RegUser from '../component/RegUser';
@@ -108,6 +109,7 @@ ReactDOM.render(
       <Route path="/outStorage/:dataID" breadcrumbName="销售出库单"   onEnter={requireAuthApp}  component={OutStorage}/>
       <Route path="importconf" breadcrumbName="导入配置列表"  onEnter={requireAuthApp}   component={ImportExcelConfList} />
       <Route path="/importconf/:dataID" breadcrumbName="导入配置"   onEnter={requireAuthApp}  component={ImportExcelConf}/>
+      <Route path="favorites" breadcrumbName="收藏夹"  onEnter={requireAuthApp}   component={Favorites} />
       <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
       <Route path="*" breadcrumbName="未找到页面"  onEnter={refreshApp}  component={NoMatch}/>
     </Route>

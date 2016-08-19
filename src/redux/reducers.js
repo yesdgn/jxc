@@ -369,3 +369,20 @@ export function importConf(state = [], action) {
       return state
   }
 }
+//收藏夹配置
+export function favorites(state = [], action) {
+  switch (action.type) {
+    case actionsType.READ_FAVORITESLIST:
+      return {
+        ...state,
+        favoritesList: action.receivedJson.items
+      }
+    case actionsType.READ_MENU_SELECT:
+        return {
+          ...state,
+          searchResult: action.receivedJson.items
+        }
+    default:
+      return state
+  }
+}

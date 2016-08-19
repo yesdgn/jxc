@@ -696,3 +696,54 @@ return (dispatch, getState) => {
   return dispatch(fetchPost(null, params,cb))
 }
 }
+//得到列名
+export function getTableColName(tableName,cb) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:23,
+      userid:storeS.getJson('userInfo').UserID,
+      sessionkey:storeS.getItem('sessionKey'),
+      tableName:tableName
+    };
+    return dispatch(fetchPost(null, params,cb,{isNeedDispatch:false}))
+  }
+}
+export function readFavoritesList() {
+  let userid=storeS.getJson('userInfo').UserID;
+  return (dispatch, getState) => {
+    let params={
+      apiid:27,
+      apiAction:'READ',
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:userid,
+      jsonData:JSON.stringify([{UserID:userid}])
+    };
+    return dispatch(fetchPost(actionsType.READ_FAVORITESLIST, params ))
+  }
+}
+export function saveFavoritesList(jsonData,cb) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:27,
+      apiAction:'SAVE',
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      jsonData:JSON.stringify(jsonData)
+    };
+    return dispatch(fetchPost(null, params,cb))
+  }
+}
+export function readMenuSelect(searchStr,pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:31,
+      apiAction:'READ',
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      searchStr: '%'+searchStr+'%',
+      pageSize:pageSize,
+      curPage:curPage
+    };
+    return dispatch(fetchPost(actionsType.READ_MENU_SELECT, params))
+  }
+}

@@ -8,12 +8,12 @@ import * as ReactDataGridPlugins from 'react-data-grid/addons';
 import SearchInput from '../../common/SearchInput';
 import {APP_CONFIG} from '../../entry/config';
 var moment = require('moment');
-import {forEach} from 'lodash';
+import {forEach,differenceWith} from 'lodash';
 import {storeS, getRand, ifNull} from '../../common/dgn';
 import {getSelectOption,getUploadControlImgData} from '../../common/dgnControlAssist';
 
 import {
-  readImportExcelConf,saveImportExcelConf
+  readImportExcelConf,saveImportExcelConf,getTableColName
 } from '../../redux/actions';
 import {READ_IMPORTEXCELCONF} from '../../redux/actionsType';
 import {
@@ -86,7 +86,29 @@ class ImportExcelConf extends React.Component {
     }
 
   }
-
+  RefreshColName=()=>{
+    let fieldValue=this.props.form.getFieldValue('TableName');
+    if (!fieldValue)
+    {message.error('请先输入表名');return;}
+    this.props.dispatch(getTableColName(fieldValue,function (data) {
+      let newRows=differenceWith(data.items,this.state.rows,  function (arrVal, othVal) {
+        return arrVal.column_name.toUpperCase()==othVal.TableColName.toUpperCase();
+      }.bind(this));
+      newRows.map(function (x) {
+        let newRow = {
+          DgnOperatorType:'ADD',
+          ID: undefined,
+          FormID: primaryKey,
+          TableColName:x.column_name,
+          IsValid: 0,
+          IsAllowInsert:1,
+          IsAllowUpdate:1,
+          IsJoin: 0
+        };
+        this.handleAddRow(null, newRow);
+      }.bind(this))
+    }.bind(this)));
+  }
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((errors, values) => {
@@ -171,6 +193,7 @@ class ImportExcelConf extends React.Component {
       }, {
         key: 'ExcelColName',
         name: 'excel列名',
+        width:100,
         editable: true
       }, {
         key: 'TableColName',
@@ -179,34 +202,37 @@ class ImportExcelConf extends React.Component {
       }, {
         key: 'IsValid',
         name: '启用',
+        width:50,
         editable: true
       }, {
         key: 'IsAllowInsert',
         name: '允许插入',
+        width:50,
         editable: true
       }, {
         key: 'IsAllowUpdate',
         name: '允许更新',
+        width:50,
         editable: true
       }, {
         key: 'DefaultValue',
         name: '缺省值',
+        width:100,
         editable: true
       }, {
         key: 'IsJoin',
         name: '是否关联',
+        width:50,
         editable: true
       }, {
         key: 'JoinTableSql',
         name: '关联表SQL',
-        editable: true
-      }, {
-        key: 'JoinCondition',
-        name: '关联表条件',
+        width:300,
         editable: true
       }, {
         key: 'IsValid',
         name: '启用',
+        width:50,
         editable: true
       }
     ];
@@ -217,6 +243,7 @@ class ImportExcelConf extends React.Component {
             <Col >
               <FormItem >
                 <Button type="primary" htmlType="submit">保存</Button>
+                <Button type="default" onClick={this.RefreshColName}>刷新列名</Button>
               </FormItem>
             </Col>
             <Col span="1">
