@@ -39,7 +39,7 @@ const columns = [
     key: 'IsOpen'
   }
   , {
-    title: '返回类型',
+    title: 'API类型',
     dataIndex: 'TransformJsonType',
     key: 'RouterStr'
   }, {

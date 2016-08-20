@@ -21,7 +21,6 @@ export function readGoodsSelect(searchStr,pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:37,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       searchStr: '%'+searchStr+'%',
@@ -35,7 +34,6 @@ export function readOutstorageGoods(customerID,searchStr,pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:44,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       customerid:customerID,
@@ -51,7 +49,6 @@ export function readDictionaryList(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:38,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
@@ -63,11 +60,10 @@ export function readDictionaryList(pageSize,curPage) {
 export function readDictionary(dictTypeID) {
   return (dispatch, getState) => {
     let params={
-      apiid:39,
-      apiAction:'READ',
+      apiid:40,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      jsonData:JSON.stringify([{dictTypeID:dictTypeID},{dictTypeID:dictTypeID}])
+      dictTypeID:dictTypeID
     };
     return dispatch(fetchPost(actionsType.READ_DICTIONARY, params ))
   }
@@ -76,7 +72,6 @@ export function saveDictionary(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:39,
-    apiAction:'SAVE',
     sessionkey:storeS.getItem('sessionKey'),
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
@@ -89,7 +84,6 @@ export function readInStorageList(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:32,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
@@ -101,11 +95,10 @@ export function readInStorageList(pageSize,curPage) {
 export function readInStorage(formID) {
   return (dispatch, getState) => {
     let params={
-      apiid:35,
-      apiAction:'READ',
+      apiid:47,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      jsonData:JSON.stringify([{formid:formID},{formid:formID}])
+      formid:formID
     };
     return dispatch(fetchPost(actionsType.READ_INSTORAGE, params,cbReadInStorage ))
   }
@@ -117,11 +110,10 @@ function cbReadInStorage (data,params,dispatch) {
 export function deleteInStorage(formID,cb) {
     return (dispatch, getState) => {
       let params={
-        apiid:35,
-        apiAction:'DELETE',
+        apiid:48,
         sessionkey:storeS.getItem('sessionKey'),
         userid:storeS.getJson('userInfo').UserID,
-        jsonData:JSON.stringify([{formid:formID},{formid:formID}])
+        formid:formID
       };
       return dispatch(fetchPost(null, params,cb ,{isNeedDispatch:false}))
     }
@@ -130,10 +122,10 @@ export function saveInStorage(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:35,
-    apiAction:'SAVE',
     sessionkey:storeS.getItem('sessionKey'),
     userid:storeS.getJson('userInfo').UserID,
-    jsonData:JSON.stringify(jsonData)
+    jsonData:JSON.stringify(jsonData),
+    formid:jsonData[0].FormID
   };
   return dispatch(fetchPost(null, params,cb,{isNeedDispatch:false}))
 }
@@ -143,7 +135,6 @@ export function readOutStorageList(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:43,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
@@ -155,11 +146,10 @@ export function readOutStorageList(pageSize,curPage) {
 export function readOutStorage(formID) {
   return (dispatch, getState) => {
     let params={
-      apiid:41,
-      apiAction:'READ',
+      apiid:49,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      jsonData:JSON.stringify([{formid:formID},{formid:formID}])
+      formid:formID
     };
     return dispatch(fetchPost(actionsType.READ_OUTSTORAGE, params,cbReadOutStorage ))
   }
@@ -172,7 +162,6 @@ export function saveOutStorage(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:41,
-    apiAction:'SAVE',
     sessionkey:storeS.getItem('sessionKey'),
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
@@ -187,7 +176,6 @@ export function readRoutes(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:29,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
@@ -199,11 +187,10 @@ export function readRoutes(pageSize,curPage) {
 export function readRoute(routeID) {
   return (dispatch, getState) => {
     let params={
-      apiid:30,
-      apiAction:'READ',
+      apiid:34,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      jsonData:JSON.stringify([{routeid:routeID}])
+      routeid:routeID
     };
     return dispatch(fetchPost(actionsType.READ_ROUTER, params ))
   }
@@ -213,7 +200,6 @@ export function saveRoute(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:30,
-    apiAction:'SAVE',
     sessionkey:storeS.getItem('sessionKey'),
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
@@ -228,7 +214,6 @@ export function readWarehouses(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:26,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
@@ -240,11 +225,10 @@ export function readWarehouses(pageSize,curPage) {
 export function readWarehouse(WarehouseID) {
   return (dispatch, getState) => {
     let params={
-      apiid:28,
-      apiAction:'READ',
+      apiid:52,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      jsonData:JSON.stringify([{WarehouseID:WarehouseID}])
+      warehouseid:WarehouseID
     };
     return dispatch(fetchPost(actionsType.READ_WAREHOUSE, params ))
   }
@@ -254,7 +238,6 @@ export function saveWarehouse(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:28,
-    apiAction:'SAVE',
     sessionkey:storeS.getItem('sessionKey'),
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
@@ -268,7 +251,6 @@ export function readSuppliers(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:25,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
@@ -280,11 +262,10 @@ export function readSuppliers(pageSize,curPage) {
 export function readSupplier(SupplierID) {
   return (dispatch, getState) => {
     let params={
-      apiid:22,
-      apiAction:'READ',
+      apiid:54,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      jsonData:JSON.stringify([{compid:SupplierID}])
+      compid:SupplierID
     };
     return dispatch(fetchPost(actionsType.READ_SUPPLIER, params,cbReadSupplier))
   }
@@ -295,8 +276,7 @@ function cbReadSupplier (data,params,dispatch) {
 export function saveSupplier(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
-    apiid:22,
-    apiAction:'SAVE',
+    apiid:55,
     sessionkey:storeS.getItem('sessionKey'),
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
@@ -310,7 +290,6 @@ export function readCustomers(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:24,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
@@ -322,11 +301,10 @@ export function readCustomers(pageSize,curPage) {
 export function readCustomer(CustomerID) {
   return (dispatch, getState) => {
     let params={
-      apiid:22,
-      apiAction:'READ',
+      apiid:53,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      jsonData:JSON.stringify([{compid:CustomerID}])
+      compid:CustomerID
     };
     return dispatch(fetchPost(actionsType.READ_CUSTOMER, params,cbReadCustomer))
   }
@@ -338,7 +316,6 @@ export function saveCustomer(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:22,
-    apiAction:'SAVE',
     sessionkey:storeS.getItem('sessionKey'),
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
@@ -352,7 +329,6 @@ export function readCompanies(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:21,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
@@ -364,11 +340,10 @@ export function readCompanies(pageSize,curPage) {
 export function readCompany(companyID) {
   return (dispatch, getState) => {
     let params={
-      apiid:22,
-      apiAction:'READ',
+      apiid:57,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      jsonData:JSON.stringify([{compid:companyID}])
+      compid:companyID
     };
     return dispatch(fetchPost(actionsType.READ_COMPANY, params,cbReadCompany ))
   }
@@ -379,8 +354,7 @@ function cbReadCompany (data,params,dispatch) {
 export function saveCompany(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
-    apiid:22,
-    apiAction:'SAVE',
+    apiid:56,
     sessionkey:storeS.getItem('sessionKey'),
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
@@ -393,7 +367,6 @@ export function readGoodses(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:5,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
@@ -406,11 +379,10 @@ export function readGoodses(pageSize,curPage) {
 export function readGoods(goodsID) {
   return (dispatch, getState) => {
     let params={
-      apiid:18,
-      apiAction:'READ',
+      apiid:51,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      jsonData:JSON.stringify([{goodsID:goodsID},{goodsID:goodsID}])
+      goodsid:goodsID
     };
     return dispatch(fetchPost(actionsType.READ_GOODS, params,cbReadGoods))
   }
@@ -422,7 +394,6 @@ export function saveGoods(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:18,
-    apiAction:'SAVE',
     sessionkey:storeS.getItem('sessionKey'),
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
@@ -435,7 +406,6 @@ export function readPersons(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:13,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
@@ -448,7 +418,6 @@ export function savePerson(jsonData,cb) {
   return (dispatch, getState) => {
     let params={
       apiid:14,
-      apiAction:'SAVE',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       jsonData:JSON.stringify(jsonData)
@@ -459,11 +428,10 @@ export function savePerson(jsonData,cb) {
 export function readPerson(personID) {
   return (dispatch, getState) => {
     let params={
-      apiid:14,
-      apiAction:'READ',
+      apiid:50,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      jsonData:JSON.stringify([{userid:personID}])
+      personID:personID
     };
     return dispatch(fetchPost(actionsType.READ_PERSON, params,cbReadPerson))
   }
@@ -531,7 +499,6 @@ export function readMessage(msgID) {
   return (dispatch, getState) => {
     let params={
       apiid:45,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       jsonData:JSON.stringify([{msgID:msgID}])
@@ -544,7 +511,6 @@ export function readMessages() {
   return (dispatch, getState) => {
     let params={
       apiid:10,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID
     };
@@ -650,7 +616,6 @@ export function exportExcel(apiid,sheetNames,cb) {
   return (dispatch, getState) => {
     let params={
       apiid:apiid,
-      apiAction:'EXPORT',
       userid:storeS.getJson('userInfo').UserID,
       sessionkey:storeS.getItem('sessionKey'),
       sheetNames:sheetNames
@@ -663,7 +628,6 @@ export function readImportExcelConfList(pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:16,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
@@ -675,11 +639,10 @@ export function readImportExcelConfList(pageSize,curPage) {
 export function readImportExcelConf(formID) {
   return (dispatch, getState) => {
     let params={
-      apiid:19,
-      apiAction:'READ',
+      apiid:36,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      jsonData:JSON.stringify([{formID:formID},{formID:formID}])
+      formid:formID
     };
     return dispatch(fetchPost(actionsType.READ_IMPORTEXCELCONF, params ))
   }
@@ -688,7 +651,6 @@ export function saveImportExcelConf(jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:19,
-    apiAction:'SAVE',
     sessionkey:storeS.getItem('sessionKey'),
     userid:storeS.getJson('userInfo').UserID,
     jsonData:JSON.stringify(jsonData)
@@ -712,11 +674,9 @@ export function readFavoritesList() {
   let userid=storeS.getJson('userInfo').UserID;
   return (dispatch, getState) => {
     let params={
-      apiid:27,
-      apiAction:'READ',
+      apiid:42,
       sessionkey:storeS.getItem('sessionKey'),
-      userid:userid,
-      jsonData:JSON.stringify([{UserID:userid}])
+      userid:userid
     };
     return dispatch(fetchPost(actionsType.READ_FAVORITESLIST, params ))
   }
@@ -725,7 +685,6 @@ export function saveFavoritesList(jsonData,cb) {
   return (dispatch, getState) => {
     let params={
       apiid:27,
-      apiAction:'SAVE',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       jsonData:JSON.stringify(jsonData)
@@ -737,7 +696,6 @@ export function readMenuSelect(searchStr,pageSize,curPage) {
   return (dispatch, getState) => {
     let params={
       apiid:31,
-      apiAction:'READ',
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       searchStr: '%'+searchStr+'%',

@@ -16,9 +16,6 @@ export function fetchGet(actionType, params, callBack,  option,srcData) {
           if (data.returnCode == 0) {
             if (!option || option.isNeedDispatch===true)
             {dispatch(receiveData(actionType, data, srcData))}
-            if (isFunction(callBack)) {
-              callBack(data, params, dispatch);
-            }
           } else if (data.returnCode == 1003 || data.returnCode == 1004) {
             message.error(data.returnDescribe);
             storeS.removeItem("sessionKey");
@@ -26,6 +23,9 @@ export function fetchGet(actionType, params, callBack,  option,srcData) {
             dispatch(userLogout());
           } else {
             message.error(data.returnDescribe);
+          }
+          if (isFunction(callBack)) {
+            callBack(data, params, dispatch);
           }
         });
       } else {
@@ -55,9 +55,6 @@ export function fetchPost(actionType, params, callBack, option, srcData) {
           if (data.returnCode == 0) {
             if (!option || option.isNeedDispatch===true)
             {dispatch(receiveData(actionType, data, srcData))}
-            if (isFunction(callBack)) {
-              callBack(data, params, dispatch);
-            }
           } else if (data.returnCode == 1003 || data.returnCode == 1004) {
             message.error(data.returnDescribe);
             storeS.removeItem("sessionKey");
@@ -65,6 +62,9 @@ export function fetchPost(actionType, params, callBack, option, srcData) {
             dispatch(userLogout());
           } else {
             message.error(data.returnDescribe);
+          }
+          if (isFunction(callBack)) {
+            callBack(data, params, dispatch);
           }
         });
       } else {

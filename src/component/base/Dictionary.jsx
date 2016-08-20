@@ -231,7 +231,7 @@ class Dictionary extends React.Component {
           <Col span="22">
 
             <ReactDataGrid enableCellSelect={true} rowGetter={this.rowGetter} columns={columns}
-               rowsCount={this.state.rows.length} minHeight={300} toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
+               rowsCount={this.state.rows.length} minHeight={500} toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
                onRowUpdated={this.handleRowUpdated} cellNavigationMode="changeRow"
                contextMenu={<MyContextMenu onRowDelete={this.deleteRow}  />}
                />

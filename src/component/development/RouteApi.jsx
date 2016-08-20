@@ -137,7 +137,7 @@ class RouteApi extends React.Component {
         <Row>
           <Col span="12">
             <FormItem {...formItemLayout} label="API类型" required>
-              <Select id="select" size="large"  {...getFieldProps('TransformJsonType', { rules: [ { required: true, whitespace: true, message: '请选择返回类型' }, ], })}>
+              <Select id="select" size="large"  {...getFieldProps('ApiType', { rules: [ { required: true, whitespace: true, message: '请选择返回类型' }, ], })}>
                 {getSelectOption(this.props.common.RouteReturnType, 'DictCode', 'DictName')}
               </Select>
             </FormItem>
@@ -151,7 +151,7 @@ class RouteApi extends React.Component {
         </Row>
         <Row>
           <Col span="12">
-            <FormItem {...formItemLayout} label="自动生成语句表名集合">
+            <FormItem {...formItemLayout} label="生成保存语句表名集合">
               <Input {...getFieldProps('AutoGenerateSqlTableName')}/>
             </FormItem>
           </Col>
@@ -163,18 +163,19 @@ class RouteApi extends React.Component {
         </Row>
         <Row>
           <Col span="24">
-            <FormItem {...singFormItemLayout} label="执行SQL" required>
-              <Input type="textarea" rows="4" {...getFieldProps('ApiExecSql', { rules: [ { required: true, whitespace: true, message: '请填写执行SQL' }, ], })}/>
+            <FormItem {...singFormItemLayout} label="执行条件SQL"  >
+              <Input type="textarea" rows="4" {...getFieldProps('ApiExecConditionSql')}/>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="24">
-            <FormItem {...singFormItemLayout} label="FORMLIST导出excelSQL"  >
-              <Input type="textarea" rows="4" {...getFieldProps('ApiExportSql')}/>
+            <FormItem {...singFormItemLayout} label="执行SQL" required>
+              <Input type="textarea" rows="4" {...getFieldProps('ApiExecSql', { rules: [ { required: true, whitespace: true, message: '请填写执行SQL' }, ], })}/>
             </FormItem>
           </Col>
         </Row>
+
       </Form>
 
     );
@@ -225,23 +226,23 @@ function mapPropsToFields(props) {
         ApiExecSql: {
           value: props.dataSource0.ApiExecSql
         },
-        ApiExportSql: {
-          value: props.dataSource0.ApiExportSql
-        },
         IsCancel: {
           value: props.dataSource0.IsCancel
         },
         IsOpen: {
           value: props.dataSource0.IsOpen
         },
-        TransformJsonType: {
-          value: props.dataSource0.TransformJsonType
+        ApiType: {
+          value: props.dataSource0.ApiType
         },
         AutoGenerateSqlType: {
           value: props.dataSource0.AutoGenerateSqlType
         },
         AutoGenerateSqlTableName: {
           value: props.dataSource0.AutoGenerateSqlTableName
+        },
+        ApiExecConditionSql: {
+          value: props.dataSource0.ApiExecConditionSql
         }
       }
     }
