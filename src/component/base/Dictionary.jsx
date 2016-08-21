@@ -263,7 +263,6 @@ function mapPropsToFields(props) {
   if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
-      userInfo = storeS.getJson('userInfo');
       mainData = {
         DictTypeID: {
           value: primaryKey
@@ -273,10 +272,7 @@ function mapPropsToFields(props) {
     return mainData;
   } else if (props.dataSource0 && props.dataSource0.DictTypeID==props.params.dataID) {
     if (!mainDataHasModify) {
-
       primaryKey = props.dataSource0.DictTypeID;
-
-      userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
           value: props.dataSource0.ID
@@ -308,6 +304,7 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
+  userInfo = userInfo?userInfo:storeS.getJson('userInfo');
   const {dictionary} = state
   let dataSource0=dictionary.dictionary_M;
   let dataSource1=dictionary.dictionary_S;

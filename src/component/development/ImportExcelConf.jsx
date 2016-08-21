@@ -318,7 +318,6 @@ function mapPropsToFields(props) {
   if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
-      userInfo = storeS.getJson('userInfo');
       mainData = {
         FormID: {
           value: primaryKey
@@ -330,8 +329,6 @@ function mapPropsToFields(props) {
     if (!mainDataHasModify) {
 
       primaryKey = props.dataSource0.FormID;
-
-      userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
           value: props.dataSource0.ID
@@ -369,6 +366,7 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
+  userInfo = userInfo?userInfo:storeS.getJson('userInfo');
   const {importConf} = state
   let dataSource0=importConf.importConf_M;
   let dataSource1=importConf.importConf_S;

@@ -311,7 +311,6 @@ function mapPropsToFields(props) {
       primaryKey = getRand();
       imgGuid = getRand();
       fileGuid = getRand();
-      userInfo = storeS.getJson('userInfo');
       mainData = {
         GoodsID: {
           value: primaryKey
@@ -326,8 +325,6 @@ function mapPropsToFields(props) {
       if (ifNull(imgGuid)) {
         imgGuid = getRand();
       }
-
-      userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
           value: props.dataSource0.ID
@@ -380,6 +377,7 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
+  userInfo = userInfo?userInfo:storeS.getJson('userInfo');
   const {common, goods} = state;
   let dataSource0=goods.goods_M;
   let dataSource1=goods.goods_S;

@@ -186,7 +186,6 @@ function mapPropsToFields(props) {
   if (props.params.dataID == 0) {
     if (!mainDataHasModify) {
       primaryKey = getRand();
-      userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
           value: undefined
@@ -209,7 +208,6 @@ function mapPropsToFields(props) {
   } else if (props.dataSource0 && props.dataSource0.RouteID == props.params.dataID) {
     if (!mainDataHasModify) {
       primaryKey = props.dataSource0.RouteID;
-      userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
           value: props.dataSource0.ID
@@ -262,6 +260,7 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
+  userInfo = userInfo?userInfo:storeS.getJson('userInfo');
   const {common, routeApi} = state;
   let dataSource0 = routeApi.route;
   return {common, dataSource0}

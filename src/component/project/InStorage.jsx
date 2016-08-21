@@ -398,7 +398,6 @@ function mapPropsToFields(props) {
       primaryKey = getRand();
       imgGuid = getRand();
       fileGuid = getRand();
-      userInfo = storeS.getJson('userInfo');
       mainData = {
         CompID: {
           value: userInfo.CompID
@@ -432,7 +431,6 @@ function mapPropsToFields(props) {
       if (ifNull(fileGuid)) {
         fileGuid = getRand();
       }
-      userInfo = storeS.getJson('userInfo');
       mainData = {
         ID: {
           value: props.dataSource0.ID
@@ -482,6 +480,7 @@ function onFieldsChange(props, fields) {
 }
 
 function mapStateToProps(state) {
+  userInfo = userInfo?userInfo:storeS.getJson('userInfo');
   const {common, supplier, warehouse, inStorage} = state;
   let dataSource0=inStorage.inStorage_M;
   let dataSource1=inStorage.inStorage_S;

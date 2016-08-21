@@ -107,7 +107,6 @@ class Favorites extends React.Component {
   }
   handleAddRow = (e, rowObj) => {
     let newRow;
-    userInfo = storeS.getJson('userInfo');
     if (rowObj === undefined) {
       newRow = {
         DgnOperatorType:'ADD',
@@ -137,7 +136,6 @@ class Favorites extends React.Component {
     this.props.dispatch(readMenuSelect(searchStr,pageSize,curPage));
   }
   onSelect = (data) => {
-    userInfo = storeS.getJson('userInfo');
     data.map(function(x) {
       let newRow = {
         DgnOperatorType:'ADD',
@@ -232,6 +230,7 @@ var MyContextMenu = React.createClass({
 
 
 function mapStateToProps(state) {
+  userInfo = userInfo?userInfo:storeS.getJson('userInfo');
   const {favorites} = state;
   let dataSource1=favorites.favoritesList?favorites.favoritesList.item0:[];
   let searchResult=favorites.searchResult;
