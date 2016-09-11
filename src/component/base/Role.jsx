@@ -13,7 +13,7 @@ import {getSelectOption, checkDate, getUploadControlImgData,initTree} from '../.
 
 import {
   readRole,
-  saveRole,readRoleUserSelect,readRoleMainMenu
+  saveRole,readRoleUserSelect,readRoleMainMenu,readRoleRight
 } from '../../redux/actions';
 
 import {
@@ -72,29 +72,28 @@ const searchPageColumns = [
 ];
 
 class Role extends React.Component {
-  static defaultProps = {keys: ['800002', '10000201'],};
+  static defaultProps = {};
   static propTypes = {};
   static contextTypes = {
     router: React.PropTypes.object.isRequired
   };
   constructor(props) {
     super(props);
-    const keys = this.props.keys;
     this.state = {
       rows: [],
       saveLoading:false,
-      defaultSelectedKeys: keys,
-      defaultCheckedKeys: keys,
+      roleRight:[],
     }
   };
 
   componentWillMount() {
     deleteID=[];
     mainDataHasModify = false;
+    this.props.dispatch(readRoleMainMenu());
      if (this.props.params.dataID != 0) {
       this.props.dispatch(readRole(this.props.params.dataID));
+      this.props.dispatch(readRoleRight(this.props.params.dataID));
     }
-    this.props.dispatch(readRoleMainMenu(this.props.params.dataID));
   }
   componentWillUnmount() {
     mainDataHasModify = false;
@@ -110,6 +109,15 @@ class Role extends React.Component {
     if (nextProps.params.dataID==primaryKey  &&  (this.state.rows.length === 0 || nextProps.dataSource1!==this.props.dataSource1)  ) {
       this.setState({rows: nextProps.dataSource1});
     }
+    //角色权限
+    if (nextProps.params.dataID==primaryKey && nextProps.roleRight &&  (this.state.roleRight.length === 0 || nextProps.roleRight!==this.props.roleRight)  ) {
+      let roleRight=[];
+      nextProps.roleRight.map(function (x) {
+        roleRight.push(x.DataID);
+      })
+      this.setState({roleRight: roleRight});
+    }
+
 
   }
 
@@ -135,9 +143,15 @@ class Role extends React.Component {
       deleteID.map(function(x) {
         form1Arr.push({ID:x,DgnOperatorType:'DELETE'})
       })
+      let tempRoleRight = this.state.roleRight;
+      let form2Arr=[];
+      tempRoleRight.map(function (x) {
+        form2Arr.push({ID:undefined,DgnOperatorType:'ADD',RoleID:primaryKey,DataID:x});
+      })
       formArr.push(form0);
       formArr.push(form1Arr);
-      this.props.dispatch(saveRole(formArr, function(data) {
+      formArr.push(form2Arr);
+      this.props.dispatch(saveRole(primaryKey,formArr, function(data) {
         this.setState({saveLoading:false});
         if (data.returnCode == 0 && data.items[0].result == 'success') {
           message.success(data.items[0].resultDescribe);
@@ -217,7 +231,13 @@ handleDelete=(e)=>{
       this.handleAddRow(null, newRow);
     }.bind(this));
   }
-
+  onRightCheck=(checkedKeys,e)=> {
+    console.log(checkedKeys);
+    console.log(e);
+    this.setState({
+      roleRight:checkedKeys
+    });
+  }
   render() {
     const {getFieldProps} = this.props.form;
     var columns = [
@@ -296,11 +316,10 @@ handleDelete=(e)=>{
               />
 
          </TabPane>
-         <TabPane tab="角色组API权限" key="2">选项卡二内容</TabPane>
-         <TabPane tab="角色组功能权限" key="3">
+         <TabPane tab="角色组权限" key="2">
            <Tree className="myCls" showLine checkable defaultExpandAll
-              defaultCheckedKeys={this.state.defaultCheckedKeys}
-              onSelect={this.onSelect} onCheck={this.onCheck}
+               checkedKeys={this.state.roleRight}
+               onCheck={this.onRightCheck}
                >
                {initTree(this.props.roleMenu)}
             </Tree>
@@ -385,8 +404,9 @@ function mapStateToProps(state) {
   let dataSource0=role.role;
   let dataSource1=role.role_user;
   let roleMenu=role.roleMenu;
+  let roleRight=role.roleRight;
   let searchResult=role.searchUserResult;
-  return {dataSource0,dataSource1,searchResult,roleMenu}
+  return {dataSource0,dataSource1,searchResult,roleMenu,roleRight}
 }
 Role = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Role);
 export default connect(mapStateToProps)(Role)

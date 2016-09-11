@@ -68,13 +68,14 @@ export function readRole(roleID) {
     return dispatch(fetchPost(actionsType.READ_ROLE, params ))
   }
 }
-export function saveRole(jsonData,cb) {
+export function saveRole(roleID,jsonData,cb) {
 return (dispatch, getState) => {
   let params={
     apiid:60,
     sessionkey:storeS.getItem('sessionKey'),
     userid:storeS.getJson('userInfo').UserID,
-    jsonData:JSON.stringify(jsonData)
+    jsonData:JSON.stringify(jsonData),
+    roleid:roleID
   };
   return dispatch(fetchPost(null, params,cb,{isNeedDispatch:false}))
 }
@@ -92,15 +93,25 @@ export function readRoleUserSelect(searchStr,pageSize,curPage) {
     return dispatch(fetchPost(actionsType.READ_ROLE_USER_SELECT, params))
   }
 }
-export function readRoleMainMenu(roleID) {
+export function readRoleMainMenu() {
   return (dispatch, getState) => {
     let params={
       apiid:62,
       sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID
+    };
+    return dispatch(fetchPost(actionsType.READ_ROLE_MENU, params))
+  }
+}
+export function readRoleRight(roleID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:63,
+      sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       roleid:roleID
     };
-    return dispatch(fetchPost(actionsType.READ_ROLE_MENU, params))
+    return dispatch(fetchPost(actionsType.READ_ROLE_RIGHT, params))
   }
 }
 //数据字典

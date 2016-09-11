@@ -410,6 +410,11 @@ export function role(state = [], action) {
               ...state,
               roleMenu: action.receivedJson.items
             }
+    case actionsType.READ_ROLE_RIGHT:
+            return {
+                ...state,
+                roleRight: action.receivedJson.items
+            }
     default:
       return state
   }

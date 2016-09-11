@@ -20,6 +20,7 @@ export const READ_ROLE_LIST = 'READ_ROLE_LIST';
 export const READ_ROLE = 'READ_ROLE';
 export const READ_ROLE_USER_SELECT = 'READ_ROLE_USER_SELECT';
 export const READ_ROLE_MENU = 'READ_ROLE_MENU';
+export const READ_ROLE_RIGHT = 'READ_ROLE_RIGHT';
 
 //入库
 export const READ_INSTORAGE_LIST = 'READ_INSTORAGE_LIST';
