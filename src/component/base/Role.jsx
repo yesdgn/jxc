@@ -318,7 +318,7 @@ handleDelete=(e)=>{
          </TabPane>
          <TabPane tab="角色组权限" key="2">
            <Tree className="myCls" showLine checkable defaultExpandAll
-               checkedKeys={this.state.roleRight}
+               checkedKeys={this.state.roleRight}  
                onCheck={this.onRightCheck}
                >
                {initTree(this.props.roleMenu)}

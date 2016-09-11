@@ -39,6 +39,7 @@ export const READ_OUTSTORAGE_GOODS = 'READ_OUTSTORAGE_GOODS';
 export const READ_ROUTERS = 'READ_ROUTERS';
 export const READ_ROUTER = 'READ_ROUTER';
 export const SAVE_ROUTER = 'SAVE_ROUTER';
+export const READ_MENU_TREE = 'READ_MENU_TREE';
 export const REMOVEFILE = 'REMOVEFILE';
 
 //仓库warehouses

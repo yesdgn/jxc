@@ -261,6 +261,11 @@ export function routeApi(state = [], action) {
         ...state,
         route: action.receivedJson.items.item0[0]
       }
+      case actionsType.READ_MENU_TREE:
+        return {
+          ...state,
+          menuTree: action.receivedJson.items
+        }
     default:
       return state
   }

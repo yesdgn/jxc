@@ -81,13 +81,13 @@ export function initTree(treeData) {
   return (treeData.map((x) => {
     if (x.children) {
       return (
-        <TreeNode key={x.MenuID} title={x.MenuName}>
+        <TreeNode key={x.MenuID} value={x.MenuID} title={x.MenuName}>
           {initTree(x.children)}
         </TreeNode>
       )
     } else {
       return (
-        <TreeNode key={x.MenuID} title={x.MenuName}>
+        <TreeNode key={x.MenuID} value={x.MenuID} title={x.MenuName}>
         </TreeNode>
       )
     }

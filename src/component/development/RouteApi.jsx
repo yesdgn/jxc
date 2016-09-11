@@ -7,9 +7,9 @@ import {APP_CONFIG} from '../../entry/config';
 var moment = require('moment');
 import {forEach} from 'lodash';
 import {storeS, getRand, ifNull} from '../../common/dgn';
-import {getSelectOption, checkDate} from '../../common/dgnControlAssist';
+import {getSelectOption, checkDate,initTree} from '../../common/dgnControlAssist';
 
-import {readDict, readRoute, saveRoute} from '../../redux/actions';
+import {readDict, readRoute, saveRoute,readMenuTree} from '../../redux/actions';
 import {READ_DICT_ROUTERETURNTYPE} from '../../redux/actionsType';
 import {
   Button,
@@ -20,7 +20,7 @@ import {
   Icon,
   message,
   Select,
-  Checkbox
+  Checkbox,TreeSelect
 } from 'antd';
 
 var primaryKey;
@@ -30,7 +30,7 @@ var userInfo;
 const Option = Select.Option;
 const createForm = Form.create;
 const FormItem = Form.Item;
-
+const TreeNode = TreeSelect.TreeNode;
 const formItemLayout = {
   labelCol: {
     span: 6
@@ -61,6 +61,7 @@ class RouteApi extends React.Component {
   componentWillMount() {
     mainDataHasModify = false;
     this.props.dispatch(readDict(READ_DICT_ROUTERETURNTYPE, '6365673372633792594'));
+    this.props.dispatch(readMenuTree());
     if (this.props.params.dataID != 0) {
       this.props.dispatch(readRoute(this.props.params.dataID));
     }
@@ -162,6 +163,28 @@ class RouteApi extends React.Component {
           </Col>
         </Row>
         <Row>
+          <Col span="12">
+            <FormItem {...formItemLayout} label="所属功能菜单">
+              <TreeSelect
+                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                placeholder="请选择"
+                allowClear
+                treeDefaultExpandAll
+                {...getFieldProps('PMenuID', {
+                rules: [
+                  { required: true, type: 'number', message: '请选择所属功能菜单' },
+                ],
+              }) }
+              >
+                {initTree(this.props.menuTree)}
+              </TreeSelect>
+            </FormItem>
+          </Col>
+          <Col span="12">
+
+          </Col>
+        </Row>
+        <Row>
           <Col span="24">
             <FormItem {...singFormItemLayout} label="执行条件SQL"  >
               <Input type="textarea" rows="4" {...getFieldProps('ApiExecConditionSql')}/>
@@ -194,7 +217,7 @@ function mapPropsToFields(props) {
           value: primaryKey
         },
         AutoGenerateSqlType: {
-          value: 'NON'
+          value: 'SQL'
         },
         IsCancel: {
           value: 0
@@ -241,6 +264,9 @@ function mapPropsToFields(props) {
         },
         ApiExecConditionSql: {
           value: props.dataSource0.ApiExecConditionSql
+        },
+        PMenuID: {
+          value: props.dataSource0.PMenuID
         }
       }
     }
@@ -263,7 +289,8 @@ function mapStateToProps(state) {
   userInfo = userInfo?userInfo:storeS.getJson('userInfo');
   const {common, routeApi} = state;
   let dataSource0 = routeApi.route;
-  return {common, dataSource0}
+  let menuTree = routeApi.menuTree;
+  return {common, dataSource0,menuTree}
 }
 RouteApi = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(RouteApi);
 export default connect(mapStateToProps)(RouteApi)

@@ -277,6 +277,17 @@ return (dispatch, getState) => {
   return dispatch(fetchPost(actionsType.SAVE_ROUTER, params,cb))
 }
 }
+export function readMenuTree() {
+  return (dispatch, getState) => {
+    let params={
+      apiid:64,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+    };
+    return dispatch(fetchPost(actionsType.READ_MENU_TREE, params ))
+  }
+}
+
 //仓库warehouses
 
 
