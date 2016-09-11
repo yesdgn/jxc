@@ -3,10 +3,10 @@ import {APP_CONFIG} from '../entry/config';
 import {filter,isArray}  from 'lodash';
 import React from 'react';
 import {
-  Select
+  Select,Tree,Icon
 } from 'antd';
 const Option = Select.Option;
-
+const TreeNode = Tree.TreeNode;
 export function  checkDate (rule, value, callback) {
   if  (!value)
   {callback('请选择入库日期');return;}
@@ -75,3 +75,21 @@ export function getUploadControlFileData(data) {
 
   return fileArray;
 }
+
+export function initTree(treeData) {
+  if (!treeData) return (null)
+  return (treeData.map((x) => {
+    if (x.children) {
+      return (
+        <TreeNode key={x.MenuID} title={x.MenuName}>
+          {initTree(x.children)}
+        </TreeNode>
+      )
+    } else {
+      return (
+        <TreeNode key={x.MenuID} title={x.MenuName}>
+        </TreeNode>
+      )
+    }
+  }))
+};

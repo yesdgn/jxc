@@ -386,3 +386,31 @@ export function favorites(state = [], action) {
       return state
   }
 }
+//角色
+export function role(state = [], action) {
+  switch (action.type) {
+    case actionsType.READ_ROLE_LIST:
+      return {
+        ...state,
+        roleList: action.receivedJson.items
+      }
+    case actionsType.READ_ROLE:
+        return {
+          ...state,
+          role: action.receivedJson.items.item0[0],
+          role_user: action.receivedJson.items.item1
+        }
+    case actionsType.READ_ROLE_USER_SELECT:
+          return {
+            ...state,
+            searchUserResult: action.receivedJson.items
+          }
+    case actionsType.READ_ROLE_MENU:
+            return {
+              ...state,
+              roleMenu: action.receivedJson.items
+            }
+    default:
+      return state
+  }
+}

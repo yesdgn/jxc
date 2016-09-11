@@ -40,8 +40,8 @@ const columns = [
   }
   , {
     title: 'API类型',
-    dataIndex: 'TransformJsonType',
-    key: 'RouterStr'
+    dataIndex: 'ApiType',
+    key: 'ApiType'
   }, {
     title: '操作',
     key: 'operation',

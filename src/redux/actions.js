@@ -44,6 +44,65 @@ export function readOutstorageGoods(customerID,searchStr,pageSize,curPage) {
     return dispatch(fetchPost(actionsType.READ_OUTSTORAGE_GOODS, params))
   }
 }
+//角色
+export function readRoleList(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:58,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      pageSize:pageSize,
+      curPage:curPage
+    };
+    return dispatch(fetchPost(actionsType.READ_ROLE_LIST, params))
+  }
+}
+export function readRole(roleID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:59,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      roleid:roleID
+    };
+    return dispatch(fetchPost(actionsType.READ_ROLE, params ))
+  }
+}
+export function saveRole(jsonData,cb) {
+return (dispatch, getState) => {
+  let params={
+    apiid:60,
+    sessionkey:storeS.getItem('sessionKey'),
+    userid:storeS.getJson('userInfo').UserID,
+    jsonData:JSON.stringify(jsonData)
+  };
+  return dispatch(fetchPost(null, params,cb,{isNeedDispatch:false}))
+}
+}
+export function readRoleUserSelect(searchStr,pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:61,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      searchStr: '%'+searchStr+'%',
+      pageSize:pageSize,
+      curPage:curPage
+    };
+    return dispatch(fetchPost(actionsType.READ_ROLE_USER_SELECT, params))
+  }
+}
+export function readRoleMainMenu(roleID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:62,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      roleid:roleID
+    };
+    return dispatch(fetchPost(actionsType.READ_ROLE_MENU, params))
+  }
+}
 //数据字典
 export function readDictionaryList(pageSize,curPage) {
   return (dispatch, getState) => {

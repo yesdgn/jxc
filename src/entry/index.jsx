@@ -40,6 +40,8 @@ import OutStorageList from '../component/project/OutStorageList';
 import {saveLog} from '../redux/actions'
 import ImportExcelConf from '../component/development/ImportExcelConf';
 import ImportExcelConfList from '../component/development/ImportExcelConfList';
+import Role from '../component/base/Role';
+import RoleList from '../component/base/RoleList';
 const store = configureStore()
 //const history = syncHistoryWithStore(browserHistory, store);
 
@@ -111,7 +113,10 @@ ReactDOM.render(
       <Route path="/importconf/:dataID" breadcrumbName="导入配置"   onEnter={requireAuthApp}  component={ImportExcelConf}/>
       <Route path="favorites" breadcrumbName="收藏夹"  onEnter={requireAuthApp}   component={Favorites} />
       <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
-      <Route path="*" breadcrumbName="未找到页面"  onEnter={refreshApp}  component={NoMatch}/>
+      <Route path="roleList" breadcrumbName="角色列表"  onEnter={requireAuthApp}   component={RoleList} />
+      <Route path="/role/:dataID" breadcrumbName="角色"   onEnter={requireAuthApp}  component={Role}/>
+
+    <Route path="*" breadcrumbName="未找到页面"  onEnter={refreshApp}  component={NoMatch}/>
     </Route>
   </Router>
 </Provider>, rootElement)
