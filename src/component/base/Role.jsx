@@ -83,6 +83,7 @@ class Role extends React.Component {
       rows: [],
       saveLoading:false,
       roleRight:[],
+      halfRoleRight:[]
     }
   };
 
@@ -116,6 +117,11 @@ class Role extends React.Component {
         roleRight.push(x.DataID);
       })
       this.setState({roleRight: roleRight});
+      let halfRoleRight=[];
+      nextProps.halfRoleRight.map(function (x) {
+        halfRoleRight.push(x.DataID);
+      })
+      this.setState({halfRoleRight: halfRoleRight});
     }
 
 
@@ -146,7 +152,11 @@ class Role extends React.Component {
       let tempRoleRight = this.state.roleRight;
       let form2Arr=[];
       tempRoleRight.map(function (x) {
-        form2Arr.push({ID:undefined,DgnOperatorType:'ADD',RoleID:primaryKey,DataID:x});
+        form2Arr.push({ID:undefined,DgnOperatorType:'ADD',RoleID:primaryKey,DataID:x,Type:'all'});
+      })
+      tempRoleRight = this.state.halfRoleRight;
+      tempRoleRight.map(function (x) {
+        form2Arr.push({ID:undefined,DgnOperatorType:'ADD',RoleID:primaryKey,DataID:x,Type:'half'});
       })
       formArr.push(form0);
       formArr.push(form1Arr);
@@ -232,10 +242,9 @@ handleDelete=(e)=>{
     }.bind(this));
   }
   onRightCheck=(checkedKeys,e)=> {
-    console.log(checkedKeys);
-    console.log(e);
     this.setState({
-      roleRight:checkedKeys
+      roleRight:checkedKeys,
+      halfRoleRight:e.halfCheckedKeys
     });
   }
   render() {
@@ -318,7 +327,7 @@ handleDelete=(e)=>{
          </TabPane>
          <TabPane tab="角色组权限" key="2">
            <Tree className="myCls" showLine checkable defaultExpandAll
-               checkedKeys={this.state.roleRight}  
+               checkedKeys={this.state.roleRight}
                onCheck={this.onRightCheck}
                >
                {initTree(this.props.roleMenu)}
@@ -404,9 +413,10 @@ function mapStateToProps(state) {
   let dataSource0=role.role;
   let dataSource1=role.role_user;
   let roleMenu=role.roleMenu;
-  let roleRight=role.roleRight;
+  let roleRight=role.roleRight?role.roleRight.item0:[];
+  let halfRoleRight=role.roleRight?role.roleRight.item1:[];
   let searchResult=role.searchUserResult;
-  return {dataSource0,dataSource1,searchResult,roleMenu,roleRight}
+  return {dataSource0,dataSource1,searchResult,roleMenu,roleRight,halfRoleRight}
 }
 Role = Form.create({mapPropsToFields: mapPropsToFields, onFieldsChange: onFieldsChange})(Role);
 export default connect(mapStateToProps)(Role)

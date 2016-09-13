@@ -18,16 +18,20 @@ const confirm = Modal.confirm;
 const pageSize = 10;
 const columns = [
   {
-    title: 'ApiID',
+    title: 'API编号',
     dataIndex: 'ApiID',
     key: 'ApiID',
     render(text,record,index) {
       return <Link to={`/routeapi/`+record.RouteID}>{text}</Link>;
     }
   },{
-    title: 'RouteName',
+    title: '路由名称',
     dataIndex: 'RouteName',
     key: 'RouteName'
+  }, {
+    title: '所属功能菜单',
+    dataIndex: 'MenuName',
+    key: 'MenuName'
   }, {
     title: '执行SQL',
     dataIndex: 'ApiExecSql',
