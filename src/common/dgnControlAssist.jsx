@@ -9,7 +9,7 @@ const Option = Select.Option;
 const TreeNode = Tree.TreeNode;
 export function  checkDate (rule, value, callback) {
   if  (!value)
-  {callback('请选择入库日期');return;}
+  {callback(rule.message);return;}
   callback();
 }
 

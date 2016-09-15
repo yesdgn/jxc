@@ -181,7 +181,9 @@ class RouteApi extends React.Component {
             </FormItem>
           </Col>
           <Col span="12">
-
+            <FormItem {...formItemLayout} label="是否受控于角色权限">
+              <Checkbox {...getFieldProps('IsAllowRoleRight', { valuePropName: 'checked' })}/>
+            </FormItem>
           </Col>
         </Row>
         <Row>
@@ -267,6 +269,9 @@ function mapPropsToFields(props) {
         },
         PMenuID: {
           value: props.dataSource0.PMenuID
+        },
+        IsAllowRoleRight: {
+          value: props.dataSource0.IsAllowRoleRight
         }
       }
     }

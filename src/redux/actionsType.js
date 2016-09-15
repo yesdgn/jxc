@@ -86,7 +86,9 @@ export const READ_USER_MESSAGES = 'READ_USER_MESSAGES';
 export const READ_USER_MESSAGE = 'READ_USER_MESSAGE';
 export const MESSAGE_DONE = 'MESSAGE_DONE';
 export const USER_LOGOUT = 'USER_LOGOUT';
-
+export const READ_USER_LIST = 'READ_USER_LIST';
+export const READ_USER = 'READ_USER';
+export const SAVE_USER = 'SAVE_USER';
 //读主菜单信息
 export const READ_MAIN_MENU = 'READ_MAIN_MENU'
 //收藏

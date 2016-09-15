@@ -302,7 +302,7 @@ handleDelete=(e)=>{
           <Row>
             <Col span="12">
               <FormItem {...formItemLayout} label="入库日期" required>
-                <DatePicker { ...getFieldProps('InDate', { rules: [ { validator: checkDate }, ], })} disabledDate={disabledDate}/>
+                <DatePicker { ...getFieldProps('InDate', { rules: [ { validator: checkDate,message:'请选择入库日期' }, ], })} disabledDate={disabledDate}/>
               </FormItem>
             </Col>
             <Col span="12">

@@ -286,8 +286,8 @@ class OutStorage extends React.Component {
           </Row>
           <Row>
             <Col span="12">
-              <FormItem {...formItemLayout} label="入库日期" required>
-                <DatePicker { ...getFieldProps('OutDate', { rules: [ { validator: checkDate }, ], })} disabledDate={disabledDate}/>
+              <FormItem {...formItemLayout} label="出库日期" required>
+                <DatePicker { ...getFieldProps('OutDate', { rules: [ { validator: checkDate,message:'请选择出库日期' }, ], })} disabledDate={disabledDate}/>
               </FormItem>
             </Col>
             <Col span="12">

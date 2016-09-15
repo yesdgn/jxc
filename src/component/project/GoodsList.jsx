@@ -95,7 +95,8 @@ class Goodses extends React.Component {
   btnExportExcel=()=>{
      this.setState({exportLoading:true});
      this.props.dispatch(exportExcel(33,"商品资料,第二个sheet名称",function (data){
-       window.location = APP_CONFIG.WEBSERVERURL+data.url;
+       if (data.returnCode==0)
+       {window.location = APP_CONFIG.WEBSERVERURL+data.url;}
        this.setState({exportLoading:false});
      }.bind(this)));
   }

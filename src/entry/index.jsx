@@ -7,7 +7,7 @@ import {Provider} from 'react-redux';
 import {storeS} from '../common/dgn';
 import {browserHistory, Router, Route, IndexRoute} from 'react-router';
 import configureStore from '../redux/configureStore';
-//import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+// import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import App from '../component/App';
 import NoMatch from '../component/NoMatch';
 import Login from '../component/Login';
@@ -42,8 +42,11 @@ import ImportExcelConf from '../component/development/ImportExcelConf';
 import ImportExcelConfList from '../component/development/ImportExcelConfList';
 import Role from '../component/base/Role';
 import RoleList from '../component/base/RoleList';
+import User from '../component/base/User';
+import UserList from '../component/base/UserList';
+import ChangePassword from '../component/base/ChangePassword';
 const store = configureStore()
-//const history = syncHistoryWithStore(browserHistory, store);
+// const history = syncHistoryWithStore(browserHistory, store);
 
 let rootElement = document.getElementById('react-body');
 
@@ -115,7 +118,9 @@ ReactDOM.render(
       <Route path="reguser" breadcrumbName="注册" component={RegUser}/>
       <Route path="roleList" breadcrumbName="角色列表"  onEnter={requireAuthApp}   component={RoleList} />
       <Route path="/role/:dataID" breadcrumbName="角色"   onEnter={requireAuthApp}  component={Role}/>
-
+      <Route path="userList" breadcrumbName="用户列表"  onEnter={requireAuthApp}   component={UserList} />
+      <Route path="/user/:dataID" breadcrumbName="用户"   onEnter={requireAuthApp}  component={User}/>
+      <Route path="/changePassword/:dataID" breadcrumbName="用户列表"  onEnter={requireAuthApp}   component={ChangePassword} />
     <Route path="*" breadcrumbName="未找到页面"  onEnter={refreshApp}  component={NoMatch}/>
     </Route>
   </Router>

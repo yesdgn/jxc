@@ -46,6 +46,16 @@ export function user(state = {}, action) {
         ...state,
         userLogout: true
       }
+    case actionsType.READ_USER_LIST:
+        return {
+          ...state,
+          userList: action.receivedJson.items
+        }
+    case actionsType.READ_USER:
+            return {
+              ...state,
+              user: action.receivedJson.items.item0[0]
+            }
     default:
       return state
   }

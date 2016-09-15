@@ -533,7 +533,40 @@ export function readUploadFile(actionType,fileFormID,gettype) {
   }
 }
 //用户
-
+export function readUserList(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:65,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      pageSize:pageSize,
+      curPage:curPage
+    };
+    return dispatch(fetchPost(actionsType.READ_USER_LIST, params))
+  }
+}
+export function readUser(userID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:66,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      personID:userID
+    };
+    return dispatch(fetchPost(actionsType.READ_USER, params))
+  }
+}
+export function saveUser(jsonData,cb) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:67,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      jsonData:JSON.stringify(jsonData)
+    };
+    return dispatch(fetchPost(actionsType.SAVE_USER, params,cb))
+  }
+}
 export function userLogin(loginInfo,cb) {
   return (dispatch, getState) => {
     let params={
@@ -561,6 +594,20 @@ export function userReg(regInfo,cb) {
     return dispatch(fetchPost(actionsType.USER_REG, params,cb))
   }
 }
+export function changePassword(personID,oldPasssord,newPasssord,cb) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:68,
+      sessionkey:storeS.getItem('sessionKey'),
+      personid:personID,
+      oldpassword:SHA1(oldPasssord).toString(),
+      newpassword:SHA1(newPasssord).toString(),
+    };
+    return dispatch(fetchPost(null, params,cb,{isNeedDispatch:false}))
+  }
+}
+
+
 export function clearUser() {
   return {
     type: actionsType.USER_CLEAR
