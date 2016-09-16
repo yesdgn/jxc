@@ -272,7 +272,7 @@ handleDelete=(e)=>{
             <Col >
               <FormItem >
                 <Button type="primary" htmlType="submit" loading={this.state.saveLoading} >保存</Button>
-                <Button type="default" onClick={this.handleDelete} >禁用</Button>
+
               </FormItem>
             </Col>
             <Col span="1">
@@ -309,12 +309,11 @@ handleDelete=(e)=>{
             </Col>
            </Row>
         </Form>
-        <Tabs tabPosition={this.state.tabPosition}>
+        <Tabs tabPosition={this.state.tabPosition} className="marLeft10">
          <TabPane tab="角色组人员" key="1">
            <SearchInput placeholder="输入人员姓名、代码搜索" style={{
              width: 250,
-             marginBottom: 5,
-             marginLeft:10
+             marginBottom: 5
            }} onSearch={this.onSearch} dataSource={this.props.searchResult}
             onSelect={this.onSelect} columns={searchPageColumns}>
            </SearchInput>

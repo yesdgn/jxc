@@ -434,3 +434,25 @@ export function role(state = [], action) {
       return state
   }
 }
+//菜单
+export function menu(state = [], action) {
+  switch (action.type) {
+    case actionsType.READ_MENU_LIST:
+      return {
+        ...state,
+        menuList: action.receivedJson.items
+      }
+    case actionsType.READ_MENU:
+        return {
+          ...state,
+          menu: action.receivedJson.items.item0[0],
+        }
+    case actionsType.ADD_MENU:
+            return {
+              ...state,
+              menu: action.payload,
+            }
+    default:
+      return state
+  }
+}

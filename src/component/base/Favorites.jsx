@@ -185,7 +185,6 @@ class Favorites extends React.Component {
           </Col>
          </Row>
          <Row>
-          <Col span="1"></Col>
           <Col span="4">
             <SearchInput placeholder="输入功能名称搜索" style={{
               width: 250,
@@ -194,8 +193,7 @@ class Favorites extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span="1"></Col>
-          <Col span="22">
+          <Col span="23">
             <ReactDataGrid enableCellSelect={true} rowGetter={this.rowGetter}
                columns={columns} rowsCount={this.state.rows.length} minHeight={500}
                onRowUpdated={this.handleRowUpdated} cellNavigationMode="changeRow"

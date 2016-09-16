@@ -7,7 +7,7 @@ import {
   Row,
   Col,
   Modal,
-  Button
+  Button,Form,Input,DatePicker,Select
 } from 'antd';
 import {Link} from 'react-router';
 import {connect} from 'react-redux'
@@ -16,11 +16,22 @@ import ImportExcel from '../../common/ImportExcel';
 import {
   readDict,readGoodses,exportExcel
 } from '../../redux/actions';
-import { READ_DICT_CUSTTYPE  } from '../../redux/actionsType';
 import {APP_CONFIG} from '../../entry/config';
+import {getSelectOption} from '../../common/dgnControlAssist';
+import {READ_DICT_GOODSCATEGORY } from '../../redux/actionsType';
 const confirm = Modal.confirm;
-
+const FormItem = Form.Item;
 const pageSize = 10;
+const createForm = Form.create;
+const formItemLayout = {
+  labelCol: {
+    span: 6
+  },
+  wrapperCol: {
+    span: 16
+  }
+};
+
 const columns = [
    {
     title: '商品名称',
@@ -70,7 +81,7 @@ class Goodses extends React.Component {
     }
   };
   componentWillMount() {
-    this.props.dispatch(readDict(READ_DICT_CUSTTYPE, '146864635828377773'));
+    this.props.dispatch(readDict(READ_DICT_GOODSCATEGORY, '6365673372633792522'));
     let paginationPage = storeS.getItem("pagination");
     if (paginationPage && this.props.route.path == JSON.parse(paginationPage).path) {
       this.setState({currentPage: JSON.parse(paginationPage).currentPage})
@@ -100,7 +111,20 @@ class Goodses extends React.Component {
        this.setState({exportLoading:false});
      }.bind(this)));
   }
+  handleSearch=(e)=>{
+    e.preventDefault();
+    this.props.form.validateFields((errors, values) => {
+      if (!!errors) {
+        return;
+      }
+      let searchCondition = {
+        ...values
+      };
+      console.log(searchCondition);
+  })
+}
   render() {
+    const {getFieldProps} = this.props.form;
     const pagination = {
       total: this.props.totalCount0,
       defaultCurrent: this.state.currentPage,
@@ -108,6 +132,34 @@ class Goodses extends React.Component {
     };
     return (
       <div>
+        <Form horizontal className="ant-advanced-search-form" onSubmit={this.handleSearch} >
+          <Row type="flex"  >
+            <Col  span="7">
+              <FormItem
+                label="商品名称"
+                 {...formItemLayout}
+              >
+                <Input {...getFieldProps('GoodsName')} size="default" />
+              </FormItem>
+            </Col>
+            <Col   span="7" >
+              <FormItem
+                label="商品分类"
+                 {...formItemLayout}
+              >
+              <Select id="select" size="default"   {...getFieldProps('GoodsCategory')}>
+                 {getSelectOption(this.props.common.GoodsCategory, 'DictID', 'DictName')}
+              </Select>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="1"></Col>
+            <Col   span="7" >
+              <Button type="primary" htmlType="submit">搜索</Button>
+            </Col>
+          </Row>
+        </Form>
         <ImportExcel visible={this.state.importExcelVisible}
           hide={()=>this.setState({importExcelVisible:false})} >
         </ImportExcel>
@@ -134,9 +186,11 @@ class Goodses extends React.Component {
   }
 };
 function mapStateToProps(state) {
-  const {goods} = state;
+  const {goods,common} = state;
   let totalCount0=goods.goodses?goods.goodses.item0[0].TotalCount:0;
   let dataSource0=goods.goodses?goods.goodses.item1:[];
-  return {totalCount0,dataSource0}
+  return {totalCount0,dataSource0,common}
 }
+
+Goodses = Form.create({})(Goodses);
 export default   connect(mapStateToProps)(Goodses)

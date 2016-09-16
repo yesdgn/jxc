@@ -191,7 +191,7 @@ class Goods extends React.Component {
 
     return (
       <div>
-        <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>
+        <Form horizontal  onSubmit={this.handleSubmit}>
           <Row type="flex" justify="end">
             <Col >
               <FormItem >

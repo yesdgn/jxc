@@ -8,6 +8,10 @@ export const READ_DICT_UNIT = 'READ_DICT_UNIT';
 export const READ_DICT_CUSTTYPE = 'READ_DICT_CUSTTYPE';
 export const READ_GOODS_SELECT = 'READ_GOODS_SELECT';
 export const SAVE_LOG = 'SAVE_LOG';
+//菜单
+export const READ_MENU_LIST = 'READ_MENU_LIST';
+export const READ_MENU = 'READ_MENU';
+export const ADD_MENU = 'ADD_MENU';
 //数据字典
 export const READ_DICTIONARY_LIST = 'READ_DICTIONARY_LIST';
 export const READ_DICTIONARY = 'READ_DICTIONARY';

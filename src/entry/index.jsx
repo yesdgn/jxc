@@ -38,6 +38,7 @@ import DictionaryList from '../component/base/DictionaryList';
 import OutStorage from '../component/project/OutStorage';
 import OutStorageList from '../component/project/OutStorageList';
 import {saveLog} from '../redux/actions'
+import MenuConf from '../component/development/MenuConf';
 import ImportExcelConf from '../component/development/ImportExcelConf';
 import ImportExcelConfList from '../component/development/ImportExcelConfList';
 import Role from '../component/base/Role';
@@ -112,6 +113,7 @@ ReactDOM.render(
       <Route path="/dictionary/:dataID" breadcrumbName="数据字典"   onEnter={requireAuthApp}  component={Dictionary}/>
       <Route path="outStorageList" breadcrumbName="销售出库单列表"  onEnter={requireAuthApp}   component={OutStorageList} />
       <Route path="/outStorage/:dataID" breadcrumbName="销售出库单"   onEnter={requireAuthApp}  component={OutStorage}/>
+      <Route path="menuConf" breadcrumbName="菜单配置列表"  onEnter={requireAuthApp}   component={MenuConf} />
       <Route path="importconf" breadcrumbName="导入配置列表"  onEnter={requireAuthApp}   component={ImportExcelConfList} />
       <Route path="/importconf/:dataID" breadcrumbName="导入配置"   onEnter={requireAuthApp}  component={ImportExcelConf}/>
       <Route path="favorites" breadcrumbName="收藏夹"  onEnter={requireAuthApp}   component={Favorites} />

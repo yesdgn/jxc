@@ -38,7 +38,9 @@
 .marLeft50{
   margin-left: 50px;
 }
-
+.marLeft10{
+  margin-left: 10px;
+}
 .contentDiv {
   margin: 10px 0px 0px 10px ;
   min-height:  500px ;
@@ -109,4 +111,17 @@ margin-right: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.ant-advanced-search-form {
+  padding: 16px 8px;
+ 
+}
+/* 由于输入标签长度不确定，所以需要微调使之看上去居中 */
+.ant-advanced-search-form > .ant-row {
+  position: relative;
+  left: -6px;
+}
+
+.ant-advanced-search-form .ant-btn + .ant-btn {
+  margin-left: 8px;
 }

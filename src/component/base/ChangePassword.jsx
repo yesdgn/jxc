@@ -91,7 +91,7 @@ class ChangePassword extends React.Component {
       <div>
         <Form horizontal   onSubmit={this.handleSubmit}>
           <Row type="flex" justify="end">
-            <Col span="1">
+            <Col span="2">
               <FormItem >
                 <Button type="primary" htmlType="submit">修改密码</Button>
               </FormItem>
@@ -150,7 +150,7 @@ function mapPropsToFields(props) {
 
 
 function mapStateToProps(state,props) {
-  userInfo = userInfo?userInfo:storeS.getJson('userInfo');
+  userInfo = storeS.getJson('userInfo');
   const {user} = state;
   let dataSource0;
   if  (props.params.dataID==0 )

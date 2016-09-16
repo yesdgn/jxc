@@ -833,3 +833,57 @@ export function readMenuSelect(searchStr,pageSize,curPage) {
     return dispatch(fetchPost(actionsType.READ_MENU_SELECT, params))
   }
 }
+
+//菜单
+export function readMenuList(pageSize,curPage) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:69,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      pageSize:pageSize,
+      curPage:curPage
+    };
+    return dispatch(fetchPost(actionsType.READ_MENU_LIST, params))
+  }
+}
+export function saveMenu(jsonData,cb) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:71,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      jsonData:JSON.stringify(jsonData)
+    };
+    return dispatch(fetchPost(null, params,cb,{isNeedDispatch:false}))
+  }
+}
+export function readMenu(menuID) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:70,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      menuid:menuID
+    };
+    return dispatch(fetchPost(actionsType.READ_MENU, params))
+  }
+}
+export function addMenu(payload) {
+  return {
+    type: actionsType.ADD_MENU,
+    payload:payload
+  }
+}
+export function dragMenu(dragKey,dropKey,cb) {
+  return (dispatch, getState) => {
+    let params={
+      apiid:72,
+      sessionkey:storeS.getItem('sessionKey'),
+      userid:storeS.getJson('userInfo').UserID,
+      dragKey:dragKey,
+      dropKey:dropKey
+    };
+    return dispatch(fetchPost(null, params,cb,{isNeedDispatch:false}))
+  }
+}
