@@ -37,13 +37,15 @@ const columns = [
     title: '商品名称',
     dataIndex: 'GoodsName',
     key: 'GoodsName',
+    sorter: true,
     render(text,record,index) {
       return <Link to={`/goods/`+record.GoodsID}>{text}</Link>;
     }
   },{
     title: '商品代码',
     dataIndex: 'GoodsCode',
-    key: 'GoodsCode'
+    key: 'GoodsCode',
+    sorter: true
   }, {
     title: '商品默认价格',
     dataIndex: 'DefaultPrice',
@@ -51,7 +53,9 @@ const columns = [
   }, {
     title: '商品分类',
     dataIndex: 'GoodsCategoryName',
-    key: 'GoodsCategoryName'
+    key: 'GoodsCategoryName',
+    sorter: true,
+    filters:{}
   }, {
     title: '规格',
     dataIndex: 'Specifications',
@@ -117,11 +121,18 @@ class Goodses extends React.Component {
       if (!!errors) {
         return;
       }
-      let searchCondition = {
+      let filterCondition = {
         ...values
       };
-      console.log(searchCondition);
+      console.log(filterCondition);
+      this.props.dispatch(readGoodses(pageSize, 1,filterCondition));
+
   })
+}
+handleTableChange=(pagination, filters, sorter)=> {
+  console.log(pagination);
+  console.log(filters);
+  console.log(sorter);
 }
   render() {
     const {getFieldProps} = this.props.form;
@@ -163,24 +174,19 @@ class Goodses extends React.Component {
         <ImportExcel visible={this.state.importExcelVisible}
           hide={()=>this.setState({importExcelVisible:false})} >
         </ImportExcel>
-        <Row type="flex" justify="center" align="end" style={{
-          margin: 10
-        }}>
-          <Col span="2">
-
+        <Row type="flex" justify="center" align="end" className="marBottom10" >
+          <Col span="5">
             <Link to="/goods/0">
-              <Button type="primary">新增</Button>
+              <Button type="primary" className="marLeft10">新增</Button>
             </Link>
-
-          </Col>
-          <Col span="2">
-            <Button type="default" onClick={this.btnImportExcel}>导入</Button>
-          </Col>
-          <Col span="2">
-            <Button type="default" onClick={this.btnExportExcel} loading={this.state.exportLoading} >导出</Button>
+              <Button type="default" className="marLeft10" onClick={this.btnImportExcel}>导入</Button>
+              <Button type="default" className="marLeft10" onClick={this.btnExportExcel} loading={this.state.exportLoading} >导出</Button>
           </Col>
         </Row>
-        <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource0} pagination={pagination}/>
+        <Table columns={columns} rowKey={record => 'K' + record.ID}
+          dataSource={this.props.dataSource0} pagination={pagination}
+          onChange={this.handleTableChange}
+          />
       </div>
     );
   }

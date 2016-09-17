@@ -3,7 +3,6 @@
 }
 .loginRow{
   height:100%;
-
 }
 .leftmenu{
   width: 240px;
@@ -40,6 +39,9 @@
 }
 .marLeft10{
   margin-left: 10px;
+}
+.marBottom10{
+  margin-bottom: 10px;
 }
 .contentDiv {
   margin: 10px 0px 0px 10px ;
@@ -114,7 +116,7 @@ margin-right: 8px;
 }
 .ant-advanced-search-form {
   padding: 16px 8px;
- 
+
 }
 /* 由于输入标签长度不确定，所以需要微调使之看上去居中 */
 .ant-advanced-search-form > .ant-row {

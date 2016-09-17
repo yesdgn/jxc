@@ -444,7 +444,7 @@ return (dispatch, getState) => {
 }
 }
 //商品
-export function readGoodses(pageSize,curPage) {
+export function readGoodses(pageSize,curPage,filterCondition) {
   return (dispatch, getState) => {
     let params={
       apiid:5,
@@ -452,6 +452,7 @@ export function readGoodses(pageSize,curPage) {
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
       curPage:curPage,
+      dgnFilter:JSON.stringify(filterCondition)
     };
     return dispatch(fetchPost(actionsType.READ_GOODSES, params))
   }
