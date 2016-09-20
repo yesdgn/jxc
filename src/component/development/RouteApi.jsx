@@ -196,7 +196,7 @@ class RouteApi extends React.Component {
         <Row>
           <Col span="24">
             <FormItem {...singFormItemLayout} label="执行SQL" required>
-              <Input type="textarea" rows="4" {...getFieldProps('ApiExecSql', { rules: [ { required: true, whitespace: true, message: '请填写执行SQL' }, ], })}/>
+              <Input type="textarea" rows="10" {...getFieldProps('ApiExecSql', { rules: [ { required: true, whitespace: true, message: '请填写执行SQL' }, ], })}/>
             </FormItem>
           </Col>
         </Row>

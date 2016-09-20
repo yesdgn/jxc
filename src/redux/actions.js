@@ -23,7 +23,7 @@ export function readGoodsSelect(searchStr,pageSize,curPage) {
       apiid:37,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      searchStr: '%'+searchStr+'%',
+      searchStr: searchStr,
       pageSize:pageSize,
       curPage:curPage
     };
@@ -37,7 +37,7 @@ export function readOutstorageGoods(customerID,searchStr,pageSize,curPage) {
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
       customerid:customerID,
-      searchStr: '%'+searchStr+'%',
+      searchStr:searchStr,
       pageSize:pageSize,
       curPage:curPage
     };
@@ -86,7 +86,7 @@ export function readRoleUserSelect(searchStr,pageSize,curPage) {
       apiid:61,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      searchStr: '%'+searchStr+'%',
+      searchStr:searchStr,
       pageSize:pageSize,
       curPage:curPage
     };
@@ -452,7 +452,7 @@ export function readGoodses(pageSize,curPage,filterCondition) {
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
       curPage:curPage,
-      dgnFilter:JSON.stringify(filterCondition)
+      filter:JSON.stringify(filterCondition)
     };
     return dispatch(fetchPost(actionsType.READ_GOODSES, params))
   }
@@ -827,7 +827,7 @@ export function readMenuSelect(searchStr,pageSize,curPage) {
       apiid:31,
       sessionkey:storeS.getItem('sessionKey'),
       userid:storeS.getJson('userInfo').UserID,
-      searchStr: '%'+searchStr+'%',
+      searchStr:searchStr ,
       pageSize:pageSize,
       curPage:curPage
     };
