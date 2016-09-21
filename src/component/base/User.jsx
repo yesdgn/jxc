@@ -111,11 +111,11 @@ class User extends React.Component {
     return (
       <div>
         <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>
-          <Row type="flex" justify="end">
-            <Col span="3">
-              <FormItem >
+          <Row type="flex" justify="end" >
+            <Col span="23"  >
+              <FormItem className="floatRight" >
                 <Button type="primary" htmlType="submit">保存</Button>
-                <Button type="default" onClick={()=>this.context.router.push('/changePassword/' + primaryKey)}>修改密码</Button>
+                <Button type="default" className="marLeft10" onClick={()=>this.context.router.push('/changePassword/' + primaryKey)}>修改密码</Button>
               </FormItem>
             </Col>
             <Col span="1">

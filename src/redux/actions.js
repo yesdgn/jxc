@@ -444,7 +444,7 @@ return (dispatch, getState) => {
 }
 }
 //商品
-export function readGoodses(pageSize,curPage,filterCondition) {
+export function readGoodses(pageSize,curPage,filterCondition,sorter) {
   return (dispatch, getState) => {
     let params={
       apiid:5,
@@ -452,7 +452,8 @@ export function readGoodses(pageSize,curPage,filterCondition) {
       userid:storeS.getJson('userInfo').UserID,
       pageSize:pageSize,
       curPage:curPage,
-      filter:JSON.stringify(filterCondition)
+      filter:JSON.stringify(filterCondition),
+      sorter:ifNull(sorter)?'':' order by '+sorter.field  + (sorter.order==='ascend'?' asc ':' desc ')
     };
     return dispatch(fetchPost(actionsType.READ_GOODSES, params))
   }

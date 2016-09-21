@@ -22,6 +22,7 @@ import {READ_DICT_GOODSCATEGORY } from '../../redux/actionsType';
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
 const pageSize = 10;
+var filterCondition;
 const createForm = Form.create;
 const formItemLayout = {
   labelCol: {
@@ -97,12 +98,10 @@ class Goodses extends React.Component {
 
   }
   componentWillUnmount() {
+    filterCondition={};
     storeS.setItem("pagination", JSON.stringify({currentPage: this.state.currentPage, path: this.props.route.path}));
   }
-  handlePageChange = (current) => {
-    this.setState({currentPage: current})
-    this.props.dispatch(readGoodses(pageSize, current));
-  }
+
 
   btnImportExcel=()=>{
     this.setState({importExcelVisible:true});
@@ -121,25 +120,21 @@ class Goodses extends React.Component {
       if (!!errors) {
         return;
       }
-      let filterCondition = {
+      filterCondition = {
         ...values
       };
-      console.log(filterCondition);
       this.props.dispatch(readGoodses(pageSize, 1,filterCondition));
-
   })
 }
 handleTableChange=(pagination, filters, sorter)=> {
-  console.log(pagination);
-  console.log(filters);
-  console.log(sorter);
+  this.setState({currentPage: pagination.current})
+  this.props.dispatch(readGoodses(pageSize, pagination.current,filterCondition,sorter));
 }
   render() {
     const {getFieldProps} = this.props.form;
     const pagination = {
       total: this.props.totalCount0,
-      defaultCurrent: this.state.currentPage,
-      onChange: this.handlePageChange
+      defaultCurrent: this.state.currentPage
     };
     return (
       <div>
@@ -165,7 +160,7 @@ handleTableChange=(pagination, filters, sorter)=> {
             </Col>
           </Row>
           <Row>
-            <Col span="1"></Col>
+
             <Col   span="7" >
               <Button type="primary" htmlType="submit">搜索</Button>
             </Col>

@@ -84,18 +84,14 @@ class Companies extends React.Component {
     };
     return (
       <div>
-        <Row type="flex" justify="center" align="end" style={{
-          margin: 10
-        }}>
-          <Col span="2">
-
+        <Row type="flex" justify="center" align="end" className="marBottom10 marRight10" > >
+          <Col span="22">
+            <div className="floatRight">
             <Link to="/company/0">
               <Button type="primary">新增</Button>
             </Link>
-
-          </Col>
-          <Col span="2">
-            <Button type="primary">导出</Button>
+            <Button type="default" className="marLeft10">导出</Button>
+            </div>
           </Col>
         </Row>
         <Table columns={columns} rowKey={record => 'K' + record.ID} dataSource={this.props.dataSource0} pagination={pagination}/>
